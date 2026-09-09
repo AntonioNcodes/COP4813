@@ -121,4 +121,163 @@ footer p {
     }
 }
 
+/* =================================
+Assignment 3 Form
+================================= */
+
+.form-section {
+padding: 40px;
+}
+
+.form-intro {
+text-align: center;
+max-width: 650px;
+margin: 0 auto 35px;
+}
+
+.form-label {
+display: inline-block;
+color: #e21b2d;
+font-size: 0.85rem;
+font-weight: bold;
+letter-spacing: 1.5px;
+margin-bottom: 8px;
+}
+
+.form-intro h2 {
+margin-top: 0;
+font-size: 2rem;
+}
+
+.form-intro p {
+color: #5b6675;
+}
+
+.form-group {
+margin-bottom: 30px;
+padding: 25px;
+background-color: #f7faff;
+border: 1px solid #dce5ef;
+border-radius: 10px;
+}
+
+.form-group h3,
+.security-box h3 {
+color: #0b3d91;
+margin-top: 0;
+margin-bottom: 20px;
+font-size: 1.25rem;
+}
+
+.form-row {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 20px;
+}
+
+.form-field {
+margin-bottom: 18px;
+}
+
+.form-row .form-field {
+margin-bottom: 0;
+}
+
+.form-field label {
+display: block;
+margin-bottom: 7px;
+font-weight: bold;
+color: #172033;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+width: 100%;
+padding: 12px 14px;
+border: 2px solid #d4dee9;
+border-radius: 7px;
+background-color: white;
+color: #172033;
+font-family: Arial, sans-serif;
+font-size: 1rem;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+outline: none;
+border-color: #0b3d91;
+box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.12);
+}
+
+.form-field textarea {
+resize: vertical;
+min-height: 130px;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+color: #8a96a5;
+}
+
+.security-box {
+margin-bottom: 25px;
+padding: 25px;
+background-color: #eef5ff;
+border-left: 5px solid #0b3d91;
+border-radius: 8px;
+}
+
+.security-box p {
+margin-top: 0;
+color: #536174;
+}
+
+.submit-button {
+width: 100%;
+padding: 15px 20px;
+border: none;
+border-radius: 7px;
+background-color: #0b3d91;
+color: white;
+font-size: 1.05rem;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.2s, transform 0.2s;
+}
+
+.submit-button:hover,
+.submit-button:focus {
+background-color: #e21b2d;
+}
+
+.submit-button:hover {
+transform: translateY(-1px);
+}
+
+/* Assignment 3 mobile layout */
+
+@media (max-width: 700px) {
+
+.form-section {
+    padding: 25px 20px;
+}
+
+.form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+}
+
+.form-row .form-field {
+    margin-bottom: 18px;
+}
+
+.form-group {
+    padding: 20px;
+}
+
+
+}
 

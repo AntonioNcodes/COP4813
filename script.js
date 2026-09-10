@@ -98,26 +98,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         // Birth date validation
-        if (birthdate.value === "") {
+// Birth date validation
+if (birthdate.value === "") {
 
-            birthdateError.textContent =
-                "Please enter your birth date.";
+    birthdateError.textContent =
+        "Please enter your birth date.";
 
-            valid = false;
+    valid = false;
 
-        } else {
+} else {
 
-            const selectedDate =
-                new Date(birthdate.value + "T00:00:00");
+    const selectedDate =
+        new Date(birthdate.value + "T00:00:00");
 
-            if (selectedDate > today) {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
 
-                birthdateError.textContent =
-                    "Birth date cannot be in the future.";
+    if (selectedDate > currentDate) {
 
-                valid = false;
-            }
-        }
+        birthdateError.textContent =
+            "Warning: Birth date cannot be in the future.";
+
+        birthdateError.style.color = "#e21b2d";
+        birthdateError.style.fontWeight = "bold";
+
+        valid = false;
+    }
+}
+
 
 
         // Security question

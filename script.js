@@ -1,176 +1,190 @@
-alert("JavaScript is working!");
-
-
 // Assignment 3 - Form Validation
 
-const form = document.getElementById("contactForm");
-const phone = document.getElementById("phone");
-const birthdate = document.getElementById("birthdate");
-const security = document.getElementById("security");
+document.addEventListener("DOMContentLoaded", function () {
 
-const phoneError = document.getElementById("phoneError");
-const birthdateError = document.getElementById("birthdateError");
-const securityError = document.getElementById("securityError");
+    const form = document.getElementById("contactForm");
+    const phone = document.getElementById("phone");
+    const birthdate = document.getElementById("birthdate");
+    const security = document.getElementById("security");
 
-
-// Phone number formatting
-phone.addEventListener("input", function () {
-
-    let numbers = phone.value.replace(/\D/g, "");
-
-    if (numbers.length > 10) {
-        numbers = numbers.substring(0, 10);
-    }
-
-    if (numbers.length >= 7) {
-
-        phone.value =
-            "(" +
-            numbers.substring(0, 3) +
-            ")" +
-            numbers.substring(3, 6) +
-            "-" +
-            numbers.substring(6);
-
-    } else if (numbers.length >= 4) {
-
-        phone.value =
-            "(" +
-            numbers.substring(0, 3) +
-            ")" +
-            numbers.substring(3);
-
-    } else if (numbers.length > 0) {
-
-        phone.value = "(" + numbers;
-
-    } else {
-
-        phone.value = "";
-    }
-});
+    const phoneError = document.getElementById("phoneError");
+    const birthdateError = document.getElementById("birthdateError");
+    const securityError = document.getElementById("securityError");
 
 
-// Prevent future birth dates
-const today = new Date();
+    // Phone number formatting
+    phone.addEventListener("input", function () {
 
-const year = today.getFullYear();
-const month = String(today.getMonth() + 1).padStart(2, "0");
-const day = String(today.getDate()).padStart(2, "0");
+        let numbers = phone.value.replace(/\D/g, "");
 
-birthdate.max = `${year}-${month}-${day}`;
+        if (numbers.length > 10) {
+            numbers = numbers.substring(0, 10);
+        }
+
+        if (numbers.length >= 7) {
+
+            phone.value =
+                "(" +
+                numbers.substring(0, 3) +
+                ")" +
+                numbers.substring(3, 6) +
+                "-" +
+                numbers.substring(6);
+
+        } else if (numbers.length >= 4) {
+
+            phone.value =
+                "(" +
+                numbers.substring(0, 3) +
+                ")" +
+                numbers.substring(3);
+
+        } else if (numbers.length > 0) {
+
+            phone.value = "(" + numbers;
+
+        } else {
+
+            phone.value = "";
+        }
+
+    });
 
 
-// Form validation
-form.addEventListener("submit", function (event) {
+    // Prevent future birth dates
+    const today = new Date();
 
-    let valid = true;
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-    phoneError.textContent = "";
-    birthdateError.textContent = "";
-    securityError.textContent = "";
-
-
-    // Phone validation
-    const phoneNumbers = phone.value.replace(/\D/g, "");
-
-    if (phoneNumbers.length !== 10) {
-
-        phoneError.textContent =
-            "Please enter a complete 10-digit phone number.";
-
-        valid = false;
-    }
+    birthdate.max = `${year}-${month}-${day}`;
 
 
-    // Birth date validation
-    if (birthdate.value === "") {
+    // Form validation
+    form.addEventListener("submit", function (event) {
 
-        birthdateError.textContent =
-            "Please enter your birth date.";
+        let valid = true;
 
-        valid = false;
+        phoneError.textContent = "";
+        birthdateError.textContent = "";
+        securityError.textContent = "";
 
-    } else {
 
-        const selectedDate = new Date(birthdate.value);
+        // Check first and last name
+        const firstName =
+            document.getElementById("firstName").value.trim();
 
-        if (selectedDate > today) {
+        const lastName =
+            document.getElementById("lastName").value.trim();
 
-            birthdateError.textContent =
-                "Birth date cannot be in the future.";
+        if (firstName === "" || lastName === "") {
 
             valid = false;
         }
-    }
 
 
-    // Security question
-    if (security.value.trim() !== "8") {
+        // Phone validation
+        const phoneNumbers =
+            phone.value.replace(/\D/g, "");
 
-        securityError.textContent =
-            "Incorrect answer. Please enter 8.";
+        if (phoneNumbers.length !== 10) {
 
-        valid = false;
-    }
+            phoneError.textContent =
+                "Please enter a complete 10-digit phone number.";
 
-
-    // HTML5 required-field validation
-    if (!form.checkValidity()) {
-
-        form.reportValidity();
-
-        valid = false;
-    }
+            valid = false;
+        }
 
 
-    // Stop if anything is invalid
-    if (!valid) {
+        // Birth date validation
+        if (birthdate.value === "") {
 
-        event.preventDefault();
-        return;
-    }
+            birthdateError.textContent =
+                "Please enter your birth date.";
 
+            valid = false;
 
-    // Save information for the confirmation page
-    const formData = {
+        } else {
 
-        firstName:
-            document.getElementById("firstName").value,
+            const selectedDate =
+                new Date(birthdate.value + "T00:00:00");
 
-        lastName:
-            document.getElementById("lastName").value,
+            if (selectedDate > today) {
 
-        birthdate:
-            document.getElementById("birthdate").value,
+                birthdateError.textContent =
+                    "Birth date cannot be in the future.";
 
-        address:
-            document.getElementById("address").value,
-
-        city:
-            document.getElementById("city").value,
-
-        state:
-            document.getElementById("state").value,
-
-        zip:
-            document.getElementById("zip").value,
-
-        phone:
-            document.getElementById("phone").value,
-
-        email:
-            document.getElementById("email").value,
-
-        message:
-            document.getElementById("message").value
-    };
+                valid = false;
+            }
+        }
 
 
-    sessionStorage.setItem(
-        "assignment3FormData",
-        JSON.stringify(formData)
-    );
+        // Security question
+        if (security.value.trim() !== "8") {
+
+            securityError.textContent =
+                "Incorrect answer. Please enter 8.";
+
+            valid = false;
+        }
+
+
+        // HTML5 validation
+        if (!form.checkValidity()) {
+
+            form.reportValidity();
+
+            valid = false;
+        }
+
+
+        // Stop if information is invalid
+        if (!valid) {
+
+            event.preventDefault();
+            return;
+        }
+
+
+        // Save information for confirmation page
+        const formData = {
+
+            firstName: firstName,
+
+            lastName: lastName,
+
+            birthdate:
+                birthdate.value,
+
+            address:
+                document.getElementById("address").value.trim(),
+
+            city:
+                document.getElementById("city").value.trim(),
+
+            state:
+                document.getElementById("state").value,
+
+            zip:
+                document.getElementById("zip").value.trim(),
+
+            phone:
+                phone.value,
+
+            email:
+                document.getElementById("email").value.trim(),
+
+            message:
+                document.getElementById("message").value.trim()
+        };
+
+
+        sessionStorage.setItem(
+            "assignment3FormData",
+            JSON.stringify(formData)
+        );
+
+    });
 
 });
-

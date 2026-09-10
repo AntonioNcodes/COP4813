@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 3 contact form for Web Systems.">
+
+    <meta name="description"
+          content="Assignment 3 HTML5 and JavaScript form for COP4813 Web Systems.">
 
     <title>Assignment 3 - Forms</title>
 
@@ -38,13 +40,15 @@
 
                 <p>
                     Please complete all required fields. Your information
-                    will be validated before you can continue.
+                    will be validated before you continue.
                 </p>
             </div>
 
             <form id="contactForm"
                   action="confirmation.html"
                   method="get">
+
+                <!-- Personal Information -->
 
                 <div class="form-group">
 
@@ -90,6 +94,8 @@
                 </div>
 
 
+                <!-- Address -->
+
                 <div class="form-group">
 
                     <h3>Mailing Address</h3>
@@ -106,7 +112,6 @@
 
                     </div>
 
-
                     <div class="form-row">
 
                         <div class="form-field">
@@ -121,7 +126,6 @@
 
                         </div>
 
-
                         <div class="form-field">
 
                             <label for="state">State *</label>
@@ -132,7 +136,6 @@
                                     required>
 
                                 <option value="">Select a state</option>
-
                                 <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
                                 <option value="AZ">Arizona</option>
@@ -190,7 +193,6 @@
 
                     </div>
 
-
                     <div class="form-field">
 
                         <label for="zip">ZIP Code *</label>
@@ -207,6 +209,8 @@
 
                 </div>
 
+
+                <!-- Contact Information -->
 
                 <div class="form-group">
 
@@ -228,7 +232,6 @@
 
                     </div>
 
-
                     <div class="form-field">
 
                         <label for="email">Email Address *</label>
@@ -244,6 +247,8 @@
 
                 </div>
 
+
+                <!-- Message -->
 
                 <div class="form-group">
 
@@ -265,6 +270,8 @@
 
                 </div>
 
+
+                <!-- Security Question -->
 
                 <div class="security-box">
 
@@ -309,8 +316,8 @@
     </footer>
 
 
-   <script src="script.js"></script>
-
+    <!-- Your JavaScript file is named script.js -->
+    <script src="script.js"></script>
 
 </body>
 

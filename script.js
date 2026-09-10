@@ -131,8 +131,9 @@ if (birthdate.value === "") {
         // Security question
         if (security.value.trim() !== "8") {
 
-            securityError.textContent =
-                "Incorrect answer. Please enter 8.";
+           securityError.textContent =
+    "Incorrect answer. Please try again.";
+
 
             valid = false;
         }

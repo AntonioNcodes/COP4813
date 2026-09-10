@@ -1,7 +1,6 @@
 // Assignment 3 - Form Validation
 
 const form = document.getElementById("contactForm");
-
 const phone = document.getElementById("phone");
 const birthdate = document.getElementById("birthdate");
 const security = document.getElementById("security");
@@ -11,7 +10,7 @@ const birthdateError = document.getElementById("birthdateError");
 const securityError = document.getElementById("securityError");
 
 
-// Phone number input mask
+// Phone number formatting
 phone.addEventListener("input", function () {
 
     let numbers = phone.value.replace(/\D/g, "");
@@ -20,25 +19,38 @@ phone.addEventListener("input", function () {
         numbers = numbers.substring(0, 10);
     }
 
-    if (numbers.length > 6) {
+    if (numbers.length >= 7) {
+
         phone.value =
-            "(" + numbers.substring(0, 3) + ")" +
-            numbers.substring(3, 6) + "-" +
+            "(" +
+            numbers.substring(0, 3) +
+            ")" +
+            numbers.substring(3, 6) +
+            "-" +
             numbers.substring(6);
-    } 
-    else if (numbers.length > 3) {
+
+    } else if (numbers.length >= 4) {
+
         phone.value =
-            "(" + numbers.substring(0, 3) + ")" +
+            "(" +
+            numbers.substring(0, 3) +
+            ")" +
             numbers.substring(3);
-    } 
-    else if (numbers.length > 0) {
+
+    } else if (numbers.length > 0) {
+
         phone.value = "(" + numbers;
+
+    } else {
+
+        phone.value = "";
     }
 });
 
 
 // Prevent future birth dates
 const today = new Date();
+
 const year = today.getFullYear();
 const month = String(today.getMonth() + 1).padStart(2, "0");
 const day = String(today.getDate()).padStart(2, "0");
@@ -51,17 +63,19 @@ form.addEventListener("submit", function (event) {
 
     let valid = true;
 
-    // Clear previous error messages
     phoneError.textContent = "";
     birthdateError.textContent = "";
     securityError.textContent = "";
+
 
     // Phone validation
     const phoneNumbers = phone.value.replace(/\D/g, "");
 
     if (phoneNumbers.length !== 10) {
+
         phoneError.textContent =
             "Please enter a complete 10-digit phone number.";
+
         valid = false;
     }
 
@@ -77,9 +91,8 @@ form.addEventListener("submit", function (event) {
     } else {
 
         const selectedDate = new Date(birthdate.value);
-        const currentDate = new Date();
 
-        if (selectedDate > currentDate) {
+        if (selectedDate > today) {
 
             birthdateError.textContent =
                 "Birth date cannot be in the future.";
@@ -89,7 +102,7 @@ form.addEventListener("submit", function (event) {
     }
 
 
-    // Security question validation
+    // Security question
     if (security.value.trim() !== "8") {
 
         securityError.textContent =
@@ -99,44 +112,62 @@ form.addEventListener("submit", function (event) {
     }
 
 
-    // Check all required fields
+    // HTML5 required-field validation
     if (!form.checkValidity()) {
 
         form.reportValidity();
+
         valid = false;
     }
 
 
-    // Stop submission if anything is invalid
+    // Stop if anything is invalid
     if (!valid) {
+
         event.preventDefault();
         return;
     }
 
 
-    // Save form information for confirmation page
+    // Save information for the confirmation page
     const formData = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        birthdate: document.getElementById("birthdate").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        zip: document.getElementById("zip").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
+
+        firstName:
+            document.getElementById("firstName").value,
+
+        lastName:
+            document.getElementById("lastName").value,
+
+        birthdate:
+            document.getElementById("birthdate").value,
+
+        address:
+            document.getElementById("address").value,
+
+        city:
+            document.getElementById("city").value,
+
+        state:
+            document.getElementById("state").value,
+
+        zip:
+            document.getElementById("zip").value,
+
+        phone:
+            document.getElementById("phone").value,
+
+        email:
+            document.getElementById("email").value,
+
+        message:
+            document.getElementById("message").value
     };
+
 
     sessionStorage.setItem(
         "assignment3FormData",
         JSON.stringify(formData)
     );
 
-    // Stop the normal mailto submission for now.
-    // The confirmation page will handle the final submission.
-    event.preventDefault();
-
-    window.location.href = "confirmation.html";
 });
 

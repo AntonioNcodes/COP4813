@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="Assignment 3 form confirmation page.">
+          content="Assignment 3 confirmation page for COP4813 Web Systems.">
 
     <title>Confirm Your Information</title>
 
@@ -26,7 +26,7 @@
 
         .confirmation-item {
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             background-color: #f7faff;
             border-left: 4px solid #0b3d91;
             border-radius: 5px;
@@ -110,55 +110,78 @@
             <h2>Confirm Your Information</h2>
 
             <p>
-                Please review the information below. If everything is
-                correct, select "Confirm & Send." If you need to make
-                changes, select "Go Back and Edit."
+                Please review your information carefully.
+                If everything is correct, click
+                <strong>Confirm &amp; Send</strong>.
+                If something needs to be changed, click
+                <strong>Go Back and Edit</strong>.
             </p>
+
 
             <div id="confirmationData"></div>
 
-            <div class="confirmation-buttons">
 
-                <button type="button"
-                        id="confirmButton"
-                        class="confirm-button">
-                    Confirm &amp; Send
-                </button>
+            <!-- Required mailto submission -->
+            <form action="mailto:test@example.com"
+                  method="post"
+                  enctype="text/plain">
 
-                <a href="assignment3.html"
-                   class="edit-button">
-                    Go Back and Edit
-                </a>
+                <input type="hidden"
+                       id="emailData"
+                       name="Form Information">
 
-            </div>
+
+                <div class="confirmation-buttons">
+
+                    <button type="submit"
+                            class="confirm-button">
+                        Confirm &amp; Send
+                    </button>
+
+                    <a href="assignment3.html"
+                       class="edit-button">
+                        Go Back and Edit
+                    </a>
+
+                </div>
+
+            </form>
 
         </section>
 
     </main>
 
+
     <footer>
         <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
 
+
     <script>
 
-        const data = sessionStorage.getItem("assignment3FormData");
+        const storedData =
+            sessionStorage.getItem("assignment3FormData");
 
         const confirmationData =
             document.getElementById("confirmationData");
 
-        if (!data) {
+        const emailData =
+            document.getElementById("emailData");
+
+
+        if (!storedData) {
 
             confirmationData.innerHTML =
                 "<p>No form information was found. Please return to the form.</p>";
 
-            document.getElementById("confirmButton").disabled = true;
-
         } else {
 
-            const formData = JSON.parse(data);
+            const formData =
+                JSON.parse(storedData);
+
 
             confirmationData.innerHTML = `
+
                 <div class="confirmation-item">
                     <strong>Name:</strong>
                     ${formData.firstName} ${formData.lastName}
@@ -191,43 +214,38 @@
                     <strong>Message:</strong><br>
                     ${formData.message}
                 </div>
+
             `;
 
+
+            emailData.value =
+
+                "Name: " +
+                formData.firstName +
+                " " +
+                formData.lastName +
+
+                "\nBirth Date: " +
+                formData.birthdate +
+
+                "\nAddress: " +
+                formData.address +
+                ", " +
+                formData.city +
+                ", " +
+                formData.state +
+                " " +
+                formData.zip +
+
+                "\nPhone: " +
+                formData.phone +
+
+                "\nEmail: " +
+                formData.email +
+
+                "\n\nMessage:\n" +
+                formData.message;
         }
-
-
-        document.getElementById("confirmButton")
-            .addEventListener("click", function () {
-
-                if (!data) {
-                    return;
-                }
-
-                const formData = JSON.parse(data);
-
-                const emailBody =
-                    "Assignment 3 Form Submission\n\n" +
-                    "Name: " + formData.firstName + " " +
-                    formData.lastName + "\n" +
-                    "Birth Date: " + formData.birthdate + "\n" +
-                    "Address: " + formData.address + ", " +
-                    formData.city + ", " +
-                    formData.state + " " +
-                    formData.zip + "\n" +
-                    "Phone: " + formData.phone + "\n" +
-                    "Email: " + formData.email + "\n\n" +
-                    "Message:\n" +
-                    formData.message;
-
-                const mailto =
-                    "mailto:test@example.com" +
-                    "?subject=Assignment%203%20Form%20Submission" +
-                    "&body=" +
-                    encodeURIComponent(emailBody);
-
-                window.location.href = mailto;
-
-            });
 
     </script>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 3 HTML5 form for Web Systems.">
+    <meta name="description" content="Assignment 3 contact form for Web Systems.">
 
     <title>Assignment 3 - Forms</title>
 
@@ -33,20 +33,19 @@
 
             <div class="form-intro">
                 <span class="form-label">ASSIGNMENT 3</span>
+
                 <h2>Contact Form</h2>
+
                 <p>
-                    Please complete all required fields below. Your information
-                    will be checked before you can submit the form.
+                    Please complete all required fields. Your information
+                    will be validated before you can continue.
                 </p>
             </div>
 
             <form id="contactForm"
-                  action="mailto:test@example.com"
-                  method="post"
-                  enctype="text/plain"
-                  novalidate>
+                  action="confirmation.html"
+                  method="get">
 
-                <!-- Personal Information -->
                 <div class="form-group">
 
                     <h3>Personal Information</h3>
@@ -55,18 +54,20 @@
 
                         <div class="form-field">
                             <label for="firstName">First Name *</label>
+
                             <input type="text"
                                    id="firstName"
-                                   name="First Name"
+                                   name="firstName"
                                    autocomplete="given-name"
                                    required>
                         </div>
 
                         <div class="form-field">
                             <label for="lastName">Last Name *</label>
+
                             <input type="text"
                                    id="lastName"
-                                   name="Last Name"
+                                   name="lastName"
                                    autocomplete="family-name"
                                    required>
                         </div>
@@ -74,49 +75,64 @@
                     </div>
 
                     <div class="form-field">
+
                         <label for="birthdate">Birth Date *</label>
+
                         <input type="date"
                                id="birthdate"
-                               name="Birth Date"
+                               name="birthdate"
                                required>
-                        <small id="birthdateError" class="error"></small>
+
+                        <small id="birthdateError"></small>
+
                     </div>
 
                 </div>
 
-                <!-- Address -->
+
                 <div class="form-group">
 
                     <h3>Mailing Address</h3>
 
                     <div class="form-field">
+
                         <label for="address">Street Address *</label>
+
                         <input type="text"
                                id="address"
-                               name="Street Address"
+                               name="address"
                                autocomplete="street-address"
                                required>
+
                     </div>
+
 
                     <div class="form-row">
 
                         <div class="form-field">
+
                             <label for="city">City *</label>
+
                             <input type="text"
                                    id="city"
-                                   name="City"
+                                   name="city"
                                    autocomplete="address-level2"
                                    required>
+
                         </div>
 
+
                         <div class="form-field">
+
                             <label for="state">State *</label>
+
                             <select id="state"
-                                    name="State"
+                                    name="state"
                                     autocomplete="address-level1"
                                     required>
 
                                 <option value="">Select a state</option>
+
                                 <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
                                 <option value="AZ">Arizona</option>
@@ -169,95 +185,113 @@
                                 <option value="WY">Wyoming</option>
 
                             </select>
+
                         </div>
 
                     </div>
 
+
                     <div class="form-field">
+
                         <label for="zip">ZIP Code *</label>
+
                         <input type="text"
                                id="zip"
-                               name="ZIP Code"
+                               name="zip"
                                autocomplete="postal-code"
                                placeholder="12345 or 12345-6789"
                                pattern="[0-9]{5}(-[0-9]{4})?"
                                required>
+
                     </div>
 
                 </div>
 
-                <!-- Contact Information -->
+
                 <div class="form-group">
 
                     <h3>Contact Information</h3>
 
                     <div class="form-field">
+
                         <label for="phone">Phone Number *</label>
+
                         <input type="tel"
                                id="phone"
-                               name="Phone Number"
+                               name="phone"
                                autocomplete="tel"
                                placeholder="(000)000-0000"
                                maxlength="13"
                                required>
 
-                        <small id="phoneError" class="error"></small>
+                        <small id="phoneError"></small>
+
                     </div>
 
+
                     <div class="form-field">
+
                         <label for="email">Email Address *</label>
+
                         <input type="email"
                                id="email"
-                               name="Email Address"
+                               name="email"
                                autocomplete="email"
                                placeholder="name@example.com"
                                required>
+
                     </div>
 
                 </div>
 
-                <!-- Message -->
+
                 <div class="form-group">
 
                     <h3>Message</h3>
 
                     <div class="form-field">
+
                         <label for="message">Your Message *</label>
 
                         <textarea id="message"
-                                  name="Message"
+                                  name="message"
                                   rows="6"
                                   minlength="10"
                                   maxlength="1000"
                                   placeholder="Enter your message here..."
                                   required></textarea>
+
                     </div>
 
                 </div>
 
-                <!-- Security Question -->
+
                 <div class="security-box">
 
                     <h3>Security Check</h3>
 
                     <p>
-                        Please answer the following question to confirm
-                        that you are a person.
+                        Please answer the question below.
                     </p>
 
                     <div class="form-field">
-                        <label for="security">What is 5 + 3? *</label>
+
+                        <label for="security">
+                            What is 5 + 3? *
+                        </label>
 
                         <input type="text"
                                id="security"
-                               name="Security Answer"
+                               name="security"
                                inputmode="numeric"
                                required>
 
-                        <small id="securityError" class="error"></small>
+                        <small id="securityError"></small>
+
                     </div>
 
                 </div>
+
 
                 <button type="submit" class="submit-button">
                     Submit Form
@@ -269,9 +303,11 @@
 
     </main>
 
+
     <footer>
         <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
+
 
     <script src="form.js"></script>
 

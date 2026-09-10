@@ -1,264 +1,280 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-    <head> 
-        <meta charset="UTF-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <meta name="description" content="COP4813 Assignment 3 HTML5 and JavaScript form.">
-<title>Assignment 3 - Input Form</title>
+<!DOCTYPE html>
+<html lang="en">
 
-<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assignment 3 HTML5 form for Web Systems.">
 
-</head> 
-    <body>
-<header>
-    <h1>Assignment 3 - Input Form</h1>
-    <p>HTML5 and JavaScript Form Validation</p>
-</header>
+    <title>Assignment 3 - Forms</title>
 
-<nav aria-label="Main navigation">
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
-        <li><a href="assignment2.html">Assignments</a></li>
-        <li><a href="assignment3.html">Assignment 3</a></li>
-    </ul>
-</nav>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-<main>
+<body>
 
-    <section class="form-section">
+    <header>
+        <h1>My school code</h1>
+        <p>Web programming and personal portfolio</p>
+    </header>
 
-    <div class="form-intro">
-        <span class="form-label">COP4813 • ASSIGNMENT 3</span>
-        <h2>Contact Information</h2>
-        <p>
-            Please complete the form below. All required information
-            must be entered before you can continue.
-        </p>
-    </div>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="assignment2.html">Assignments</a></li>
+            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        </ul>
+    </nav>
 
-    <form id="contactForm"
-          action="mailto:navantonio13@gmail.com"
-          method="post"
-          enctype="text/plain">
+    <main>
 
-        <div class="form-group">
+        <section class="form-section">
 
-            <h3>Personal Information</h3>
-
-            <div class="form-row">
-
-                <div class="form-field">
-                    <label for="firstName">First Name</label>
-                    <input type="text"
-                           id="firstName"
-                           name="First Name"
-                           placeholder="Enter your first name"
-                           required>
-                </div>
-
-                <div class="form-field">
-                    <label for="lastName">Last Name</label>
-                    <input type="text"
-                           id="lastName"
-                           name="Last Name"
-                           placeholder="Enter your last name"
-                           required>
-                </div>
-
+            <div class="form-intro">
+                <span class="form-label">ASSIGNMENT 3</span>
+                <h2>Contact Form</h2>
+                <p>
+                    Please complete all required fields below. Your information
+                    will be checked before you can submit the form.
+                </p>
             </div>
 
-        </div>
+            <form id="contactForm"
+                  action="mailto:YOUR_EMAIL_HERE"
+                  method="post"
+                  enctype="text/plain"
+                  novalidate>
 
+                <!-- Personal Information -->
+                <div class="form-group">
 
-        <div class="form-group">
+                    <h3>Personal Information</h3>
 
-            <h3>Mailing Address</h3>
+                    <div class="form-row">
 
-            <div class="form-field">
-                <label for="address">Street Address</label>
-                <input type="text"
-                       id="address"
-                       name="Address"
-                       placeholder="123 Main Street"
-                       required>
-            </div>
+                        <div class="form-field">
+                            <label for="firstName">First Name *</label>
+                            <input type="text"
+                                   id="firstName"
+                                   name="First Name"
+                                   autocomplete="given-name"
+                                   required>
+                        </div>
 
-            <div class="form-row">
+                        <div class="form-field">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text"
+                                   id="lastName"
+                                   name="Last Name"
+                                   autocomplete="family-name"
+                                   required>
+                        </div>
 
-                <div class="form-field">
-                    <label for="city">City</label>
-                    <input type="text"
-                           id="city"
-                           name="City"
-                           placeholder="City"
-                           required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="birthdate">Birth Date *</label>
+                        <input type="date"
+                               id="birthdate"
+                               name="Birth Date"
+                               required>
+                        <small id="birthdateError" class="error"></small>
+                    </div>
+
                 </div>
 
-                <div class="form-field">
-                    <label for="state">State</label>
-                    <select id="state" name="State" required>
-                        <option value="">Select State</option>
-                        <option value="AL">Alabama</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="AR">Arkansas</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="HI">Hawaii</option>
-                        <option value="ID">Idaho</option>
-                        <option value="IL">Illinois</option>
-                        <option value="IN">Indiana</option>
-                        <option value="IA">Iowa</option>
-                        <option value="KS">Kansas</option>
-                        <option value="KY">Kentucky</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="ME">Maine</option>
-                        <option value="MD">Maryland</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MN">Minnesota</option>
-                        <option value="MS">Mississippi</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NE">Nebraska</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NH">New Hampshire</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NY">New York</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="ND">North Dakota</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OK">Oklahoma</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="SD">South Dakota</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="VT">Vermont</option>
-                        <option value="VA">Virginia</option>
-                        <option value="WA">Washington</option>
-                        <option value="WV">West Virginia</option>
-                        <option value="WI">Wisconsin</option>
-                        <option value="WY">Wyoming</option>
-                    </select>
+                <!-- Address -->
+                <div class="form-group">
+
+                    <h3>Mailing Address</h3>
+
+                    <div class="form-field">
+                        <label for="address">Street Address *</label>
+                        <input type="text"
+                               id="address"
+                               name="Street Address"
+                               autocomplete="street-address"
+                               required>
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-field">
+                            <label for="city">City *</label>
+                            <input type="text"
+                                   id="city"
+                                   name="City"
+                                   autocomplete="address-level2"
+                                   required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="state">State *</label>
+                            <select id="state"
+                                    name="State"
+                                    autocomplete="address-level1"
+                                    required>
+
+                                <option value="">Select a state</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-field">
+                        <label for="zip">ZIP Code *</label>
+                        <input type="text"
+                               id="zip"
+                               name="ZIP Code"
+                               autocomplete="postal-code"
+                               placeholder="12345 or 12345-6789"
+                               pattern="[0-9]{5}(-[0-9]{4})?"
+                               required>
+                    </div>
+
                 </div>
 
-                <div class="form-field zip-field">
-                    <label for="zip">ZIP Code</label>
-                    <input type="text"
-                           id="zip"
-                           name="ZIP Code"
-                           placeholder="32114"
-                           pattern="[0-9]{5}(-[0-9]{4})?"
-                           title="Enter a 5-digit ZIP code or ZIP+4."
-                           required>
+                <!-- Contact Information -->
+                <div class="form-group">
+
+                    <h3>Contact Information</h3>
+
+                    <div class="form-field">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel"
+                               id="phone"
+                               name="Phone Number"
+                               autocomplete="tel"
+                               placeholder="(000)000-0000"
+                               maxlength="13"
+                               required>
+
+                        <small id="phoneError" class="error"></small>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email Address *</label>
+                        <input type="email"
+                               id="email"
+                               name="Email Address"
+                               autocomplete="email"
+                               placeholder="name@example.com"
+                               required>
+                    </div>
+
                 </div>
 
-            </div>
+                <!-- Message -->
+                <div class="form-group">
 
-        </div>
+                    <h3>Message</h3>
 
+                    <div class="form-field">
+                        <label for="message">Your Message *</label>
 
-        <div class="form-group">
+                        <textarea id="message"
+                                  name="Message"
+                                  rows="6"
+                                  minlength="10"
+                                  maxlength="1000"
+                                  placeholder="Enter your message here..."
+                                  required></textarea>
+                    </div>
 
-            <h3>Contact Information</h3>
-
-            <div class="form-row">
-
-                <div class="form-field">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel"
-                           id="phone"
-                           name="Phone"
-                           placeholder="(000) 000-0000"
-                           maxlength="14"
-                           required>
                 </div>
 
-                <div class="form-field">
-                    <label for="email">Email Address</label>
-                    <input type="email"
-                           id="email"
-                           name="Email"
-                           placeholder="name@example.com"
-                           required>
+                <!-- Security Question -->
+                <div class="security-box">
+
+                    <h3>Security Check</h3>
+
+                    <p>
+                        Please answer the following question to confirm
+                        that you are a person.
+                    </p>
+
+                    <div class="form-field">
+                        <label for="security">What is 5 + 3? *</label>
+
+                        <input type="text"
+                               id="security"
+                               name="Security Answer"
+                               inputmode="numeric"
+                               required>
+
+                        <small id="securityError" class="error"></small>
+                    </div>
+
                 </div>
 
-            </div>
+                <button type="submit" class="submit-button">
+                    Submit Form
+                </button>
 
-        </div>
+            </form>
 
+        </section>
 
-        <div class="form-group">
+    </main>
 
-            <h3>Additional Information</h3>
+    <footer>
+        <p>school code Web Systems - Created by me</p>
+    </footer>
 
-            <div class="form-field">
-                <label for="birthdate">Birth Date</label>
-                <input type="date"
-                       id="birthdate"
-                       name="Birth Date"
-                       required>
-            </div>
-
-            <div class="form-field">
-                <label for="message">Message</label>
-                <textarea id="message"
-                          name="Message"
-                          rows="6"
-                          placeholder="Enter your message here..."
-                          required></textarea>
-            </div>
-
-        </div>
-
-
-        <div class="security-box">
-
-            <h3>Security Check</h3>
-
-            <p>
-                Please answer the question below to confirm that
-                you are completing the form yourself.
-            </p>
-
-            <div class="form-field">
-                <label for="security">What is 5 + 7?</label>
-                <input type="text"
-                       id="security"
-                       name="Security Answer"
-                       placeholder="Enter your answer"
-                       required>
-            </div>
-
-        </div>
-
-
-        <button type="submit" class="submit-button">
-            Review My Information
-        </button>
-
-    </form>
-
-</section>
-</main>
-
-<footer>
-    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
-</footer>
-
-<script src="script.js">
-    
-</script>
+    <script src="form.js"></script>
 
 </body>
+
 </html>

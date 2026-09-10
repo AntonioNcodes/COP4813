@@ -1,3 +1,6 @@
+alert("JavaScript is working!");
+
+
 // Assignment 3 - Form Validation
 
 const form = document.getElementById("contactForm");

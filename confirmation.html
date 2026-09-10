@@ -1,65 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <meta name="description" content="Assignment 3 confirmation page for submitted form information.">
-<title>Confirm Information - Assignment 3</title>
 
-<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head> 
-  <body>
-<header>
-    <h1>Confirm Your Information</h1>
-    <p>Please review your information before submitting.</p>
-</header>
+    <meta name="description"
+          content="Assignment 3 form confirmation page.">
 
-<nav aria-label="Main navigation">
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
-        <li><a href="assignment2.html">Assignments</a></li>
-        <li><a href="assignment3.html">Assignment 3</a></li>
-    </ul>
-</nav>
+    <title>Confirm Your Information</title>
 
-<main>
+    <link rel="stylesheet" href="style.css">
 
-    <section>
+    <style>
+        .confirmation-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-        <h2>Review Your Information</h2>
+        .confirmation-box h2 {
+            color: #0b3d91;
+        }
 
-        <p>
-            Please make sure the information below is correct.
-            If you need to make a change, return to the form.
-        </p>
+        .confirmation-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f7faff;
+            border-left: 4px solid #0b3d91;
+            border-radius: 5px;
+        }
 
-        <div id="confirmationInfo">
-            <!-- JavaScript will place the submitted information here. -->
-        </div>
+        .confirmation-item strong {
+            color: #0b3d91;
+        }
 
-        <div class="confirmation-buttons">
+        .confirmation-message {
+            white-space: pre-wrap;
+        }
 
-            <button type="button" id="editButton">
-                Go Back and Edit
-            </button>
+        .confirmation-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
 
-            <button type="button" id="confirmButton">
-                Confirm and Submit
-            </button>
+        .confirm-button,
+        .edit-button {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
 
-        </div>
+        .confirm-button {
+            background-color: #0b3d91;
+        }
 
-    </section>
+        .confirm-button:hover {
+            background-color: #e21b2d;
+        }
 
-</main>
+        .edit-button {
+            background-color: #777;
+        }
 
-<footer>
-    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
-</footer>
+        .edit-button:hover {
+            background-color: #555;
+        }
 
-<script src="confirmation.js"></script>
+        @media (max-width: 600px) {
+            .confirmation-box {
+                padding: 25px;
+            }
 
-</body> 
+            .confirmation-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>My COP4813</h1>
+        <p>Web programming and personal portfolio</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="assignment2.html">Assignments</a></li>
+            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="confirmation-box">
+
+            <h2>Confirm Your Information</h2>
+
+            <p>
+                Please review the information below. If everything is
+                correct, select "Confirm & Send." If you need to make
+                changes, select "Go Back and Edit."
+            </p>
+
+            <div id="confirmationData"></div>
+
+            <div class="confirmation-buttons">
+
+                <button type="button"
+                        id="confirmButton"
+                        class="confirm-button">
+                    Confirm &amp; Send
+                </button>
+
+                <a href="assignment3.html"
+                   class="edit-button">
+                    Go Back and Edit
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+    </footer>
+
+    <script>
+
+        const data = sessionStorage.getItem("assignment3FormData");
+
+        const confirmationData =
+            document.getElementById("confirmationData");
+
+        if (!data) {
+
+            confirmationData.innerHTML =
+                "<p>No form information was found. Please return to the form.</p>";
+
+            document.getElementById("confirmButton").disabled = true;
+
+        } else {
+
+            const formData = JSON.parse(data);
+
+            confirmationData.innerHTML = `
+                <div class="confirmation-item">
+                    <strong>Name:</strong>
+                    ${formData.firstName} ${formData.lastName}
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Birth Date:</strong>
+                    ${formData.birthdate}
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Address:</strong>
+                    ${formData.address},
+                    ${formData.city},
+                    ${formData.state}
+                    ${formData.zip}
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Phone:</strong>
+                    ${formData.phone}
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Email:</strong>
+                    ${formData.email}
+                </div>
+
+                <div class="confirmation-item confirmation-message">
+                    <strong>Message:</strong><br>
+                    ${formData.message}
+                </div>
+            `;
+
+        }
+
+
+        document.getElementById("confirmButton")
+            .addEventListener("click", function () {
+
+                if (!data) {
+                    return;
+                }
+
+                const formData = JSON.parse(data);
+
+                const emailBody =
+                    "Assignment 3 Form Submission\n\n" +
+                    "Name: " + formData.firstName + " " +
+                    formData.lastName + "\n" +
+                    "Birth Date: " + formData.birthdate + "\n" +
+                    "Address: " + formData.address + ", " +
+                    formData.city + ", " +
+                    formData.state + " " +
+                    formData.zip + "\n" +
+                    "Phone: " + formData.phone + "\n" +
+                    "Email: " + formData.email + "\n\n" +
+                    "Message:\n" +
+                    formData.message;
+
+                const mailto =
+                    "mailto:YOUR_EMAIL_HERE" +
+                    "?subject=Assignment%203%20Form%20Submission" +
+                    "&body=" +
+                    encodeURIComponent(emailBody);
+
+                window.location.href = mailto;
+
+            });
+
+    </script>
+
+</body>
+
 </html>

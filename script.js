@@ -1,77 +1,47 @@
 // Assignment 3 - Form Validation
 
+
 document.addEventListener("DOMContentLoaded", function () {
 
-const form =
-    document.getElementById("contactForm");
+    const form =
+        document.getElementById("contactForm");
+
+    const phone =
+        document.getElementById("phone");
+
+    const birthdate =
+        document.getElementById("birthdate");
 
 
-const phone =
-    document.getElementById("phone");
+    // Set today's date as the maximum birth date
+
+    const today = new Date();
+
+    const year =
+        today.getFullYear();
+
+    const month =
+        String(today.getMonth() + 1).padStart(2, "0");
+
+    const day =
+        String(today.getDate()).padStart(2, "0");
+
+    birthdate.max =
+        `${year}-${month}-${day}`;
 
 
-const birthdate =
-    document.getElementById("birthdate");
+    // Phone number input mask
 
-
-
-// ==========================================
-// Set today's date as the maximum birth date
-// ==========================================
-
-
-const today =
-    new Date();
-
-
-const year =
-    today.getFullYear();
-
-
-const month =
-    String(
-        today.getMonth() + 1
-    ).padStart(2, "0");
-
-
-const day =
-    String(
-        today.getDate()
-    ).padStart(2, "0");
-
-
-birthdate.max =
-    `${year}-${month}-${day}`;
-
-
-
-// ==========================================
-// Phone Number Input Mask
-// Format: (000)000-0000
-// ==========================================
-
-
-phone.addEventListener(
-    "input",
-    function () {
-
+    phone.addEventListener("input", function () {
 
         let numbers =
-            phone.value.replace(
-                /\D/g,
-                ""
-            );
-
+            phone.value.replace(/\D/g, "");
 
         numbers =
-            numbers.substring(
-                0,
-                10
-            );
+            numbers.substring(0, 10);
 
 
         if (numbers.length > 6) {
-
 
             phone.value =
                 "(" +
@@ -81,9 +51,9 @@ phone.addEventListener(
                 "-" +
                 numbers.substring(6, 10);
 
+        }
 
-        } else if (numbers.length > 3) {
-
+        else if (numbers.length > 3) {
 
             phone.value =
                 "(" +
@@ -91,50 +61,36 @@ phone.addEventListener(
                 ")" +
                 numbers.substring(3);
 
+        }
 
-        } else if (numbers.length > 0) {
-
-
-            phone.value =
-                "(" +
-                numbers;
-
-
-        } else {
-
+        else if (numbers.length > 0) {
 
             phone.value =
-                "";
+                "(" + numbers;
 
         }
 
-    }
-);
+        else {
+
+            phone.value = "";
+
+        }
+
+    });
 
 
+    // Form validation
 
-// ==========================================
-// Form Validation
-// ==========================================
-
-
-form.addEventListener(
-    "submit",
-    function (event) {
-
+    form.addEventListener("submit", function (event) {
 
         event.preventDefault();
 
-
         clearErrors();
 
-
-        let valid =
-            true;
+        let valid = true;
 
 
-
-        // FIRST NAME
+        // First name
 
         const firstName =
             document
@@ -145,38 +101,28 @@ form.addEventListener(
 
         if (firstName === "") {
 
-
             showError(
                 "firstNameError",
                 "Please enter your first name."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !/^[A-Za-zÀ-ÿ' -]+$/.test(
-                firstName
-            )
-        ) {
-
+        else if (!/^[A-Za-zÀ-ÿ' -]+$/.test(firstName)) {
 
             showError(
                 "firstNameError",
                 "Please enter a valid first name."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // LAST NAME
+        // Last name
 
         const lastName =
             document
@@ -187,38 +133,28 @@ form.addEventListener(
 
         if (lastName === "") {
 
-
             showError(
                 "lastNameError",
                 "Please enter your last name."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !/^[A-Za-zÀ-ÿ' -]+$/.test(
-                lastName
-            )
-        ) {
-
+        else if (!/^[A-Za-zÀ-ÿ' -]+$/.test(lastName)) {
 
             showError(
                 "lastNameError",
                 "Please enter a valid last name."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // BIRTH DATE
+        // Birth date
 
         const birthValue =
             birthdate.value;
@@ -226,19 +162,16 @@ form.addEventListener(
 
         if (birthValue === "") {
 
-
             showError(
                 "birthdateError",
                 "Please enter your birth date."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else {
-
+        else {
 
             const birth =
                 new Date(
@@ -246,56 +179,32 @@ form.addEventListener(
                 );
 
 
-            const currentDate =
-                new Date();
-
-
-            currentDate.setHours(
-                0,
-                0,
-                0,
-                0
-            );
-
-
-            if (
-                isNaN(
-                    birth.getTime()
-                )
-            ) {
-
+            if (isNaN(birth.getTime())) {
 
                 showError(
                     "birthdateError",
                     "Please enter a valid date."
                 );
 
+                valid = false;
 
-                valid =
-                    false;
+            }
 
-
-            } else if (
-                birth > currentDate
-            ) {
-
+            else if (birth > new Date()) {
 
                 showError(
                     "birthdateError",
                     "Birth date cannot be in the future."
                 );
 
-
-                valid =
-                    false;
+                valid = false;
 
             }
 
         }
 
 
-
-        // STREET ADDRESS
+        // Street address
 
         const address =
             document
@@ -310,38 +219,28 @@ form.addEventListener(
 
         if (address === "") {
 
-
             showError(
                 "addressError",
                 "Please enter your street address."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !addressPattern.test(
-                address
-            )
-        ) {
-
+        else if (!addressPattern.test(address)) {
 
             showError(
                 "addressError",
                 "Please enter a valid street address, such as 123 Main Street."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // CITY
+        // City
 
         const city =
             document
@@ -352,38 +251,28 @@ form.addEventListener(
 
         if (city === "") {
 
-
             showError(
                 "cityError",
                 "Please enter your city."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !/^[A-Za-zÀ-ÿ .'-]+$/.test(
-                city
-            )
-        ) {
-
+        else if (!/^[A-Za-zÀ-ÿ .'-]+$/.test(city)) {
 
             showError(
                 "cityError",
                 "Please enter a valid city."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // STATE
+        // State
 
         const state =
             document
@@ -393,21 +282,17 @@ form.addEventListener(
 
         if (state === "") {
 
-
             showError(
                 "stateError",
                 "Please select a state."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // ZIP CODE
+        // ZIP code
 
         const zip =
             document
@@ -422,38 +307,28 @@ form.addEventListener(
 
         if (zip === "") {
 
-
             showError(
                 "zipError",
                 "Please enter your ZIP code."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !zipPattern.test(
-                zip
-            )
-        ) {
-
+        else if (!zipPattern.test(zip)) {
 
             showError(
                 "zipError",
                 "Please enter a valid 5-digit ZIP code or ZIP+4."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // PHONE
+        // Phone
 
         const phoneValue =
             phone.value.trim();
@@ -465,38 +340,28 @@ form.addEventListener(
 
         if (phoneValue === "") {
 
-
             showError(
                 "phoneError",
                 "Please enter your phone number."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !phonePattern.test(
-                phoneValue
-            )
-        ) {
-
+        else if (!phonePattern.test(phoneValue)) {
 
             showError(
                 "phoneError",
                 "Please enter your phone as (000)000-0000."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // EMAIL
+        // Email
 
         const email =
             document
@@ -511,38 +376,28 @@ form.addEventListener(
 
         if (email === "") {
 
-
             showError(
                 "emailError",
                 "Please enter your email address."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            !emailPattern.test(
-                email
-            )
-        ) {
-
+        else if (!emailPattern.test(email)) {
 
             showError(
                 "emailError",
                 "Please enter a valid email address."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // MESSAGE
+        // Message
 
         const message =
             document
@@ -553,36 +408,28 @@ form.addEventListener(
 
         if (message === "") {
 
-
             showError(
                 "messageError",
                 "Please enter a message."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            message.length < 10
-        ) {
-
+        else if (message.length < 10) {
 
             showError(
                 "messageError",
                 "Your message must contain at least 10 characters."
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // SECURITY QUESTION
+        // Security question
 
         const security =
             document
@@ -593,187 +440,124 @@ form.addEventListener(
 
         if (security === "") {
 
-
             showError(
                 "securityError",
                 "Please answer the security question."
             );
 
+            valid = false;
 
-            valid =
-                false;
+        }
 
-
-        } else if (
-            security !== "8"
-        ) {
-
+        else if (security !== "8") {
 
             showError(
                 "securityError",
                 "Incorrect answer. What is 5 + 3?"
             );
 
-
-            valid =
-                false;
+            valid = false;
 
         }
 
 
-
-        // ==========================================
-        // Save Data and Continue
-        // ==========================================
-
+        // Everything is valid
 
         if (valid) {
 
-
             const formData = {
 
+                firstName: firstName,
 
-                firstName:
-                    firstName,
+                lastName: lastName,
 
+                birthdate: birthValue,
 
-                lastName:
-                    lastName,
+                address: address,
 
+                city: city,
 
-                birthdate:
-                    birthValue,
+                state: state,
 
+                zip: zip,
 
-                address:
-                    address,
+                phone: phoneValue,
 
+                email: email,
 
-                city:
-                    city,
-
-
-                state:
-                    state,
-
-
-                zip:
-                    zip,
-
-
-                phone:
-                    phoneValue,
-
-
-                email:
-                    email,
-
-
-                message:
-                    message
+                message: message
 
             };
 
 
+            // Save information temporarily
+
             sessionStorage.setItem(
                 "assignment3Data",
-                JSON.stringify(
-                    formData
-                )
+                JSON.stringify(formData)
             );
 
+
+            // Go to confirmation page
 
             window.location.href =
                 "confirmation.html";
 
+        }
 
-        } else {
-
+        else {
 
             const firstError =
-                document.querySelector(
-                    "small.error"
-                );
+                document.querySelector(".error");
 
 
             if (firstError) {
 
-
-                firstError.scrollIntoView(
-                    {
-                        behavior: "smooth",
-                        block: "center"
-                    }
-                );
+                firstError.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
             }
 
         }
 
+    });
+
+
+    // Show an error message
+
+    function showError(id, message) {
+
+        const errorElement =
+            document.getElementById(id);
+
+
+        errorElement.textContent =
+            message;
+
+
+        errorElement.classList.add("error");
+
     }
-);
 
 
+    // Clear error messages
 
-// ==========================================
-// Show Error
-// ==========================================
+    function clearErrors() {
 
-
-function showError(
-    id,
-    message
-) {
+        const errors =
+            document.querySelectorAll("small");
 
 
-    const errorElement =
-        document.getElementById(
-            id
-        );
+        errors.forEach(function (error) {
 
+            error.textContent = "";
 
-    errorElement.textContent =
-        message;
+            error.classList.remove("error");
 
+        });
 
-    errorElement.classList.add(
-        "error"
-    );
-
-}
-
-
-
-// ==========================================
-// Clear Errors
-// ==========================================
-
-
-function clearErrors() {
-
-
-    const errors =
-        document.querySelectorAll(
-            "small"
-        );
-
-
-    errors.forEach(
-        function (error) {
-
-
-            error.textContent =
-                "";
-
-
-            error.classList.remove(
-                "error"
-            );
-
-        }
-    );
-
-}
-
+    }
 
 });

@@ -3,16 +3,40 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("contactForm");
-    const phone = document.getElementById("phone");
+
+    const firstName = document.getElementById("firstName");
+    const lastName = document.getElementById("lastName");
     const birthdate = document.getElementById("birthdate");
+
+    const address = document.getElementById("address");
+    const city = document.getElementById("city");
+    const state = document.getElementById("state");
+    const zip = document.getElementById("zip");
+
+    const phone = document.getElementById("phone");
+    const email = document.getElementById("email");
+    const message = document.getElementById("message");
     const security = document.getElementById("security");
 
-    const phoneError = document.getElementById("phoneError");
+
+    const firstNameError = document.getElementById("firstNameError");
+    const lastNameError = document.getElementById("lastNameError");
     const birthdateError = document.getElementById("birthdateError");
+
+    const addressError = document.getElementById("addressError");
+    const cityError = document.getElementById("cityError");
+    const zipError = document.getElementById("zipError");
+
+    const phoneError = document.getElementById("phoneError");
+    const emailError = document.getElementById("emailError");
+    const messageError = document.getElementById("messageError");
     const securityError = document.getElementById("securityError");
 
 
-    // Phone number formatting
+    // --------------------------------------------------
+    // Phone number input mask
+    // --------------------------------------------------
+
     phone.addEventListener("input", function () {
 
         let numbers = phone.value.replace(/\D/g, "");
@@ -51,7 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    // --------------------------------------------------
     // Prevent future birth dates
+    // --------------------------------------------------
+
     const today = new Date();
 
     const year = today.getFullYear();
@@ -61,30 +88,177 @@ document.addEventListener("DOMContentLoaded", function () {
     birthdate.max = `${year}-${month}-${day}`;
 
 
-    // Form validation
+    // --------------------------------------------------
+    // Form submission and validation
+    // --------------------------------------------------
+
     form.addEventListener("submit", function (event) {
+
+        event.preventDefault();
 
         let valid = true;
 
-        phoneError.textContent = "";
+
+        // Clear previous error messages
+
+        firstNameError.textContent = "";
+        lastNameError.textContent = "";
         birthdateError.textContent = "";
+
+        addressError.textContent = "";
+        cityError.textContent = "";
+        zipError.textContent = "";
+
+        phoneError.textContent = "";
+        emailError.textContent = "";
+        messageError.textContent = "";
         securityError.textContent = "";
 
 
-        // Check first and last name
-        const firstName =
-            document.getElementById("firstName").value.trim();
+        // --------------------------------------------------
+        // First name
+        // --------------------------------------------------
 
-        const lastName =
-            document.getElementById("lastName").value.trim();
+        const firstNameValue = firstName.value.trim();
 
-        if (firstName === "" || lastName === "") {
+        if (firstNameValue === "") {
+
+            firstNameError.textContent =
+                "Please enter your first name.";
 
             valid = false;
         }
 
 
-        // Phone validation
+        // --------------------------------------------------
+        // Last name
+        // --------------------------------------------------
+
+        const lastNameValue = lastName.value.trim();
+
+        if (lastNameValue === "") {
+
+            lastNameError.textContent =
+                "Please enter your last name.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
+        // Birth date
+        // --------------------------------------------------
+
+        if (birthdate.value === "") {
+
+            birthdateError.textContent =
+                "Please enter your birth date.";
+
+            valid = false;
+
+        } else {
+
+            const selectedDate =
+                new Date(birthdate.value + "T00:00:00");
+
+            const currentDate = new Date();
+
+            currentDate.setHours(0, 0, 0, 0);
+
+            if (selectedDate > currentDate) {
+
+                birthdateError.textContent =
+                    "Birth date cannot be in the future.";
+
+                valid = false;
+            }
+        }
+
+
+        // --------------------------------------------------
+        // Street address
+        // --------------------------------------------------
+
+        const addressValue = address.value.trim();
+
+        if (addressValue === "") {
+
+            addressError.textContent =
+                "Please enter your street address.";
+
+            valid = false;
+
+        } else if (!/\d/.test(addressValue)) {
+
+            addressError.textContent =
+                "Please include a street number.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
+        // City
+        // --------------------------------------------------
+
+        const cityValue = city.value.trim();
+
+        if (cityValue === "") {
+
+            cityError.textContent =
+                "Please enter your city.";
+
+            valid = false;
+
+        } else if (!/^[A-Za-zÀ-ÿ' -]+$/.test(cityValue)) {
+
+            cityError.textContent =
+                "Please enter a valid city.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
+        // State
+        // --------------------------------------------------
+
+        if (state.value === "") {
+
+            valid = false;
+
+            state.focus();
+        }
+
+
+        // --------------------------------------------------
+        // ZIP code
+        // --------------------------------------------------
+
+        const zipValue = zip.value.trim();
+
+        const zipPattern = /^[0-9]{5}(-[0-9]{4})?$/;
+
+        if (zipValue === "") {
+
+            zipError.textContent =
+                "Please enter your ZIP code.";
+
+            valid = false;
+
+        } else if (!zipPattern.test(zipValue)) {
+
+            zipError.textContent =
+                "Please enter a valid ZIP code.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
+        // Phone number
+        // --------------------------------------------------
+
         const phoneNumbers =
             phone.value.replace(/\D/g, "");
 
@@ -97,95 +271,115 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // Birth date validation
-// Birth date validation
-if (birthdate.value === "") {
+        // --------------------------------------------------
+        // Email
+        // --------------------------------------------------
 
-    birthdateError.textContent =
-        "Please enter your birth date.";
+        const emailValue = email.value.trim();
 
-    valid = false;
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-} else {
+        if (emailValue === "") {
 
-    const selectedDate =
-        new Date(birthdate.value + "T00:00:00");
+            emailError.textContent =
+                "Please enter your email address.";
 
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+            valid = false;
 
-    if (selectedDate > currentDate) {
+        } else if (!emailPattern.test(emailValue)) {
 
-        birthdateError.textContent =
-            "Warning: Birth date cannot be in the future.";
-
-        birthdateError.style.color = "#e21b2d";
-        birthdateError.style.fontWeight = "bold";
-
-        valid = false;
-    }
-}
-
-
-
-        // Security question
-        if (security.value.trim() !== "8") {
-
-           securityError.textContent =
-    "Incorrect answer. Please try again.";
-
+            emailError.textContent =
+                "Please enter a valid email address.";
 
             valid = false;
         }
 
 
+        // --------------------------------------------------
+        // Message
+        // --------------------------------------------------
+
+        const messageValue = message.value.trim();
+
+        if (messageValue === "") {
+
+            messageError.textContent =
+                "Please enter a message.";
+
+            valid = false;
+
+        } else if (messageValue.length < 10) {
+
+            messageError.textContent =
+                "Your message must contain at least 10 characters.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
+        // Security question
+        // --------------------------------------------------
+
+        const securityValue =
+            security.value.trim();
+
+        if (securityValue !== "8") {
+
+            securityError.textContent =
+                "Incorrect answer. Please enter 8.";
+
+            valid = false;
+        }
+
+
+        // --------------------------------------------------
         // HTML5 validation
+        // --------------------------------------------------
+
         if (!form.checkValidity()) {
 
-            form.reportValidity();
-
             valid = false;
         }
 
 
-        // Stop if information is invalid
+        // --------------------------------------------------
+        // Stop submission if anything is invalid
+        // --------------------------------------------------
+
         if (!valid) {
 
-            event.preventDefault();
+            form.reportValidity();
             return;
         }
 
 
+        // --------------------------------------------------
         // Save information for confirmation page
+        // --------------------------------------------------
+
         const formData = {
 
-            firstName: firstName,
+            firstName: firstNameValue,
 
-            lastName: lastName,
+            lastName: lastNameValue,
 
-            birthdate:
-                birthdate.value,
+            birthdate: birthdate.value,
 
-            address:
-                document.getElementById("address").value.trim(),
+            address: addressValue,
 
-            city:
-                document.getElementById("city").value.trim(),
+            city: cityValue,
 
-            state:
-                document.getElementById("state").value,
+            state: state.options[state.selectedIndex].text,
 
-            zip:
-                document.getElementById("zip").value.trim(),
+            zip: zipValue,
 
-            phone:
-                phone.value,
+            phone: phone.value,
 
-            email:
-                document.getElementById("email").value.trim(),
+            email: emailValue,
 
-            message:
-                document.getElementById("message").value.trim()
+            message: messageValue
         };
 
 
@@ -193,6 +387,13 @@ if (birthdate.value === "") {
             "assignment3FormData",
             JSON.stringify(formData)
         );
+
+
+        // --------------------------------------------------
+        // Go to confirmation page
+        // --------------------------------------------------
+
+        window.location.href = "confirmation.html";
 
     });
 

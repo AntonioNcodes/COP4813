@@ -46,7 +46,8 @@
 
             <form id="contactForm"
                   action="confirmation.html"
-                  method="get">
+                  method="get"
+                  novalidate>
 
                 <!-- Personal Information -->
 
@@ -63,7 +64,10 @@
                                    id="firstName"
                                    name="firstName"
                                    autocomplete="given-name"
+                                   placeholder="Enter your first name"
                                    required>
+
+                            <small id="firstNameError"></small>
                         </div>
 
                         <div class="form-field">
@@ -73,7 +77,10 @@
                                    id="lastName"
                                    name="lastName"
                                    autocomplete="family-name"
+                                   placeholder="Enter your last name"
                                    required>
+
+                            <small id="lastNameError"></small>
                         </div>
 
                     </div>
@@ -107,8 +114,11 @@
                         <input type="text"
                                id="address"
                                name="address"
-                              autocomplete="address-line1"
+                               autocomplete="address-line1"
+                               placeholder="123 Main Street"
                                required>
+
+                        <small id="addressError"></small>
 
                     </div>
 
@@ -122,7 +132,10 @@
                                    id="city"
                                    name="city"
                                    autocomplete="address-level2"
+                                   placeholder="Enter your city"
                                    required>
+
+                            <small id="cityError"></small>
 
                         </div>
 
@@ -203,7 +216,10 @@
                                autocomplete="postal-code"
                                placeholder="12345 or 12345-6789"
                                pattern="[0-9]{5}(-[0-9]{4})?"
+                               inputmode="numeric"
                                required>
+
+                        <small id="zipError"></small>
 
                     </div>
 
@@ -226,6 +242,7 @@
                                autocomplete="tel"
                                placeholder="(000)000-0000"
                                maxlength="13"
+                               inputmode="tel"
                                required>
 
                         <small id="phoneError"></small>
@@ -242,6 +259,8 @@
                                autocomplete="email"
                                placeholder="name@example.com"
                                required>
+
+                        <small id="emailError"></small>
 
                     </div>
 
@@ -265,6 +284,8 @@
                                   maxlength="1000"
                                   placeholder="Enter your message here..."
                                   required></textarea>
+
+                        <small id="messageError"></small>
 
                     </div>
 
@@ -291,6 +312,7 @@
                                id="security"
                                name="security"
                                inputmode="numeric"
+                               placeholder="Enter your answer"
                                required>
 
                         <small id="securityError"></small>
@@ -310,13 +332,10 @@
 
     </main>
 
-
     <footer>
         <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
 
-
-    <!-- Your JavaScript file is named script.js -->
     <script src="script.js"></script>
 
 </body>

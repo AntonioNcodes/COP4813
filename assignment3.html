@@ -92,6 +92,7 @@
                         <input type="date"
                                id="birthdate"
                                name="birthdate"
+                               autocomplete="bday"
                                required>
 
                         <small id="birthdateError"></small>
@@ -101,7 +102,7 @@
                 </div>
 
 
-                <!-- Address -->
+                <!-- Mailing Address -->
 
                 <div class="form-group">
 
@@ -114,7 +115,7 @@
                         <input type="text"
                                id="address"
                                name="address"
-                               autocomplete="address-line1"
+                               autocomplete="street-address"
                                placeholder="123 Main Street"
                                required>
 
@@ -202,6 +203,8 @@
 
                             </select>
 
+                            <small id="stateError"></small>
+
                         </div>
 
                     </div>
@@ -215,7 +218,7 @@
                                name="zip"
                                autocomplete="postal-code"
                                placeholder="12345 or 12345-6789"
-                               pattern="[0-9]{5}(-[0-9]{4})?"
+                               maxlength="10"
                                inputmode="numeric"
                                required>
 
@@ -298,9 +301,7 @@
 
                     <h3>Security Check</h3>
 
-                    <p>
-                        Please answer the question below.
-                    </p>
+                    <p>Please answer the question below.</p>
 
                     <div class="form-field">
 
@@ -312,6 +313,7 @@
                                id="security"
                                name="security"
                                inputmode="numeric"
+                               maxlength="2"
                                placeholder="Enter your answer"
                                required>
 
@@ -323,7 +325,7 @@
 
 
                 <button type="submit" class="submit-button">
-                    Submit Form
+                    Continue to Confirmation
                 </button>
 
             </form>

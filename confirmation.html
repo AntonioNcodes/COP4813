@@ -2,187 +2,222 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
           content="Assignment 3 confirmation page for COP4813 Web Systems.">
 
-    <title>Confirm Your Information</title>
+    <title>Confirm Information - Assignment 3</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <style>
-
-        .confirmation-box {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .confirmation-box h2 {
-            color: #0b3d91;
-        }
-
-        .confirmation-item {
-            padding: 15px;
-            margin-bottom: 12px;
-            background-color: #f7faff;
-            border-left: 4px solid #0b3d91;
-            border-radius: 5px;
-        }
-
-        .confirmation-item strong {
-            color: #0b3d91;
-        }
-
-        .confirmation-message {
-            white-space: pre-wrap;
-        }
-
-        .confirmation-buttons {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .confirm-button,
-        .edit-button {
-            padding: 14px 22px;
-            border: none;
-            border-radius: 7px;
-            color: white;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .confirm-button {
-            background-color: #0b3d91;
-        }
-
-        .confirm-button:hover,
-        .confirm-button:focus {
-            background-color: #e21b2d;
-        }
-
-        .edit-button {
-            background-color: #777;
-        }
-
-        .edit-button:hover,
-        .edit-button:focus {
-            background-color: #555;
-        }
-
-        @media (max-width: 600px) {
-
-            .confirmation-box {
-                padding: 25px;
-            }
-
-            .confirmation-buttons {
-                flex-direction: column;
-            }
-
-        }
-
-    </style>
-
 </head>
 
 <body>
 
     <header>
-
         <h1>My COP4813</h1>
-
         <p>Web programming and personal portfolio</p>
-
     </header>
 
-
     <nav aria-label="Main navigation">
-
         <ul>
-
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-
-            <li>
-                <a href="about.html">About Me</a>
-            </li>
-
-            <li>
-                <a href="assignment2.html">Assignments</a>
-            </li>
-
-            <li>
-                <a href="assignment3.html">Assignment 3 - Forms</a>
-            </li>
-
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="assignment2.html">Assignments</a></li>
+            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
         </ul>
-
     </nav>
-
 
     <main>
 
-        <section class="confirmation-box">
+        <section class="form-section">
 
-            <h2>Confirm Your Information</h2>
+            <div class="form-intro">
+                <span class="form-label">ASSIGNMENT 3</span>
 
-            <p>
-                Please review your information carefully.
-                If everything is correct, click
-                <strong>Confirm &amp; Send</strong>.
-                If something needs to be changed, click
-                <strong>Go Back and Edit</strong>.
-            </p>
+                <h2>Confirm Your Information</h2>
 
-
-            <div id="confirmationInfo"></div>
+                <p>
+                    Please review the information below. If everything
+                    is correct, click the confirmation button.
+                </p>
+            </div>
 
 
-            <div class="confirmation-buttons">
+            <div class="confirmation-box">
 
-                <button type="button"
-                        id="confirmButton"
-                        class="confirm-button">
-                    Confirm &amp; Send
-                </button>
+                <h3>Personal Information</h3>
+
+                <div class="confirmation-item">
+                    <strong>Name:</strong>
+                    <span id="displayName"></span>
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Birth Date:</strong>
+                    <span id="displayBirthdate"></span>
+                </div>
 
 
-                <button type="button"
-                        id="editButton"
-                        class="edit-button">
-                    Go Back and Edit
-                </button>
+                <h3>Mailing Address</h3>
+
+                <div class="confirmation-item">
+                    <strong>Street Address:</strong>
+                    <span id="displayAddress"></span>
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>City:</strong>
+                    <span id="displayCity"></span>
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>State:</strong>
+                    <span id="displayState"></span>
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>ZIP Code:</strong>
+                    <span id="displayZip"></span>
+                </div>
+
+
+                <h3>Contact Information</h3>
+
+                <div class="confirmation-item">
+                    <strong>Phone:</strong>
+                    <span id="displayPhone"></span>
+                </div>
+
+                <div class="confirmation-item">
+                    <strong>Email:</strong>
+                    <span id="displayEmail"></span>
+                </div>
+
+
+                <h3>Message</h3>
+
+                <div class="message-display" id="displayMessage"></div>
 
             </div>
+
+
+            <!-- Final email form -->
+
+            <form id="emailForm"
+                  action="mailto:test@example.com"
+                  method="post"
+                  enctype="text/plain">
+
+                <input type="hidden" name="Name" id="emailName">
+                <input type="hidden" name="Birth Date" id="emailBirthdate">
+                <input type="hidden" name="Address" id="emailAddress">
+                <input type="hidden" name="City" id="emailCity">
+                <input type="hidden" name="State" id="emailState">
+                <input type="hidden" name="ZIP Code" id="emailZip">
+                <input type="hidden" name="Phone" id="emailPhone">
+                <input type="hidden" name="Email" id="emailEmail">
+                <input type="hidden" name="Message" id="emailMessage">
+
+                <div class="confirmation-buttons">
+
+                    <a href="assignment3.html"
+                       class="back-button">
+                        Go Back and Edit
+                    </a>
+
+                    <button type="submit" class="submit-button">
+                        Confirm and Send
+                    </button>
+
+                </div>
+
+            </form>
 
         </section>
 
     </main>
 
-
     <footer>
-
-        <p>
-            COP4813 Web Systems - Created by Antonio Nava-Martinez
-        </p>
-
+        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
 
 
-    <script src="confirmation.js"></script>
+    <script>
+
+        const params = new URLSearchParams(window.location.search);
+
+        const firstName = params.get("firstName") || "";
+        const lastName = params.get("lastName") || "";
+        const birthdate = params.get("birthdate") || "";
+        const address = params.get("address") || "";
+        const city = params.get("city") || "";
+        const state = params.get("state") || "";
+        const zip = params.get("zip") || "";
+        const phone = params.get("phone") || "";
+        const email = params.get("email") || "";
+        const message = params.get("message") || "";
+
+
+        // Display information
+        document.getElementById("displayName").textContent =
+            firstName + " " + lastName;
+
+        document.getElementById("displayBirthdate").textContent =
+            birthdate;
+
+        document.getElementById("displayAddress").textContent =
+            address;
+
+        document.getElementById("displayCity").textContent =
+            city;
+
+        document.getElementById("displayState").textContent =
+            state;
+
+        document.getElementById("displayZip").textContent =
+            zip;
+
+        document.getElementById("displayPhone").textContent =
+            phone;
+
+        document.getElementById("displayEmail").textContent =
+            email;
+
+        document.getElementById("displayMessage").textContent =
+            message;
+
+
+        // Put information into email fields
+        document.getElementById("emailName").value =
+            firstName + " " + lastName;
+
+        document.getElementById("emailBirthdate").value =
+            birthdate;
+
+        document.getElementById("emailAddress").value =
+            address;
+
+        document.getElementById("emailCity").value =
+            city;
+
+        document.getElementById("emailState").value =
+            state;
+
+        document.getElementById("emailZip").value =
+            zip;
+
+        document.getElementById("emailPhone").value =
+            phone;
+
+        document.getElementById("emailEmail").value =
+            email;
+
+        document.getElementById("emailMessage").value =
+            message;
+
+    </script>
 
 </body>
 

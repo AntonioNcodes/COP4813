@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+
         .confirmation-box {
             background-color: white;
             padding: 40px;
@@ -63,7 +64,8 @@
             background-color: #0b3d91;
         }
 
-        .confirm-button:hover {
+        .confirm-button:hover,
+        .confirm-button:focus {
             background-color: #e21b2d;
         }
 
@@ -71,11 +73,13 @@
             background-color: #777;
         }
 
-        .edit-button:hover {
+        .edit-button:hover,
+        .edit-button:focus {
             background-color: #555;
         }
 
         @media (max-width: 600px) {
+
             .confirmation-box {
                 padding: 25px;
             }
@@ -83,7 +87,9 @@
             .confirmation-buttons {
                 flex-direction: column;
             }
+
         }
+
     </style>
 </head>
 
@@ -117,11 +123,10 @@
                 <strong>Go Back and Edit</strong>.
             </p>
 
-
             <div id="confirmationData"></div>
 
 
-            <!-- Required mailto submission -->
+            <!-- Fake email address approved by professor -->
             <form action="mailto:test@example.com"
                   method="post"
                   enctype="text/plain">
@@ -151,7 +156,6 @@
 
     </main>
 
-
     <footer>
         <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
@@ -169,6 +173,26 @@
             document.getElementById("emailData");
 
 
+        function createConfirmationItem(label, value) {
+
+            const div = document.createElement("div");
+
+            div.className = "confirmation-item";
+
+            const strong = document.createElement("strong");
+
+            strong.textContent = label + ":";
+
+            div.appendChild(strong);
+
+            div.appendChild(
+                document.createTextNode(" " + value)
+            );
+
+            return div;
+        }
+
+
         if (!storedData) {
 
             confirmationData.innerHTML =
@@ -180,46 +204,82 @@
                 JSON.parse(storedData);
 
 
-            confirmationData.innerHTML = `
+            confirmationData.appendChild(
+                createConfirmationItem(
+                    "Name",
+                    formData.firstName + " " + formData.lastName
+                )
+            );
 
-                <div class="confirmation-item">
-                    <strong>Name:</strong>
-                    ${formData.firstName} ${formData.lastName}
-                </div>
 
-                <div class="confirmation-item">
-                    <strong>Birth Date:</strong>
-                    ${formData.birthdate}
-                </div>
+            confirmationData.appendChild(
+                createConfirmationItem(
+                    "Birth Date",
+                    formData.birthdate
+                )
+            );
 
-                <div class="confirmation-item">
-                    <strong>Address:</strong>
-                    ${formData.address},
-                    ${formData.city},
-                    ${formData.state}
-                    ${formData.zip}
-                </div>
 
-                <div class="confirmation-item">
-                    <strong>Phone:</strong>
-                    ${formData.phone}
-                </div>
+            confirmationData.appendChild(
+                createConfirmationItem(
+                    "Address",
+                    formData.address +
+                    ", " +
+                    formData.city +
+                    ", " +
+                    formData.state +
+                    " " +
+                    formData.zip
+                )
+            );
 
-                <div class="confirmation-item">
-                    <strong>Email:</strong>
-                    ${formData.email}
-                </div>
 
-                <div class="confirmation-item confirmation-message">
-                    <strong>Message:</strong><br>
-                    ${formData.message}
-                </div>
+            confirmationData.appendChild(
+                createConfirmationItem(
+                    "Phone",
+                    formData.phone
+                )
+            );
 
-            `;
 
+            confirmationData.appendChild(
+                createConfirmationItem(
+                    "Email",
+                    formData.email
+                )
+            );
+
+
+            const messageBox =
+                document.createElement("div");
+
+            messageBox.className =
+                "confirmation-item confirmation-message";
+
+
+            const messageTitle =
+                document.createElement("strong");
+
+            messageTitle.textContent =
+                "Message:";
+
+
+            messageBox.appendChild(messageTitle);
+
+            messageBox.appendChild(
+                document.createElement("br")
+            );
+
+            messageBox.appendChild(
+                document.createTextNode(formData.message)
+            );
+
+            confirmationData.appendChild(messageBox);
+
+
+            // Information placed into the email message
 
             emailData.value =
-
                 "Name: " +
                 formData.firstName +
                 " " +

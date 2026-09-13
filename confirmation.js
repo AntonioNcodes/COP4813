@@ -1,103 +1,136 @@
 // Assignment 3 - Confirmation Page
 
-const confirmationInfo =
-document.getElementById("confirmationInfo");
+document.addEventListener("DOMContentLoaded", function () {
 
-const formData =
-JSON.parse(sessionStorage.getItem("formData"));
+    const confirmationInfo =
+        document.getElementById("confirmationInfo");
 
-// If there is no saved form information,
-// send the user back to the form.
-if (!formData) {
-
-confirmationInfo.innerHTML =
-    "<p>No form information was found. Please return to the form.</p>";
+    const formData =
+        JSON.parse(sessionStorage.getItem("assignment3FormData"));
 
 
-} else {
+    // If there is no saved form information,
+    // send the user back to the form.
+    if (!formData) {
 
-confirmationInfo.innerHTML = `
-    <div class="confirmation-item">
-        <strong>Name:</strong>
-        ${formData.firstName} ${formData.lastName}
-    </div>
+        confirmationInfo.innerHTML =
+            "<p>No form information was found. Please return to the form.</p>";
 
-    <div class="confirmation-item">
-        <strong>Address:</strong>
-        ${formData.address}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>City:</strong>
-        ${formData.city}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>State:</strong>
-        ${formData.state}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>ZIP Code:</strong>
-        ${formData.zip}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>Phone:</strong>
-        ${formData.phone}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>Email:</strong>
-        ${formData.email}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>Birth Date:</strong>
-        ${formData.birthdate}
-    </div>
-
-    <div class="confirmation-item">
-        <strong>Message:</strong>
-        ${formData.message}
-    </div>
-`;
+        return;
+    }
 
 
-}
+    // Display the submitted information.
+    confirmationInfo.innerHTML = `
+        <div class="confirmation-item">
+            <strong>Name:</strong>
+            ${formData.firstName} ${formData.lastName}
+        </div>
 
-// Return to the form so the user can make changes.
-document.getElementById("editButton").addEventListener("click", function () {
+        <div class="confirmation-item">
+            <strong>Address:</strong>
+            ${formData.address}
+        </div>
 
-window.location.href = "assignment3.html";
+        <div class="confirmation-item">
+            <strong>City:</strong>
+            ${formData.city}
+        </div>
+
+        <div class="confirmation-item">
+            <strong>State:</strong>
+            ${formData.state}
+        </div>
+
+        <div class="confirmation-item">
+            <strong>ZIP Code:</strong>
+            ${formData.zip}
+        </div>
+
+        <div class="confirmation-item">
+            <strong>Phone:</strong>
+            ${formData.phone}
+        </div>
+
+        <div class="confirmation-item">
+            <strong>Email:</strong>
+            ${formData.email}
+        </div>
+
+        <div class="confirmation-item">
+            <strong>Birth Date:</strong>
+            ${formData.birthdate}
+        </div>
+
+        <div class="confirmation-item confirmation-message">
+            <strong>Message:</strong><br>
+            ${formData.message}
+        </div>
+    `;
 
 
-});
+    // Return to the form so the user can make changes.
+    document.getElementById("editButton")
+        .addEventListener("click", function () {
 
-// Confirm and submit the information.
-document.getElementById("confirmButton").addEventListener("click", function () {
+            window.location.href = "assignment3.html";
 
-const emailBody =
-    "Assignment 3 Form Submission\n\n" +
-    "Name: " + formData.firstName + " " + formData.lastName + "\n" +
-    "Address: " + formData.address + "\n" +
-    "City: " + formData.city + "\n" +
-    "State: " + formData.state + "\n" +
-    "ZIP Code: " + formData.zip + "\n" +
-    "Phone: " + formData.phone + "\n" +
-    "Email: " + formData.email + "\n" +
-    "Birth Date: " + formData.birthdate + "\n" +
-    "Message: " + formData.message;
+        });
 
 
-const mailtoLink =
-    "mailto:navantonio13@gmail.com" +
-    "?subject=Assignment%203%20Form%20Submission" +
-    "&body=" +
-    encodeURIComponent(emailBody);
+    // Confirm and open the email message.
+    document.getElementById("confirmButton")
+        .addEventListener("click", function () {
+
+            const emailBody =
+                "Assignment 3 Form Submission\n\n" +
+                "Name: " +
+                formData.firstName +
+                " " +
+                formData.lastName +
+                "\n" +
+
+                "Address: " +
+                formData.address +
+                "\n" +
+
+                "City: " +
+                formData.city +
+                "\n" +
+
+                "State: " +
+                formData.state +
+                "\n" +
+
+                "ZIP Code: " +
+                formData.zip +
+                "\n" +
+
+                "Phone: " +
+                formData.phone +
+                "\n" +
+
+                "Email: " +
+                formData.email +
+                "\n" +
+
+                "Birth Date: " +
+                formData.birthdate +
+                "\n\n" +
+
+                "Message:\n" +
+                formData.message;
 
 
-window.location.href = mailtoLink;
+            const mailtoLink =
+                "mailto:test@example.com" +
+                "?subject=Assignment%203%20Form%20Submission" +
+                "&body=" +
+                encodeURIComponent(emailBody);
 
+
+            window.location.href = mailtoLink;
+
+        });
 
 });

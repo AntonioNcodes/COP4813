@@ -16,7 +16,7 @@ const birthdate =
 
 
 // ==========================================
-// Set today's date as the latest birth date
+// Set today's date as the maximum birth date
 // ==========================================
 
 
@@ -134,10 +134,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // First Name
-        // ==========================================
-
+        // FIRST NAME
 
         const firstName =
             document
@@ -179,10 +176,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Last Name
-        // ==========================================
-
+        // LAST NAME
 
         const lastName =
             document
@@ -224,10 +218,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Birth Date
-        // ==========================================
-
+        // BIRTH DATE
 
         const birthValue =
             birthdate.value;
@@ -304,10 +295,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Street Address
-        // ==========================================
-
+        // STREET ADDRESS
 
         const address =
             document
@@ -353,10 +341,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // City
-        // ==========================================
-
+        // CITY
 
         const city =
             document
@@ -398,10 +383,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // State
-        // ==========================================
-
+        // STATE
 
         const state =
             document
@@ -425,10 +407,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // ZIP Code
-        // ==========================================
-
+        // ZIP CODE
 
         const zip =
             document
@@ -474,10 +453,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Phone Number
-        // ==========================================
-
+        // PHONE
 
         const phoneValue =
             phone.value.trim();
@@ -520,10 +496,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Email
-        // ==========================================
-
+        // EMAIL
 
         const email =
             document
@@ -569,10 +542,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Message
-        // ==========================================
-
+        // MESSAGE
 
         const message =
             document
@@ -612,10 +582,7 @@ form.addEventListener(
 
 
 
-        // ==========================================
-        // Security Question
-        // ==========================================
-
+        // SECURITY QUESTION
 
         const security =
             document
@@ -656,14 +623,68 @@ form.addEventListener(
 
 
         // ==========================================
-        // Continue to Confirmation
+        // Save Data and Continue
         // ==========================================
 
 
         if (valid) {
 
 
-            form.submit();
+            const formData = {
+
+
+                firstName:
+                    firstName,
+
+
+                lastName:
+                    lastName,
+
+
+                birthdate:
+                    birthValue,
+
+
+                address:
+                    address,
+
+
+                city:
+                    city,
+
+
+                state:
+                    state,
+
+
+                zip:
+                    zip,
+
+
+                phone:
+                    phoneValue,
+
+
+                email:
+                    email,
+
+
+                message:
+                    message
+
+            };
+
+
+            sessionStorage.setItem(
+                "assignment3Data",
+                JSON.stringify(
+                    formData
+                )
+            );
+
+
+            window.location.href =
+                "confirmation.html";
 
 
         } else {
@@ -695,7 +716,7 @@ form.addEventListener(
 
 
 // ==========================================
-// Display Error
+// Show Error
 // ==========================================
 
 

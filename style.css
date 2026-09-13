@@ -9,6 +9,11 @@ body {
     color: #172033;
     background-color: #eaf2f8;
 }
+
+/* ================================
+   Header
+================================ */
+
 header {
     background: linear-gradient(135deg, #0b3d91, #06265c);
     color: white;
@@ -26,6 +31,12 @@ header p {
     margin: 10px 0 0;
     font-size: 1.1rem;
 }
+
+
+/* ================================
+   Navigation
+================================ */
+
 nav {
     background-color: #071a3d;
     padding: 10px;
@@ -54,6 +65,12 @@ nav a:focus {
     background-color: #e21b2d;
     color: white;
 }
+
+
+/* ================================
+   Main Content
+================================ */
+
 main {
     max-width: 1000px;
     margin: 40px auto;
@@ -68,11 +85,18 @@ section {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 h2 {
     color: #0b3d91;
     border-bottom: 3px solid #e21b2d;
     padding-bottom: 8px;
 }
+
+
+/* ================================
+   Images
+================================ */
+
 img {
     display: block;
     max-width: 500px;
@@ -82,6 +106,12 @@ img {
     border: 5px solid #0b3d91;
     border-radius: 10px;
 }
+
+
+/* ================================
+   Links
+================================ */
+
 a {
     color: #c41224;
 }
@@ -90,6 +120,12 @@ a:hover,
 a:focus {
     color: #0b3d91;
 }
+
+
+/* ================================
+   Footer
+================================ */
+
 footer {
     background-color: #071a3d;
     color: white;
@@ -101,7 +137,14 @@ footer {
 footer p {
     margin: 0;
 }
+
+
+/* ================================
+   General Mobile Layout
+================================ */
+
 @media (max-width: 600px) {
+
     nav ul {
         flex-direction: column;
         align-items: center;
@@ -121,163 +164,296 @@ footer p {
     }
 }
 
+
 /* =================================
-Assignment 3 Form
+   Assignment 3 Form
 ================================= */
 
 .form-section {
-padding: 40px;
+    padding: 40px;
 }
 
 .form-intro {
-text-align: center;
-max-width: 650px;
-margin: 0 auto 35px;
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 35px;
 }
 
 .form-label {
-display: inline-block;
-color: #e21b2d;
-font-size: 0.85rem;
-font-weight: bold;
-letter-spacing: 1.5px;
-margin-bottom: 8px;
+    display: inline-block;
+    color: #e21b2d;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
 }
 
 .form-intro h2 {
-margin-top: 0;
-font-size: 2rem;
+    margin-top: 0;
+    font-size: 2rem;
 }
 
 .form-intro p {
-color: #5b6675;
+    color: #5b6675;
 }
 
 .form-group {
-margin-bottom: 30px;
-padding: 25px;
-background-color: #f7faff;
-border: 1px solid #dce5ef;
-border-radius: 10px;
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #f7faff;
+    border: 1px solid #dce5ef;
+    border-radius: 10px;
 }
 
 .form-group h3,
 .security-box h3 {
-color: #0b3d91;
-margin-top: 0;
-margin-bottom: 20px;
-font-size: 1.25rem;
+    color: #0b3d91;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.25rem;
 }
 
 .form-row {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 .form-field {
-margin-bottom: 18px;
+    margin-bottom: 18px;
 }
 
 .form-row .form-field {
-margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .form-field label {
-display: block;
-margin-bottom: 7px;
-font-weight: bold;
-color: #172033;
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #172033;
 }
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-width: 100%;
-padding: 12px 14px;
-border: 2px solid #d4dee9;
-border-radius: 7px;
-background-color: white;
-color: #172033;
-font-family: Arial, sans-serif;
-font-size: 1rem;
-transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #d4dee9;
+    border-radius: 7px;
+    background-color: white;
+    color: #172033;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-outline: none;
-border-color: #0b3d91;
-box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.12);
+    outline: none;
+    border-color: #0b3d91;
+    box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.12);
 }
 
 .form-field textarea {
-resize: vertical;
-min-height: 130px;
+    resize: vertical;
+    min-height: 130px;
 }
 
 .form-field input::placeholder,
 .form-field textarea::placeholder {
-color: #8a96a5;
+    color: #8a96a5;
 }
 
+
+/* ================================
+   Validation Errors
+================================ */
+
+.form-field small {
+    display: block;
+    min-height: 20px;
+    margin-top: 5px;
+    color: #e21b2d;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.form-field input:invalid:focus,
+.form-field select:invalid:focus,
+.form-field textarea:invalid:focus {
+    border-color: #e21b2d;
+}
+
+
+/* ================================
+   Security Question
+================================ */
+
 .security-box {
-margin-bottom: 25px;
-padding: 25px;
-background-color: #eef5ff;
-border-left: 5px solid #0b3d91;
-border-radius: 8px;
+    margin-bottom: 25px;
+    padding: 25px;
+    background-color: #eef5ff;
+    border-left: 5px solid #0b3d91;
+    border-radius: 8px;
 }
 
 .security-box p {
-margin-top: 0;
-color: #536174;
+    margin-top: 0;
+    color: #536174;
 }
 
+
+/* ================================
+   Submit Button
+================================ */
+
 .submit-button {
-width: 100%;
-padding: 15px 20px;
-border: none;
-border-radius: 7px;
-background-color: #0b3d91;
-color: white;
-font-size: 1.05rem;
-font-weight: bold;
-cursor: pointer;
-transition: background-color 0.2s, transform 0.2s;
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #0b3d91;
+    color: white;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .submit-button:hover,
 .submit-button:focus {
-background-color: #e21b2d;
+    background-color: #e21b2d;
 }
 
 .submit-button:hover {
-transform: translateY(-1px);
+    transform: translateY(-1px);
 }
 
-/* Assignment 3 mobile layout */
+
+/* =================================
+   Assignment 3 Confirmation Page
+================================= */
+
+.confirmation-box {
+    padding: 25px;
+    margin-bottom: 30px;
+    background-color: #f7faff;
+    border: 1px solid #dce5ef;
+    border-radius: 10px;
+}
+
+.confirmation-box h3 {
+    color: #0b3d91;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+}
+
+.confirmation-box h3:first-child {
+    margin-top: 0;
+}
+
+.confirmation-item {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #dce5ef;
+}
+
+.confirmation-item strong {
+    min-width: 160px;
+    color: #172033;
+}
+
+.message-display {
+    min-height: 100px;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: white;
+    border: 1px solid #d4dee9;
+    border-radius: 7px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+
+/* ================================
+   Confirmation Buttons
+================================ */
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 7px;
+    background-color: #dce5ef;
+    color: #172033;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.back-button:hover,
+.back-button:focus {
+    background-color: #c5d1df;
+    color: #172033;
+}
+
+.confirmation-buttons .submit-button {
+    width: auto;
+    min-width: 190px;
+}
+
+
+/* =================================
+   Assignment 3 Mobile Layout
+================================= */
 
 @media (max-width: 700px) {
 
-.form-section {
-    padding: 25px 20px;
+    .form-section {
+        padding: 25px 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-row .form-field {
+        margin-bottom: 18px;
+    }
+
+    .form-group {
+        padding: 20px;
+    }
+
+    .confirmation-item {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .confirmation-item strong {
+        min-width: auto;
+    }
+
+    .confirmation-buttons {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .confirmation-buttons .submit-button,
+    .confirmation-buttons .back-button {
+        width: 100%;
+        text-align: center;
+    }
+
 }
-
-.form-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-}
-
-.form-row .form-field {
-    margin-bottom: 18px;
-}
-
-.form-group {
-    padding: 20px;
-}
-
-
-}
-

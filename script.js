@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const addressError = document.getElementById("addressError");
     const cityError = document.getElementById("cityError");
-    const stateError = document.getElementById("stateError");
     const zipError = document.getElementById("zipError");
 
     const phoneError = document.getElementById("phoneError");
@@ -108,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         addressError.textContent = "";
         cityError.textContent = "";
-        stateError.textContent = "";
         zipError.textContent = "";
 
         phoneError.textContent = "";
@@ -128,12 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
             firstNameError.textContent =
                 "Please enter your first name.";
 
-            firstName.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            firstName.classList.remove("invalid");
         }
 
 
@@ -148,12 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
             lastNameError.textContent =
                 "Please enter your last name.";
 
-            lastName.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            lastName.classList.remove("invalid");
         }
 
 
@@ -166,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
             birthdateError.textContent =
                 "Please enter your birth date.";
 
-            birthdate.classList.add("invalid");
             valid = false;
 
         } else {
@@ -178,28 +165,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             currentDate.setHours(0, 0, 0, 0);
 
-            const earliestDate = new Date();
-            earliestDate.setFullYear(currentDate.getFullYear() - 120);
-
             if (selectedDate > currentDate) {
 
                 birthdateError.textContent =
                     "Birth date cannot be in the future.";
 
-                birthdate.classList.add("invalid");
                 valid = false;
-
-            } else if (selectedDate < earliestDate) {
-
-                birthdateError.textContent =
-                    "Please enter a realistic birth date.";
-
-                birthdate.classList.add("invalid");
-                valid = false;
-
-            } else {
-
-                birthdate.classList.remove("invalid");
             }
         }
 
@@ -215,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
             addressError.textContent =
                 "Please enter your street address.";
 
-            address.classList.add("invalid");
             valid = false;
 
         } else if (!/\d/.test(addressValue)) {
@@ -223,12 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
             addressError.textContent =
                 "Please include a street number.";
 
-            address.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            address.classList.remove("invalid");
         }
 
 
@@ -243,7 +208,6 @@ document.addEventListener("DOMContentLoaded", function () {
             cityError.textContent =
                 "Please enter your city.";
 
-            city.classList.add("invalid");
             valid = false;
 
         } else if (!/^[A-Za-zÀ-ÿ' -]+$/.test(cityValue)) {
@@ -251,12 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cityError.textContent =
                 "Please enter a valid city.";
 
-            city.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            city.classList.remove("invalid");
         }
 
 
@@ -266,16 +225,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (state.value === "") {
 
-            stateError.textContent =
-                "Please select a state.";
-
-            state.classList.add("invalid");
             valid = false;
 
-        } else {
-
-            stateError.textContent = "";
-            state.classList.remove("invalid");
+            state.focus();
         }
 
 
@@ -292,7 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
             zipError.textContent =
                 "Please enter your ZIP code.";
 
-            zip.classList.add("invalid");
             valid = false;
 
         } else if (!zipPattern.test(zipValue)) {
@@ -300,12 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
             zipError.textContent =
                 "Please enter a valid ZIP code.";
 
-            zip.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            zip.classList.remove("invalid");
         }
 
 
@@ -321,12 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
             phoneError.textContent =
                 "Please enter a complete 10-digit phone number.";
 
-            phone.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            phone.classList.remove("invalid");
         }
 
 
@@ -344,7 +285,6 @@ document.addEventListener("DOMContentLoaded", function () {
             emailError.textContent =
                 "Please enter your email address.";
 
-            email.classList.add("invalid");
             valid = false;
 
         } else if (!emailPattern.test(emailValue)) {
@@ -352,12 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
             emailError.textContent =
                 "Please enter a valid email address.";
 
-            email.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            email.classList.remove("invalid");
         }
 
 
@@ -372,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
             messageError.textContent =
                 "Please enter a message.";
 
-            message.classList.add("invalid");
             valid = false;
 
         } else if (messageValue.length < 10) {
@@ -380,12 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
             messageError.textContent =
                 "Your message must contain at least 10 characters.";
 
-            message.classList.add("invalid");
             valid = false;
-
-        } else {
-
-            message.classList.remove("invalid");
         }
 
 
@@ -401,12 +330,17 @@ document.addEventListener("DOMContentLoaded", function () {
             securityError.textContent =
                 "Incorrect answer. Please enter 8.";
 
-            security.classList.add("invalid");
             valid = false;
+        }
 
-        } else {
 
-            security.classList.remove("invalid");
+        // --------------------------------------------------
+        // HTML5 validation
+        // --------------------------------------------------
+
+        if (!form.checkValidity()) {
+
+            valid = false;
         }
 
 
@@ -415,6 +349,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // --------------------------------------------------
 
         if (!valid) {
+
+            form.reportValidity();
             return;
         }
 

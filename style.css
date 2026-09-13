@@ -266,7 +266,6 @@ footer p {
     color: #8a96a5;
 }
 
-
 /* ================================
    Validation Errors
 ================================ */
@@ -280,11 +279,18 @@ footer p {
     font-weight: bold;
 }
 
+.form-field small.error {
+    display: block;
+    color: #c41224;
+    font-weight: bold;
+}
+
 .form-field input:invalid:focus,
 .form-field select:invalid:focus,
 .form-field textarea:invalid:focus {
     border-color: #e21b2d;
 }
+
 
 
 /* ================================

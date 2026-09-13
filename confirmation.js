@@ -20,8 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Display the submitted information.
+    // Display submitted information.
+
     confirmationInfo.innerHTML = `
+
         <div class="confirmation-item">
             <strong>Name:</strong>
             ${formData.firstName} ${formData.lastName}
@@ -66,10 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <strong>Message:</strong><br>
             ${formData.message}
         </div>
+
     `;
 
 
-    // Return to the form so the user can make changes.
+    // Go back to the form.
+
     document.getElementById("editButton")
         .addEventListener("click", function () {
 
@@ -78,12 +82,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-    // Confirm and open the email message.
+    // Confirm and open email message.
+
     document.getElementById("confirmButton")
         .addEventListener("click", function () {
 
             const emailBody =
+
                 "Assignment 3 Form Submission\n\n" +
+
                 "Name: " +
                 formData.firstName +
                 " " +

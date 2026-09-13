@@ -2,8 +2,11 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
           content="Assignment 3 confirmation page for COP4813 Web Systems.">
@@ -91,23 +94,44 @@
         }
 
     </style>
+
 </head>
 
 <body>
 
     <header>
+
         <h1>My COP4813</h1>
+
         <p>Web programming and personal portfolio</p>
+
     </header>
 
+
     <nav aria-label="Main navigation">
+
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Me</a></li>
-            <li><a href="assignment2.html">Assignments</a></li>
-            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+
+            <li>
+                <a href="about.html">About Me</a>
+            </li>
+
+            <li>
+                <a href="assignment2.html">Assignments</a>
+            </li>
+
+            <li>
+                <a href="assignment3.html">Assignment 3 - Forms</a>
+            </li>
+
         </ul>
+
     </nav>
+
 
     <main>
 
@@ -123,191 +147,42 @@
                 <strong>Go Back and Edit</strong>.
             </p>
 
-            <div id="confirmationData"></div>
+
+            <div id="confirmationInfo"></div>
 
 
-            <!-- Fake email address approved by professor -->
-            <form action="mailto:test@example.com"
-                  method="post"
-                  enctype="text/plain">
+            <div class="confirmation-buttons">
 
-                <input type="hidden"
-                       id="emailData"
-                       name="Form Information">
+                <button type="button"
+                        id="confirmButton"
+                        class="confirm-button">
+                    Confirm &amp; Send
+                </button>
 
 
-                <div class="confirmation-buttons">
+                <button type="button"
+                        id="editButton"
+                        class="edit-button">
+                    Go Back and Edit
+                </button>
 
-                    <button type="submit"
-                            class="confirm-button">
-                        Confirm &amp; Send
-                    </button>
-
-                    <a href="assignment3.html"
-                       class="edit-button">
-                        Go Back and Edit
-                    </a>
-
-                </div>
-
-            </form>
+            </div>
 
         </section>
 
     </main>
 
+
     <footer>
-        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+
+        <p>
+            COP4813 Web Systems - Created by Antonio Nava-Martinez
+        </p>
+
     </footer>
 
 
-    <script>
-
-        const storedData =
-            sessionStorage.getItem("assignment3FormData");
-
-        const confirmationData =
-            document.getElementById("confirmationData");
-
-        const emailData =
-            document.getElementById("emailData");
-
-
-        function createConfirmationItem(label, value) {
-
-            const div = document.createElement("div");
-
-            div.className = "confirmation-item";
-
-            const strong = document.createElement("strong");
-
-            strong.textContent = label + ":";
-
-            div.appendChild(strong);
-
-            div.appendChild(
-                document.createTextNode(" " + value)
-            );
-
-            return div;
-        }
-
-
-        if (!storedData) {
-
-            confirmationData.innerHTML =
-                "<p>No form information was found. Please return to the form.</p>";
-
-        } else {
-
-            const formData =
-                JSON.parse(storedData);
-
-
-            confirmationData.appendChild(
-                createConfirmationItem(
-                    "Name",
-                    formData.firstName + " " + formData.lastName
-                )
-            );
-
-
-            confirmationData.appendChild(
-                createConfirmationItem(
-                    "Birth Date",
-                    formData.birthdate
-                )
-            );
-
-
-            confirmationData.appendChild(
-                createConfirmationItem(
-                    "Address",
-                    formData.address +
-                    ", " +
-                    formData.city +
-                    ", " +
-                    formData.state +
-                    " " +
-                    formData.zip
-                )
-            );
-
-
-            confirmationData.appendChild(
-                createConfirmationItem(
-                    "Phone",
-                    formData.phone
-                )
-            );
-
-
-            confirmationData.appendChild(
-                createConfirmationItem(
-                    "Email",
-                    formData.email
-                )
-            );
-
-
-            const messageBox =
-                document.createElement("div");
-
-            messageBox.className =
-                "confirmation-item confirmation-message";
-
-
-            const messageTitle =
-                document.createElement("strong");
-
-            messageTitle.textContent =
-                "Message:";
-
-
-            messageBox.appendChild(messageTitle);
-
-            messageBox.appendChild(
-                document.createElement("br")
-            );
-
-            messageBox.appendChild(
-                document.createTextNode(formData.message)
-            );
-
-            confirmationData.appendChild(messageBox);
-
-
-            // Information placed into the email message
-
-            emailData.value =
-                "Name: " +
-                formData.firstName +
-                " " +
-                formData.lastName +
-
-                "\nBirth Date: " +
-                formData.birthdate +
-
-                "\nAddress: " +
-                formData.address +
-                ", " +
-                formData.city +
-                ", " +
-                formData.state +
-                " " +
-                formData.zip +
-
-                "\nPhone: " +
-                formData.phone +
-
-                "\nEmail: " +
-                formData.email +
-
-                "\n\nMessage:\n" +
-                formData.message;
-        }
-
-    </script>
+    <script src="confirmation.js"></script>
 
 </body>
 

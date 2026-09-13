@@ -1,223 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
+    <head>
+<meta charset="UTF-8">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Assignment 3 confirmation page for COP4813 Web Systems.">
+<meta name="description"
+      content="Assignment 3 confirmation page for COP4813 Web Systems.">
 
-    <title>Confirm Information - Assignment 3</title>
+<title>Confirm Information - Assignment 3</title>
 
-    <link rel="stylesheet" href="style.css">
-</head>
+<link rel="stylesheet" href="style.css">
 
-<body>
+</head> <body>
+<header>
 
-    <header>
-        <h1>My COP4813</h1>
-        <p>Web programming and personal portfolio</p>
-    </header>
+    <h1>My COP4813</h1>
 
-    <nav aria-label="Main navigation">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Me</a></li>
-            <li><a href="assignment2.html">Assignments</a></li>
-            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
-        </ul>
-    </nav>
+    <p>Web programming and personal portfolio</p>
 
-    <main>
-
-        <section class="form-section">
-
-            <div class="form-intro">
-                <span class="form-label">ASSIGNMENT 3</span>
-
-                <h2>Confirm Your Information</h2>
-
-                <p>
-                    Please review the information below. If everything
-                    is correct, click the confirmation button.
-                </p>
-            </div>
+</header>
 
 
-            <div class="confirmation-box">
+<nav aria-label="Main navigation">
 
-                <h3>Personal Information</h3>
+    <ul>
 
-                <div class="confirmation-item">
-                    <strong>Name:</strong>
-                    <span id="displayName"></span>
-                </div>
+        <li>
+            <a href="index.html">Home</a>
+        </li>
 
-                <div class="confirmation-item">
-                    <strong>Birth Date:</strong>
-                    <span id="displayBirthdate"></span>
-                </div>
+        <li>
+            <a href="about.html">About Me</a>
+        </li>
 
+        <li>
+            <a href="assignment2.html">Assignments</a>
+        </li>
 
-                <h3>Mailing Address</h3>
+        <li>
+            <a href="assignment3.html">Assignment 3 - Forms</a>
+        </li>
 
-                <div class="confirmation-item">
-                    <strong>Street Address:</strong>
-                    <span id="displayAddress"></span>
-                </div>
+    </ul>
 
-                <div class="confirmation-item">
-                    <strong>City:</strong>
-                    <span id="displayCity"></span>
-                </div>
-
-                <div class="confirmation-item">
-                    <strong>State:</strong>
-                    <span id="displayState"></span>
-                </div>
-
-                <div class="confirmation-item">
-                    <strong>ZIP Code:</strong>
-                    <span id="displayZip"></span>
-                </div>
+</nav>
 
 
-                <h3>Contact Information</h3>
-
-                <div class="confirmation-item">
-                    <strong>Phone:</strong>
-                    <span id="displayPhone"></span>
-                </div>
-
-                <div class="confirmation-item">
-                    <strong>Email:</strong>
-                    <span id="displayEmail"></span>
-                </div>
+<main>
 
 
-                <h3>Message</h3>
+    <section class="form-section">
 
-                <div class="message-display" id="displayMessage"></div>
+
+        <div class="form-intro">
+
+            <span class="form-label">
+                ASSIGNMENT 3
+            </span>
+
+            <h2>
+                Confirm Your Information
+            </h2>
+
+            <p>
+                Please review the information below carefully.
+                If everything is correct, click
+                "Confirm and Send."
+            </p>
+
+        </div>
+
+
+
+        <!-- Personal and contact information -->
+
+        <div class="confirmation-box">
+
+
+            <h3>
+                Personal Information
+            </h3>
+
+
+            <div class="confirmation-item">
+
+                <strong>
+                    Name:
+                </strong>
+
+                <span id="displayName"></span>
 
             </div>
 
 
-            <!-- Final email form -->
+            <div class="confirmation-item">
 
-            <form id="emailForm"
-                  action="mailto:test@example.com"
-                  method="post"
-                  enctype="text/plain">
+                <strong>
+                    Birth Date:
+                </strong>
 
-                <input type="hidden" name="Name" id="emailName">
-                <input type="hidden" name="Birth Date" id="emailBirthdate">
-                <input type="hidden" name="Address" id="emailAddress">
-                <input type="hidden" name="City" id="emailCity">
-                <input type="hidden" name="State" id="emailState">
-                <input type="hidden" name="ZIP Code" id="emailZip">
-                <input type="hidden" name="Phone" id="emailPhone">
-                <input type="hidden" name="Email" id="emailEmail">
-                <input type="hidden" name="Message" id="emailMessage">
+                <span id="displayBirthdate"></span>
 
-                <div class="confirmation-buttons">
-
-                    <a href="assignment3.html"
-                       class="back-button">
-                        Go Back and Edit
-                    </a>
-
-                    <button type="submit" class="submit-button">
-                        Confirm and Send
-                    </button>
-
-                </div>
-
-            </form>
-
-        </section>
-
-    </main>
-
-    <footer>
-        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
-    </footer>
+            </div>
 
 
-    <script>
 
-        const params = new URLSearchParams(window.location.search);
-
-        const firstName = params.get("firstName") || "";
-        const lastName = params.get("lastName") || "";
-        const birthdate = params.get("birthdate") || "";
-        const address = params.get("address") || "";
-        const city = params.get("city") || "";
-        const state = params.get("state") || "";
-        const zip = params.get("zip") || "";
-        const phone = params.get("phone") || "";
-        const email = params.get("email") || "";
-        const message = params.get("message") || "";
+            <h3>
+                Mailing Address
+            </h3>
 
 
-        // Display information
-        document.getElementById("displayName").textContent =
-            firstName + " " + lastName;
+            <div class="confirmation-item">
 
-        document.getElementById("displayBirthdate").textContent =
-            birthdate;
+                <strong>
+                    Street Address:
+                </strong>
 
-        document.getElementById("displayAddress").textContent =
-            address;
+                <span id="displayAddress"></span>
 
-        document.getElementById("displayCity").textContent =
-            city;
-
-        document.getElementById("displayState").textContent =
-            state;
-
-        document.getElementById("displayZip").textContent =
-            zip;
-
-        document.getElementById("displayPhone").textContent =
-            phone;
-
-        document.getElementById("displayEmail").textContent =
-            email;
-
-        document.getElementById("displayMessage").textContent =
-            message;
+            </div>
 
 
-        // Put information into email fields
-        document.getElementById("emailName").value =
-            firstName + " " + lastName;
+            <div class="confirmation-item">
 
-        document.getElementById("emailBirthdate").value =
-            birthdate;
+                <strong>
+                    City:
+                </strong>
 
-        document.getElementById("emailAddress").value =
-            address;
+                <span id="displayCity"></span>
 
-        document.getElementById("emailCity").value =
-            city;
+            </div>
 
-        document.getElementById("emailState").value =
-            state;
 
-        document.getElementById("emailZip").value =
-            zip;
+            <div class="confirmation-item">
 
-        document.getElementById("emailPhone").value =
-            phone;
+                <strong>
+                    State:
+                </strong>
 
-        document.getElementById("emailEmail").value =
-            email;
+                <span id="displayState"></span>
 
-        document.getElementById("emailMessage").value =
-            message;
+            </div>
 
-    </script>
+
+            <div class="confirmation-item">
+
+                <strong>
+                    ZIP Code:
+                </strong>
+
+                <span id="displayZip"></span>
+
+            </div>
+
+
+
+            <h3>
+                Contact Information
+            </h3>
+
+
+            <div class="confirmation-item">
+
+                <strong>
+                    Phone:
+                </strong>
+
+                <span id="displayPhone"></span>
+
+            </div>
+
+
+            <div class="confirmation-item">
+
+                <strong>
+                    Email:
+                </strong>
+
+                <span id="displayEmail"></span>
+
+            </div>
+
+
+
+            <h3>
+                Message
+            </h3>
+
+
+            <div
+                class="message-display"
+                id="displayMessage">
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Final email form -->
+
+        <form
+            id="emailForm"
+            action="mailto:test@example.com"
+            method="post"
+            enctype="text/plain"
+        >
+
+
+            <input
+                type="hidden"
+                name="Name"
+                id="emailName"
+            >
+
+
+            <input
+                type="hidden"
+                name="Birth Date"
+                id="emailBirthdate"
+            >
+
+
+            <input
+                type="hidden"
+                name="Street Address"
+                id="emailAddress"
+            >
+
+
+            <input
+                type="hidden"
+                name="City"
+                id="emailCity"
+            >
+
+
+            <input
+                type="hidden"
+                name="State"
+                id="emailState"
+            >
+
+
+            <input
+                type="hidden"
+                name="ZIP Code"
+                id="emailZip"
+            >
+
+
+            <input
+                type="hidden"
+                name="Phone Number"
+                id="emailPhone"
+            >
+
+
+            <input
+                type="hidden"
+                name="Email Address"
+                id="emailEmail"
+            >
+
+
+            <input
+                type="hidden"
+                name="Message"
+                id="emailMessage"
+            >
+
+
+
+            <div class="confirmation-buttons">
+
+
+                <a
+                    href="assignment3.html"
+                    class="back-button"
+                >
+                    Go Back and Edit
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    Confirm and Send
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <p>
+        COP4813 Web Systems - Created by Antonio Nava-Martinez
+    </p>
+
+</footer>
+
+
+
+<script>
+
+
+    // Get information from the URL
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+
+    const firstName =
+        params.get("firstName") || "";
+
+
+    const lastName =
+        params.get("lastName") || "";
+
+
+    const birthdate =
+        params.get("birthdate") || "";
+
+
+    const address =
+        params.get("address") || "";
+
+
+    const city =
+        params.get("city") || "";
+
+
+    const state =
+        params.get("state") || "";
+
+
+    const zip =
+        params.get("zip") || "";
+
+
+    const phone =
+        params.get("phone") || "";
+
+
+    const email =
+        params.get("email") || "";
+
+
+    const message =
+        params.get("message") || "";
+
+
+
+    // Display the information
+
+
+    document.getElementById("displayName").textContent =
+        firstName + " " + lastName;
+
+
+    document.getElementById("displayBirthdate").textContent =
+        birthdate;
+
+
+    document.getElementById("displayAddress").textContent =
+        address;
+
+
+    document.getElementById("displayCity").textContent =
+        city;
+
+
+    document.getElementById("displayState").textContent =
+        state;
+
+
+    document.getElementById("displayZip").textContent =
+        zip;
+
+
+    document.getElementById("displayPhone").textContent =
+        phone;
+
+
+    document.getElementById("displayEmail").textContent =
+        email;
+
+
+    document.getElementById("displayMessage").textContent =
+        message;
+
+
+
+    // Put the information into the email fields
+
+
+    document.getElementById("emailName").value =
+        firstName + " " + lastName;
+
+
+    document.getElementById("emailBirthdate").value =
+        birthdate;
+
+
+    document.getElementById("emailAddress").value =
+        address;
+
+
+    document.getElementById("emailCity").value =
+        city;
+
+
+    document.getElementById("emailState").value =
+        state;
+
+
+    document.getElementById("emailZip").value =
+        zip;
+
+
+    document.getElementById("emailPhone").value =
+        phone;
+
+
+    document.getElementById("emailEmail").value =
+        email;
+
+
+    document.getElementById("emailMessage").value =
+        message;
+
+
+</script>
 
 </body>
 

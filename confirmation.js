@@ -138,6 +138,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             window.location.href = mailtoLink;
 
+            sessionStorage.removeItem("assignment3FormData");
+
         });
 
 });

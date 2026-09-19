@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description" content="Compound interest calculator with plotting capability.">
+    <meta name="description" content="COP4813 Assignment 4 - JavaScript calculator and plotting.">
 
     <title>Assignment 4 - Creating Plots</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Highcharts -->
+    <!-- Highcharts Library -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 
@@ -34,121 +33,134 @@
 
     <main>
 
+        <section>
+            <h2>Assignment 4 - Creating Plots</h2>
+
+            <p>
+                This assignment uses JavaScript to calculate compound interest
+                and display the results on a graph.
+            </p>
+
+            <p>
+                The equation used is:
+                <strong>A = P(1 + r/n)<sup>nt</sup></strong>
+            </p>
+
+            <p>
+                A is the final amount, P is the initial amount, r is the
+                annual interest rate, n is the number of times interest is
+                compounded per year, and t is the time in years.
+            </p>
+        </section>
+
         <section class="calculator-section">
 
-            <div class="form-intro">
-                <span class="form-label">ASSIGNMENT 4</span>
+            <h2>Compound Interest Calculator</h2>
 
-                <h2>Compound Interest Calculator</h2>
-
-                <p>
-                    This calculator uses the compound interest equation
-                    to calculate the growth of an investment over time.
-                </p>
-            </div>
-
-            <form id="compoundForm" class="calculator-form">
+            <div class="calculator-form">
 
                 <div class="calculator-field">
-                    <label for="principal">
-                        Initial Investment ($)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="principal"
-                        value="1000"
-                        min="0"
-                        step="0.01"
-                        required
-                    >
+                    <label for="principal">Initial Amount ($):</label>
+                    <input type="number" id="principal" value="1000" min="0">
                 </div>
-
 
                 <div class="calculator-field">
-                    <label for="rate">
-                        Annual Interest Rate (%)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="rate"
-                        value="5"
-                        min="0"
-                        step="0.01"
-                        required
-                    >
+                    <label for="rate">Interest Rate (%):</label>
+                    <input type="number" id="rate" value="5" min="0" step="0.01">
                 </div>
-
 
                 <div class="calculator-field">
-                    <label for="compoundings">
-                        Compounds Per Year
-                    </label>
-
-                    <input
-                        type="number"
-                        id="compoundings"
-                        value="12"
-                        min="1"
-                        step="1"
-                        required
-                    >
+                    <label for="compounds">Compounds Per Year:</label>
+                    <input type="number" id="compounds" value="12" min="1">
                 </div>
-
 
                 <div class="calculator-field">
-                    <label for="years">
-                        Time (Years)
-                    </label>
-
-                    <input
-                        type="number"
-                        id="years"
-                        value="10"
-                        min="1"
-                        step="1"
-                        required
-                    >
+                    <label for="time">Time (Years):</label>
+                    <input type="number" id="time" value="10" min="1">
                 </div>
 
-
-                <button
-                    type="submit"
-                    class="calculate-button"
-                >
+                <button class="calculate-button" onclick="calculate()">
                     Calculate
                 </button>
 
-            </form>
+                <p id="result" class="calculation-result"></p>
 
-
-            <div
-                id="result"
-                class="calculation-result"
-                aria-live="polite"
-            >
-                Enter your values and click Calculate.
             </div>
 
+        </section>
 
-            <!-- Graph appears here -->
+        <section>
+
+            <h2>Compound Interest Plot</h2>
+
             <div id="chart"></div>
 
         </section>
 
     </main>
 
-
     <footer>
-        <p>
-            COP4813 Web Systems - Created by Antonio Nava-Martinez
-        </p>
+        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
     </footer>
 
+    <script>
 
-    <!-- Your Assignment 4 JavaScript -->
-    <script src="assignment4.js"></script>
+        function calculate() {
+
+            // Get values from the input boxes
+            let P = Number(document.getElementById("principal").value);
+            let r = Number(document.getElementById("rate").value) / 100;
+            let n = Number(document.getElementById("compounds").value);
+            let t = Number(document.getElementById("time").value);
+
+            // Calculate compound interest
+            let A = P * Math.pow(1 + r / n, n * t);
+
+            // Display the final amount
+            document.getElementById("result").innerHTML =
+                "Final Amount: $" + A.toFixed(2);
+
+            // Create the graph data
+            let data = [];
+
+            for (let year = 0; year <= t; year++) {
+
+                let amount = P * Math.pow(1 + r / n, n * year);
+
+                data.push([year, amount]);
+            }
+
+            // Create the Highcharts plot
+            Highcharts.chart("chart", {
+
+                title: {
+                    text: "Compound Interest Over Time"
+                },
+
+                xAxis: {
+                    title: {
+                        text: "Time (Years)"
+                    }
+                },
+
+                yAxis: {
+                    title: {
+                        text: "Amount ($)"
+                    }
+                },
+
+                series: [{
+                    name: "Account Value",
+                    data: data
+                }]
+
+            });
+        }
+
+        // Run the calculator automatically using the example values
+        calculate();
+
+    </script>
 
 </body>
 

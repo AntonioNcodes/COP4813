@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta name="description" content="Compound interest calculator with plotting capability.">
 
-    <title>Assignment 4 - Compound Interest Calculator</title>
+    <title>Assignment 4 - Creating Plots</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Highcharts plotting library -->
+    <!-- Highcharts -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 
@@ -37,6 +38,7 @@
 
             <div class="form-intro">
                 <span class="form-label">ASSIGNMENT 4</span>
+
                 <h2>Compound Interest Calculator</h2>
 
                 <p>
@@ -48,7 +50,10 @@
             <form id="compoundForm" class="calculator-form">
 
                 <div class="calculator-field">
-                    <label for="principal">Initial Investment ($)</label>
+                    <label for="principal">
+                        Initial Investment ($)
+                    </label>
+
                     <input
                         type="number"
                         id="principal"
@@ -59,8 +64,12 @@
                     >
                 </div>
 
+
                 <div class="calculator-field">
-                    <label for="rate">Annual Interest Rate (%)</label>
+                    <label for="rate">
+                        Annual Interest Rate (%)
+                    </label>
+
                     <input
                         type="number"
                         id="rate"
@@ -71,8 +80,12 @@
                     >
                 </div>
 
+
                 <div class="calculator-field">
-                    <label for="compoundings">Compounds Per Year</label>
+                    <label for="compoundings">
+                        Compounds Per Year
+                    </label>
+
                     <input
                         type="number"
                         id="compoundings"
@@ -83,8 +96,12 @@
                     >
                 </div>
 
+
                 <div class="calculator-field">
-                    <label for="years">Time (Years)</label>
+                    <label for="years">
+                        Time (Years)
+                    </label>
+
                     <input
                         type="number"
                         id="years"
@@ -95,26 +112,42 @@
                     >
                 </div>
 
-                <button type="submit" class="calculate-button">
+
+                <button
+                    type="submit"
+                    class="calculate-button"
+                >
                     Calculate
                 </button>
 
             </form>
 
-            <div id="result" class="calculation-result">
+
+            <div
+                id="result"
+                class="calculation-result"
+                aria-live="polite"
+            >
                 Enter your values and click Calculate.
             </div>
 
+
+            <!-- Graph appears here -->
             <div id="chart"></div>
 
         </section>
 
     </main>
 
+
     <footer>
-        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+        <p>
+            COP4813 Web Systems - Created by Antonio Nava-Martinez
+        </p>
     </footer>
 
+
+    <!-- Your Assignment 4 JavaScript -->
     <script src="assignment4.js"></script>
 
 </body>

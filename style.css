@@ -266,6 +266,7 @@ footer p {
     color: #8a96a5;
 }
 
+
 /* ================================
    Validation Errors
 ================================ */
@@ -290,7 +291,6 @@ footer p {
 .form-field textarea:invalid:focus {
     border-color: #e21b2d;
 }
-
 
 
 /* ================================
@@ -460,6 +460,105 @@ footer p {
     .confirmation-buttons .back-button {
         width: 100%;
         text-align: center;
+    }
+
+}
+
+
+/* =================================
+   Assignment 4 Calculator and Plot
+================================= */
+
+.calculator-section {
+    padding: 30px;
+}
+
+.calculator-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.calculator-field {
+    margin-bottom: 20px;
+}
+
+.calculator-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+    color: #172033;
+}
+
+.calculator-field input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #d4dee9;
+    border-radius: 7px;
+    background-color: white;
+    color: #172033;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+}
+
+.calculator-field input:focus {
+    outline: none;
+    border-color: #0b3d91;
+    box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.12);
+}
+
+.calculate-button {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #0b3d91;
+    color: white;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.calculate-button:hover,
+.calculate-button:focus {
+    background-color: #e21b2d;
+}
+
+.calculate-button:hover {
+    transform: translateY(-1px);
+}
+
+.calculation-result {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #eef5ff;
+    border-left: 5px solid #0b3d91;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+#chart {
+    width: 100%;
+    height: 400px;
+}
+
+
+/* =================================
+   Assignment 4 Mobile Layout
+================================= */
+
+@media (max-width: 600px) {
+
+    .calculator-section {
+        padding: 20px;
+    }
+
+    .calculator-form {
+        width: 100%;
+    }
+
+    #chart {
+        height: 300px;
     }
 
 }

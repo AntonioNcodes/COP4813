@@ -1,0 +1,239 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+  <head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="COP4813 Assignment 5 - HTML5 Canvas Spirograph.">
+<title>Assignment 5 - Spirograph</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head> 
+  <body>
+<header>
+    <h1>My COP4813</h1>
+    <p>Web programming and personal portfolio</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="assignment2.html">Assignments</a></li>
+        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
+        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
+    </ul>
+</nav>
+
+<main>
+
+    <section>
+        <h2>Assignment 5 - Spirograph</h2>
+
+        <p>
+            This assignment uses HTML5 Canvas and JavaScript to create
+            an animated Spirograph drawing.
+        </p>
+
+        <p>
+            The position of the pen is calculated using the Spirograph
+            equations provided in the assignment. The values for the
+            outer radius, inner radius, and pen offset can be changed
+            before starting the drawing.
+        </p>
+    </section>
+
+    <section class="spirograph-section">
+
+        <h2>Spirograph Controls</h2>
+
+        <div class="spirograph-form">
+
+            <div class="spirograph-field">
+                <label for="outerRadius">
+                    R - Outer Circle Radius:
+                </label>
+
+                <input
+                    type="number"
+                    id="outerRadius"
+                    value="150"
+                    min="1"
+                >
+            </div>
+
+            <div class="spirograph-field">
+                <label for="innerRadius">
+                    r - Inner Circle Radius:
+                </label>
+
+                <input
+                    type="number"
+                    id="innerRadius"
+                    value="50"
+                    min="1"
+                >
+            </div>
+
+            <div class="spirograph-field">
+                <label for="offset">
+                    O - Pen Offset:
+                </label>
+
+                <input
+                    type="number"
+                    id="offset"
+                    value="40"
+                    min="0"
+                >
+            </div>
+
+            <p class="spirograph-help">
+                R must be greater than or equal to r.
+                R and r must be greater than 0.
+                O must be 0 or greater.
+            </p>
+
+            <button
+                class="spirograph-button"
+                onclick="startSpirograph()"
+            >
+                Start Spirograph
+            </button>
+
+            <p id="spirographMessage" class="spirograph-message"></p>
+
+        </div>
+
+    </section>
+
+    <section>
+
+        <h2>Spirograph Drawing</h2>
+
+        <canvas
+            id="spirographCanvas"
+            width="800"
+            height="600"
+        ></canvas>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+</footer>
+
+<script>
+
+    // Get the canvas and its drawing context
+    const canvas = document.getElementById("spirographCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Used to control the animation
+    let animationFrame;
+    let t = 0;
+
+    function startSpirograph() {
+
+        // Get values from the input boxes
+        let R = Number(document.getElementById("outerRadius").value);
+        let r = Number(document.getElementById("innerRadius").value);
+        let O = Number(document.getElementById("offset").value);
+
+        let message = document.getElementById("spirographMessage");
+
+        // Validate the values
+        if (R <= 0 || r <= 0) {
+            message.textContent =
+                "R and r must be greater than 0.";
+            return;
+        }
+
+        if (r > R) {
+            message.textContent =
+                "The inner radius r cannot be greater than R.";
+            return;
+        }
+
+        if (O < 0) {
+            message.textContent =
+                "The pen offset O must be 0 or greater.";
+            return;
+        }
+
+        // Remove any previous error message
+        message.textContent = "";
+
+        // Stop an existing animation
+        if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+        }
+
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Start t at zero
+        t = 0;
+
+        // Move to the center of the canvas
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Set drawing color and line width
+        ctx.strokeStyle = "#0b3d91";
+        ctx.lineWidth = 2;
+
+        // Calculate the first position
+        let x = (R + r) * Math.cos(t)
+            - (r + O) * Math.cos(((R + r) / r) * t);
+
+        let y = (R + r) * Math.sin(t)
+            - (r + O) * Math.sin(((R + r) / r) * t);
+
+        // Start drawing the path
+        ctx.beginPath();
+        ctx.moveTo(centerX + x, centerY + y);
+
+        drawSpirograph(R, r, O, centerX, centerY);
+    }
+
+
+    function drawSpirograph(R, r, O, centerX, centerY) {
+
+        // Increase t
+        t += 0.03;
+
+        // Spirograph x equation
+        let x = (R + r) * Math.cos(t)
+            - (r + O) * Math.cos(((R + r) / r) * t);
+
+        // Spirograph y equation
+        let y = (R + r) * Math.sin(t)
+            - (r + O) * Math.sin(((R + r) / r) * t);
+
+        // Draw a line to the new position
+        ctx.lineTo(centerX + x, centerY + y);
+        ctx.stroke();
+
+        // Continue drawing
+        if (t < 2 * Math.PI * 100) {
+            animationFrame =
+                requestAnimationFrame(function () {
+                    drawSpirograph(
+                        R,
+                        r,
+                        O,
+                        centerX,
+                        centerY
+                    );
+                });
+        }
+    }
+
+</script>
+
+</body> 
+</html>

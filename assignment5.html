@@ -88,6 +88,18 @@
                     min="0"
                 >
             </div>
+          <div class="spirograph-field">
+    <label for="lineColor">
+        Drawing Color:
+    </label>
+
+    <input
+        type="color"
+        id="lineColor"
+        value="#0b3d91"
+    >
+</div>
+
 
             <p class="spirograph-help">
                 R must be greater than or equal to r.
@@ -144,6 +156,8 @@
         let O = Number(document.getElementById("offset").value);
 
         let message = document.getElementById("spirographMessage");
+      let color = document.getElementById("lineColor").value;
+
 
         // Validate the values
         if (R <= 0 || r <= 0) {
@@ -183,8 +197,9 @@
         const centerY = canvas.height / 2;
 
         // Set drawing color and line width
-        ctx.strokeStyle = "#0b3d91";
-        ctx.lineWidth = 2;
+ctx.strokeStyle = color;
+ctx.lineWidth = 2;
+
 
         // Calculate the first position
         let x = (R + r) * Math.cos(t)

@@ -562,3 +562,113 @@ footer p {
     }
 
 }
+/* =================================
+Assignment 5 Spirograph
+================================= */
+
+.spirograph-section {
+padding: 30px;
+}
+
+.spirograph-form {
+max-width: 600px;
+margin: 0 auto;
+}
+
+.spirograph-field {
+margin-bottom: 20px;
+}
+
+.spirograph-field label {
+display: block;
+margin-bottom: 7px;
+font-weight: bold;
+color: #172033;
+}
+
+.spirograph-field input {
+width: 100%;
+padding: 12px 14px;
+border: 2px solid #d4dee9;
+border-radius: 7px;
+background-color: white;
+color: #172033;
+font-family: Arial, sans-serif;
+font-size: 1rem;
+}
+
+.spirograph-field input:focus {
+outline: none;
+border-color: #0b3d91;
+box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.12);
+}
+
+.spirograph-help {
+padding: 15px;
+background-color: #eef5ff;
+border-left: 5px solid #0b3d91;
+border-radius: 7px;
+color: #536174;
+}
+
+.spirograph-button {
+width: 100%;
+padding: 15px 20px;
+border: none;
+border-radius: 7px;
+background-color: #0b3d91;
+color: white;
+font-size: 1.05rem;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.2s, transform 0.2s;
+}
+
+.spirograph-button:hover,
+.spirograph-button:focus {
+background-color: #e21b2d;
+}
+
+.spirograph-button:hover {
+transform: translateY(-1px);
+}
+
+.spirograph-message {
+min-height: 24px;
+margin-top: 15px;
+color: #c41224;
+font-weight: bold;
+text-align: center;
+}
+
+#spirographCanvas {
+display: block;
+width: 100%;
+max-width: 800px;
+height: auto;
+margin: 20px auto;
+background-color: white;
+border: 5px solid #0b3d91;
+border-radius: 10px;
+}
+
+/* =================================
+Assignment 5 Mobile Layout
+================================= */
+
+@media (max-width: 600px) {
+
+.spirograph-section {
+    padding: 20px;
+}
+
+.spirograph-form {
+    width: 100%;
+}
+
+#spirographCanvas {
+    border-width: 3px;
+}
+
+
+}

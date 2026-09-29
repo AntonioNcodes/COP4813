@@ -1,0 +1,52 @@
+[
+    {
+        "playerName": "Lionel Messi",
+        "team": "Inter Miami",
+        "position": "Forward",
+        "country": "Argentina",
+        "league": "MLS",
+        "season": "2025",
+        "goals": 29,
+        "assists": 19
+    },
+    {
+        "playerName": "Cristiano Ronaldo",
+        "team": "Al-Nassr",
+        "position": "Forward",
+        "country": "Portugal",
+        "league": "Saudi Pro League",
+        "season": "2025/26",
+        "goals": 28,
+        "assists": 2
+    },
+    {
+        "playerName": "Lamine Yamal",
+        "team": "Barcelona",
+        "position": "Forward",
+        "country": "Spain",
+        "league": "LaLiga",
+        "season": "2025/26",
+        "goals": 16,
+        "assists": 12
+    },
+    {
+        "playerName": "Kylian Mbappe",
+        "team": "Real Madrid",
+        "position": "Forward",
+        "country": "France",
+        "league": "LaLiga",
+        "season": "2025/26",
+        "goals": 25,
+        "assists": 5
+    },
+    {
+        "playerName": "Erling Haaland",
+        "team": "Manchester City",
+        "position": "Forward",
+        "country": "Norway",
+        "league": "Premier League",
+        "season": "2025/26",
+        "goals": 27,
+        "assists": 8
+    }
+]

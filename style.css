@@ -672,3 +672,65 @@ Assignment 5 Mobile Layout
 
 
 }
+/* =================================
+Assignment 6 JSON Soccer Data
+================================= */
+
+#playerData {
+overflow-x: auto;
+}
+
+#playerData table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 25px;
+background-color: white;
+}
+
+#playerData th {
+background-color: #0b3d91;
+color: white;
+padding: 12px;
+text-align: left;
+}
+
+#playerData td {
+padding: 12px;
+border-bottom: 1px solid #dce5ef;
+}
+
+#playerData tr:nth-child(even) {
+background-color: #f7faff;
+}
+
+#playerData tr:hover {
+background-color: #eef5ff;
+}
+
+#playerData th,
+#playerData td {
+border-right: 1px solid #dce5ef;
+}
+
+#playerData th:last-child,
+#playerData td:last-child {
+border-right: none;
+}
+
+/* =================================
+Assignment 6 Mobile Layout
+================================= */
+
+@media (max-width: 700px) {
+
+#playerData table {
+    font-size: 0.9rem;
+}
+
+#playerData th,
+#playerData td {
+    padding: 8px;
+}
+
+
+}

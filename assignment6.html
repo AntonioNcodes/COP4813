@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Assignment 6 - JSON soccer player statistics">
+
+    <title>Assignment 6 - JSON Soccer Data</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>My COP4813</h1>
+    <p>Web programming and personal portfolio</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="assignment2.html">Assignment 2</a></li>
+        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
+        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
+        <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
+    </ul>
+</nav>
+  <main>
+<section>
+    <h2>Assignment 6 - Soccer Player Statistics</h2>
+
+    <p>
+        This assignment uses JSON data to display soccer player
+        statistics on a web page using JavaScript.
+    </p>
+
+    <div id="playerData">
+        <p>Loading soccer player data...</p>
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+</footer>
+
+<script>
+
+    fetch("myjson.json")
+        .then(response => response.json())
+        .then(players => {
+
+            let table = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Team</th>
+                            <th>Position</th>
+                            <th>Country</th>
+                            <th>League</th>
+                            <th>Season</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            players.forEach(player => {
+
+                table += `
+                    <tr>
+                        <td>${player.playerName}</td>
+                        <td>${player.team}</td>
+                        <td>${player.position}</td>
+                        <td>${player.country}</td>
+                        <td>${player.league}</td>
+                        <td>${player.season}</td>
+                        <td>${player.goals}</td>
+                        <td>${player.assists}</td>
+                    </tr>
+                `;
+
+            });
+
+            table += `
+                    </tbody>
+                </table>
+            `;
+          document.getElementById("playerData").innerHTML = table;
+
+
+        });
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
+
+

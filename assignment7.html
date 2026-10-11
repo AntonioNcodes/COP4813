@@ -112,31 +112,29 @@
     
     <p>Assignment 7 - Soccer Challenge | HTML5 and JavaScript</p> </footer>
 
-<script> // Get the HTML elements const hand = document.getElementById("hand"); const discard = document.getElementById("discard"); const status = document.getElementById("status"); const discardCount = document.getElementById("discardCount"); const discardedCards = document.getElementById("discardedCards"); const goalMessage = document.getElementById("goalMessage"); const scoreDisplay = document.getElementById("score"); const remainingDisplay = document.getElementById("remaining"); const dealButton = document.getElementById("dealButton");
+<script> const hand = document.getElementById("hand"); const discard = document.getElementById("discard"); const status = document.getElementById("status"); const discardCount = document.getElementById("discardCount"); const discardedCards = document.getElementById("discardedCards"); const goalMessage = document.getElementById("goalMessage"); const scoreDisplay = document.getElementById("score"); const remainingDisplay = document.getElementById("remaining"); const dealButton = document.getElementById("dealButton");
 
-// Card suits const suits = [ { symbol: "♠", name: "Spades", red: false }, { symbol: "♥", name: "Hearts", red: true }, { symbol: "♦", name: "Diamonds", red: true }, { symbol: "♣", name: "Clubs", red: false } ];
+const suits = [ { symbol: "♠", name: "Spades", red: false }, { symbol: "♥", name: "Hearts", red: true }, { symbol: "♦", name: "Diamonds", red: true }, { symbol: "♣", name: "Clubs", red: false } ];
 
-// Card ranks const ranks = [ "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" ];
+const ranks = [ "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" ];
 
-// Game settings let discarded = 0; const handSize = 5;
+let discarded = 0; const handSize = 5;
 
-// Create and shuffle a standard 52-card deck function createDeck() { const deck = [];
+function createDeck() { const deck = [];
 
 suits.forEach(suit => { ranks.forEach(rank => { deck.push({ symbol: suit.symbol, name: suit.name, red: suit.red, rank: rank }); }); });
 
-// Shuffle the deck to prevent duplicate deals for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
-
-[deck[i], deck[j]] = [deck[j], deck[i]]; }
+for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
 
 return deck; }
 
-// Create an individual playing card function createCard(card, index) { const element = document.createElement("div");
+function createCard(card, index) { const element = document.createElement("div");
 
 element.className = card.red ? "card red" : "card"; element.id = "player-" + index; element.draggable = true;
 
 element.setAttribute( "aria-label", card.rank + " of " + card.name );
 
-// Top corner of the card const top = document.createElement("div"); top.className = "card-corner card-top";
+const top = document.createElement("div"); top.className = "card-corner card-top";
 
 const topRank = document.createElement("span"); topRank.textContent = card.rank;
 
@@ -144,19 +142,17 @@ const topSymbol = document.createElement("span"); topSymbol.textContent = card.s
 
 top.append(topRank, topSymbol);
 
-// Center of the card const center = document.createElement("div"); center.className = "card-center"; center.textContent = "⚽"; center.setAttribute("aria-hidden", "true");
+const center = document.createElement("div"); center.className = "card-center"; center.textContent = "⚽"; center.setAttribute("aria-hidden", "true");
 
-// Bottom corner of the card const bottom = document.createElement("div"); bottom.className = "card-corner card-bottom";
+const bottom = document.createElement("div"); bottom.className = "card-corner card-bottom";
 
 const bottomRank = document.createElement("span"); bottomRank.textContent = card.rank;
 
 const bottomSymbol = document.createElement("span"); bottomSymbol.textContent = card.symbol;
 
-bottom.append(bottomRank, bottomSymbol);
+bottom.append(bottomRank, bottomSymbol); element.append(top, center, bottom);
 
-element.append(top, center, bottom);
-
-// HTML5 drag event element.addEventListener("dragstart", event => { event.dataTransfer.setData("text/plain", element.id); event.dataTransfer.effectAllowed = "move";
+element.addEventListener("dragstart", event => { event.dataTransfer.setData("text/plain", element.id); event.dataTransfer.effectAllowed = "move";
 
 status.textContent = "Player selected! Drag the card into the soccer goal.";
 
@@ -164,7 +160,7 @@ status.classList.remove("success"); });
 
 hand.appendChild(element); }
 
-// Deal five unique cards to the player function dealCards() { hand.innerHTML = ""; discardedCards.innerHTML = "";
+function dealCards() { hand.innerHTML = ""; discardedCards.innerHTML = "";
 
 discarded = 0;
 
@@ -180,45 +176,30 @@ players.forEach((card, index) => { createCard(card, index); });
 
 status.textContent = "Kickoff! Five players are ready. Drag a card into the goal!"; }
 
-// Allow cards to be dragged over the goal discard.addEventListener("dragover", event => { event.preventDefault();
+discard.addEventListener("dragover", event => { event.preventDefault(); event.dataTransfer.dropEffect = "move"; discard.classList.add("drag-over"); });
 
-event.dataTransfer.dropEffect = "move";
+discard.addEventListener("dragleave", event => { if (!discard.contains(event.relatedTarget)) { discard.classList.remove("drag-over"); } });
 
-discard.classList.add("drag-over"); });
-
-// Remove the highlight when the card leaves the goal discard.addEventListener("dragleave", event => { if (!discard.contains(event.relatedTarget)) { discard.classList.remove("drag-over"); } });
-
-// Handle the drop event when a card enters the goal discard.addEventListener("drop", event => { event.preventDefault();
-
-discard.classList.remove("drag-over");
+discard.addEventListener("drop", event => { event.preventDefault(); discard.classList.remove("drag-over");
 
 const id = event.dataTransfer.getData("text/plain"); const card = document.getElementById(id);
 
-// Only accept cards that remain in the player's hand if (!card || !hand.contains(card)) { return; }
+if (!card || !hand.contains(card)) { return; }
 
-// Move the card into the soccer goal discardedCards.appendChild(card);
-
-card.draggable = false;
+discardedCards.appendChild(card); card.draggable = false;
 
 discarded++;
 
-// Update the scoreboard scoreDisplay.textContent = discarded; remainingDisplay.textContent = handSize - discarded; discardCount.textContent = "Goals: " + discarded;
+scoreDisplay.textContent = discarded; remainingDisplay.textContent = handSize - discarded; discardCount.textContent = "Goals: " + discarded;
 
-// Celebrate the goal goalMessage.textContent = "⚽ GOOOAL!";
+goalMessage.textContent = "⚽ GOOOAL!";
 
-discard.classList.remove("scored");
+discard.classList.remove("scored"); void discard.offsetWidth; discard.classList.add("scored");
 
-// Restart the animation so every goal is celebrated void discard.offsetWidth;
-
-discard.classList.add("scored");
-
-// Confirm that the drop event was triggered status.classList.add("success");
+status.classList.add("success");
 
 if (discarded === handSize) { status.textContent = "FULL TIME! You scored 5 goals! Drop event confirmed!";
 
 dealButton.textContent = "Play Again"; } else { status.textContent = "GOAL! Drop event triggered successfully! " + (handSize - discarded) + " players remaining."; } });
 
-// Start or restart the match dealButton.addEventListener("click", dealCards); </script>
-
-</body> 
-</html>
+dealButton.addEventListener("click", dealCards); </script>

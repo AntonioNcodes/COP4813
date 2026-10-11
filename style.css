@@ -1471,164 +1471,138 @@ Assignment 6 Mobile Layout
 
 }
 
-* =================================
-   Assignment 7 - Drag and Drop
-================================= */
+/* ================================= Assignment 7 - Soccer Challenge ================================= */
 
-.card-game-section {
-    text-align: center;
-}
+.card-game-section { text-align: center; }
 
-.card-game-intro {
-    max-width: 700px;
-    margin: 0 auto 25px;
-    color: #536174;
-}
+.card-game-intro { max-width: 700px; margin: 0 auto 25px; color: #536174; }
 
-/* Deal Cards Button */
+/* Scoreboard */
 
-.deal-button {
-    display: inline-block;
-    padding: 14px 28px;
-    border: none;
-    border-radius: 7px;
-    background-color: #0b3d91;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-}
+.scoreboard { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 30px; max-width: 650px; margin: 25px auto; padding: 15px; background: #071a3d; color: white; border-radius: 10px; border-bottom: 5px solid #e21b2d; }
 
-.deal-button:hover,
-.deal-button:focus {
-    background-color: #e21b2d;
-}
+.scoreboard h3, .scoreboard p { margin: 5px; }
 
-.deal-button:hover {
-    transform: translateY(-2px);
-}
+#score, #remaining { color: #ffd54a; font-size: 1.3rem; font-weight: bold; }
 
-/* Player's Hand */
+/* Start Match Button */
 
-#hand {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    min-height: 155px;
-    margin: 25px auto;
-    padding: 15px;
-}
+.deal-button { display: inline-block; padding: 14px 30px; border: none; border-radius: 7px; background: #0b3d91; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.2s; }
 
-/* Playing Cards */
+.deal-button:hover, .deal-button:focus { background: #e21b2d; }
 
-.card {
-    width: 90px;
-    height: 130px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: white;
-    color: #172033;
-    border: 2px solid #0b3d91;
-    border-radius: 9px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: left;
-    cursor: grab;
-    user-select: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+.deal-button:hover { transform: translateY(-2px); }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
-}
+/* Player Cards */
 
-.card:active {
-    cursor: grabbing;
-}
+#hand { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 15px; min-height: 155px; margin: 20px auto 35px; padding: 15px; background: #f2f6fb; border-radius: 10px; }
 
-.card.red {
-    color: #e21b2d;
-}
+/* Individual Playing Cards */
 
-.card span:last-child {
-    text-align: right;
-}
+.card { position: relative; width: 85px; height: 125px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; background: white; color: #172033; border: 2px solid #0b3d91; border-radius: 9px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); font-size: 1.3rem; font-weight: bold; text-align: left; cursor: grab; user-select: none; transition: transform 0.2s, box-shadow 0.2s; }
 
-/* Discard Pile */
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); }
 
-#discard {
-    width: 230px;
-    min-height: 160px;
-    margin: 25px auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f7faff;
-    border: 3px dashed #0b3d91;
-    border-radius: 10px;
-    color: #172033;
-    transition: background-color 0.2s, border-color 0.2s;
-}
+.card:active { cursor: grabbing; }
 
-#discard p {
-    margin: 5px;
-}
+.card.red { color: #e21b2d; }
 
-#discard.drag-over {
-    background-color: #eef5ff;
-    border-color: #e21b2d;
-    border-style: solid;
-}
+.card-corner { display: flex; justify-content: space-between; gap: 4px; }
 
-/* Status Message */
+.card-bottom { transform: rotate(180deg); }
 
-#status {
-    min-height: 30px;
-    margin: 20px auto;
-    color: #0b3d91;
-    font-weight: bold;
-}
+.card-center { text-align: center; font-size: 2rem; }
 
-#status.success {
-    color: #176b45;
-}
+/* ================================= Soccer Field ================================= */
 
-/* Discard Counter */
+.soccer-field { position: relative; width: 100%; max-width: 750px; height: 470px; margin: 25px auto; overflow: hidden; border: 5px solid white; border-radius: 12px; outline: 2px solid #176b45; background: repeating-linear-gradient( 90deg, #20834a 0, #20834a 90px, #279553 90px, #279553 180px ); }
 
-#discardCount {
-    font-weight: bold;
-    color: #c41224;
-}
+/* Soccer Field Markings */
 
-/* Mobile Layout */
+.field-line { position: absolute; left: 0; width: 100%; border-top: 3px solid rgba(255, 255, 255, 0.8); }
+
+.halfway-line { top: 50%; }
+
+.center-circle { position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; border: 3px solid rgba(255, 255, 255, 0.8); border-radius: 50%; transform: translate(-50%, -50%); }
+
+.penalty-box { position: absolute; left: 25%; width: 50%; height: 65px; border: 3px solid rgba(255, 255, 255, 0.8); }
+
+.penalty-box-top { top: 0; border-top: none; }
+
+.penalty-box-bottom { bottom: 0; border-bottom: none; }
+
+/* ================================= Soccer Goal and Net ================================= */
+
+.goal-area { position: absolute; z-index: 2; top: 8px; left: 50%; width: 245px; height: 155px; transform: translateX(-50%); }
+
+.goal-net { position: absolute; top: 0; left: 12px; width: calc(100% - 24px); height: 115px; background-color: rgba(255, 255, 255, 0.18); background-image: linear-gradient( rgba(255, 255, 255, 0.65) 1px, transparent 1px ), linear-gradient( 90deg, rgba(255, 255, 255, 0.65) 1px, transparent 1px ); background-size: 15px 15px; border: 4px solid white; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); }
+
+.goal-post { position: absolute; top: 0; width: 8px; height: 130px; background: white; border-radius: 3px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); }
+
+.goal-post-left { left: 8px; }
+
+.goal-post-right { right: 8px; }
+
+.goal-crossbar { position: absolute; top: 0; left: 8px; width: calc(100% - 16px); height: 8px; background: white; border-radius: 3px; }
+
+/* Goal Drop Zone */
+
+.goal-drop-zone { position: absolute; z-index: 3; top: 18px; left: 18px; width: calc(100% - 36px); min-height: 95px; padding: 8px; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; align-items: center; gap: 5px; background: rgba(4, 38, 24, 0.5); border: 2px dashed white; border-radius: 4px; color: white; transition: background 0.2s, border-color 0.2s; }
+
+.goal-drop-zone p { width: 100%; margin: 2px; color: white; font-size: 0.8rem; font-weight: bold; text-shadow: 1px 1px 3px black; }
+
+/* Highlight Goal While Dragging */
+
+.goal-drop-zone.drag-over { background: rgba(226, 27, 45, 0.85); border: 3px solid #ffd54a; box-shadow: 0 0 20px #ffd54a; }
+
+/* Cards Inside the Goal */
+
+#discardedCards { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; max-height: 115px; overflow-y: auto; }
+
+#discardedCards .card { width: 34px; height: 48px; min-width: 34px; padding: 2px; border-width: 1px; border-radius: 3px; font-size: 0.65rem; box-shadow: none; cursor: default; }
+
+#discardedCards .card:hover { transform: none; }
+
+#discardedCards .card-center { font-size: 0.8rem; }
+
+#discardedCards .card-corner span:last-child { display: none; }
+
+/* Field Instructions */
+
+.field-label { position: absolute; bottom: 20px; left: 0; width: 100%; color: white; font-size: 1.1rem; font-weight: bold; letter-spacing: 3px; text-shadow: 2px 2px 4px #06351c; }
+
+/* ================================= Goal Celebration Animation ================================= */
+
+.goal-drop-zone.scored { animation: goalCelebration 0.6s ease; }
+
+@keyframes goalCelebration { 0% { background-color: rgba(4, 38, 24, 0.5); transform: scale(1); }
+
+50% { background-color: rgba(255, 213, 74, 0.95); transform: scale(1.06); }
+
+100% { background-color: rgba(4, 38, 24, 0.5); transform: scale(1); } }
+
+/* ================================= Status and Event Confirmation ================================= */
+
+#status { min-height: 30px; margin: 20px auto; color: #0b3d91; font-weight: bold; }
+
+#status.success { color: #176b45; font-size: 1.1rem; }
+
+#discardCount { font-weight: bold; color: white; }
+
+/* ================================= Mobile Layout ================================= */
 
 @media (max-width: 600px) {
-    #hand {
-        gap: 10px;
-        padding: 5px;
-    }
 
-    .card {
-        width: 75px;
-        height: 110px;
-        font-size: 1.25rem;
-    }
+.card-game-section { padding: 20px; }
 
-    #discard {
-        width: 200px;
-        min-height: 140px;
-    }
+.soccer-field { height: 390px; }
 
-    .card-game-section {
-        padding: 20px;
-    }
-}
+.goal-area { width: 215px; }
+
+#hand { gap: 8px; padding: 8px; }
+
+.card { width: 70px; height: 105px; font-size: 1.1rem; }
+
+.scoreboard { gap: 5px 15px; }
+
+.field-label { font-size: 0.85rem; letter-spacing: 2px; } }

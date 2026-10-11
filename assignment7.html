@@ -1,238 +1,224 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 7 - Soccer Challenge</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Assignment 7 - Soccer Challenge</title> 
+        <link rel="stylesheet" href="style.css"> 
+    </head>
 
 <body>
 
-<header>
-    <h1>Soccer Challenge</h1>
-    <p>Assignment 7: HTML5 Drag and Drop</p>
+<header> 
+    <h1>Soccer Challenge</h1> 
+    <p>Assignment 7: HTML5 Drag and Drop</p> 
 </header>
 
 <nav>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
-        <li><a href="assignment2.html">Assignment 2</a></li>
-        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
-        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
-        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
-        <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
-        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
-    </ul>
+    <ul> 
+        <li>
+            <a href="index.html">Home</a>
+        </li> 
+        <li>
+            <a href="about.html">About Me</a>
+        </li> 
+        <li>
+            <a href="assignment2.html">Assignment 2</a>
+        </li> 
+        <li>
+            <a href="assignment3.html">Assignment 3 - Forms</a>
+        </li> 
+        <li>
+            <a href="assignment4.html">Assignment 4 - Creating Plots</a>
+        </li> 
+        <li>
+            <a href="assignment5.html">Assignment 5 - Spirograph</a>
+        </li> 
+        <li>
+            <a href="assignment6.html">Assignment 6 - JSON</a>
+        </li>
+        <li>
+            <a href="assignment7.html">Assignment 7 - Soccer Challenge</a>
+        </li> 
+    </ul> 
 </nav>
 
-<main>
+<main> 
     <section class="card-game-section">
-        <h2>Soccer Training Ground</h2>
 
-        <p class="card-game-intro">
-            Drag your player cards into the goal zone to score!
-        </p>
+<h2>Soccer Training Ground</h2>
 
+<p class="card-game-intro"> Drag your player cards into the soccer goal to score! </p>
+
+<!-- Scoreboard --> 
         <div class="scoreboard">
-            <h3>Match Score</h3>
-            <p>Goals Scored: <span id="score">0</span></p>
-            <p>Players Remaining: <span id="remaining">5</span></p>
+            <h3>⚽ Match Score</h3> 
+            <p>Goals Scored: <span id="score">0</span></p> 
+            <p>Players Remaining: <span id="remaining">5</span></p> 
         </div>
 
-        <button type="button" id="dealButton" class="deal-button">
-            Start Match
-        </button>
+<!-- Start Match Button --> 
+        <button type="button" id="dealButton" class="deal-button"> Start Match </button>
 
-        <h3>Your Players</h3>
-        <div id="hand"></div>
+<!-- Player Cards --> 
+        <h3>Your Players</h3> <div id="hand"></div>
 
-        <h3>Goal Zone</h3>
-        <div id="discard">
-            <p id="goalMessage">Drag a player here to score!</p>
-            <div id="discardedCards"></div>
-            <p id="discardCount">Goals: 0</p>
+<!-- Soccer Field --> 
+        <h3>⚽ Soccer Pitch</h3>
+
+<div class="soccer-field">
+
+<!-- Soccer Field Markings --> 
+    <div class="field-line halfway-line">
+        
+    </div> <div class="center-circle"></div>
+
+<div class="penalty-box penalty-box-top"></div> <div class="penalty-box penalty-box-bottom"></div>
+
+<!-- Soccer Goal -->
+    <div class="goal-area">
+
+<div class="goal-net"></div>
+
+<div class="goal-post goal-post-left"></div>
+        <div class="goal-post goal-post-right"></div>
+        <div class="goal-crossbar">
         </div>
 
-        <p id="status" role="status" aria-live="polite">
-            Click Start Match to begin.
-        </p>
-    </section>
+<!-- Drag and Drop Target -->
+        <div id="discard" class="goal-drop-zone">
+
+<p id="goalMessage">DRAG CARD HERE</p>
+
+<div id="discardedCards"></div>
+
+<p id="discardCount">Goals: 0</p>
+
+</div>
+
+</div>
+
+<div class="field-label">SHOOT TO SCORE!</div>
+
+</div>
+
+<!-- Event Confirmation Message --> 
+        <p id="status" role="status" aria-live="polite"> Click Start Match to begin. </p>
+
+</section>
 </main>
 
 <footer>
-    <p>Assignment 7 - Soccer Challenge | HTML5 and JavaScript</p>
-</footer>
+    
+    <p>Assignment 7 - Soccer Challenge | HTML5 and JavaScript</p> </footer>
 
-<script>
-const hand = document.getElementById("hand");
-const discard = document.getElementById("discard");
-const status = document.getElementById("status");
-const discardCount = document.getElementById("discardCount");
-const discardedCards = document.getElementById("discardedCards");
-const goalMessage = document.getElementById("goalMessage");
-const scoreDisplay = document.getElementById("score");
-const remainingDisplay = document.getElementById("remaining");
-const dealButton = document.getElementById("dealButton");
+<script> // Get the HTML elements const hand = document.getElementById("hand"); const discard = document.getElementById("discard"); const status = document.getElementById("status"); const discardCount = document.getElementById("discardCount"); const discardedCards = document.getElementById("discardedCards"); const goalMessage = document.getElementById("goalMessage"); const scoreDisplay = document.getElementById("score"); const remainingDisplay = document.getElementById("remaining"); const dealButton = document.getElementById("dealButton");
 
-const suits = [
-    { symbol: "♠", name: "Spades", red: false },
-    { symbol: "♥", name: "Hearts", red: true },
-    { symbol: "♦", name: "Diamonds", red: true },
-    { symbol: "♣", name: "Clubs", red: false }
-];
+// Card suits const suits = [ { symbol: "♠", name: "Spades", red: false }, { symbol: "♥", name: "Hearts", red: true }, { symbol: "♦", name: "Diamonds", red: true }, { symbol: "♣", name: "Clubs", red: false } ];
 
-const ranks = [
-    "A", "2", "3", "4", "5", "6", "7",
-    "8", "9", "10", "J", "Q", "K"
-];
+// Card ranks const ranks = [ "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" ];
 
-let discarded = 0;
-const handSize = 5;
+// Game settings let discarded = 0; const handSize = 5;
 
-function createDeck() {
-    const deck = [];
+// Create and shuffle a standard 52-card deck function createDeck() { const deck = [];
 
-    suits.forEach(suit => {
-        ranks.forEach(rank => {
-            deck.push({
-                symbol: suit.symbol,
-                name: suit.name,
-                red: suit.red,
-                rank: rank
-            });
-        });
-    });
+suits.forEach(suit => { ranks.forEach(rank => { deck.push({ symbol: suit.symbol, name: suit.name, red: suit.red, rank: rank }); }); });
 
-    // Shuffle the deck to deal random cards.
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
+// Shuffle the deck to prevent duplicate deals for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));
 
-    return deck;
-}
+[deck[i], deck[j]] = [deck[j], deck[i]]; }
 
-function createCard(card, index) {
-    const element = document.createElement("div");
+return deck; }
 
-    element.className = card.red ? "card red" : "card";
-    element.id = "player-" + index;
-    element.draggable = true;
+// Create an individual playing card function createCard(card, index) { const element = document.createElement("div");
 
-    element.setAttribute(
-        "aria-label",
-        card.rank + " of " + card.name
-    );
+element.className = card.red ? "card red" : "card"; element.id = "player-" + index; element.draggable = true;
 
-    const top = document.createElement("div");
-    top.className = "card-corner card-top";
-    top.innerHTML =
-        "<span>" + card.rank + "</span><span>⚽</span>";
+element.setAttribute( "aria-label", card.rank + " of " + card.name );
 
-    const center = document.createElement("div");
-    center.className = "card-center";
-    center.textContent = "⚽";
-    center.setAttribute("aria-hidden", "true");
+// Top corner of the card const top = document.createElement("div"); top.className = "card-corner card-top";
 
-    const bottom = document.createElement("div");
-    bottom.className = "card-corner card-bottom";
-    bottom.innerHTML =
-        "<span>" + card.rank + "</span><span>⚽</span>";
+const topRank = document.createElement("span"); topRank.textContent = card.rank;
 
-    element.append(top, center, bottom);
+const topSymbol = document.createElement("span"); topSymbol.textContent = card.symbol;
 
-    element.addEventListener("dragstart", event => {
-        event.dataTransfer.setData("text/plain", element.id);
-        event.dataTransfer.effectAllowed = "move";
+top.append(topRank, topSymbol);
 
-        status.textContent =
-            "Player selected! Drag the card into the goal zone.";
-        status.classList.remove("success");
-    });
+// Center of the card const center = document.createElement("div"); center.className = "card-center"; center.textContent = "⚽"; center.setAttribute("aria-hidden", "true");
 
-    hand.appendChild(element);
-}
+// Bottom corner of the card const bottom = document.createElement("div"); bottom.className = "card-corner card-bottom";
 
-function dealCards() {
-    hand.innerHTML = "";
-    discardedCards.innerHTML = "";
+const bottomRank = document.createElement("span"); bottomRank.textContent = card.rank;
 
-    discarded = 0;
+const bottomSymbol = document.createElement("span"); bottomSymbol.textContent = card.symbol;
 
-    scoreDisplay.textContent = "0";
-    remainingDisplay.textContent = handSize;
-    discardCount.textContent = "Goals: 0";
-    goalMessage.textContent = "Drag a player here to score!";
+bottom.append(bottomRank, bottomSymbol);
 
-    status.classList.remove("success");
-    dealButton.textContent = "Start Match";
+element.append(top, center, bottom);
 
-    const deck = createDeck();
-    const players = deck.slice(0, handSize);
+// HTML5 drag event element.addEventListener("dragstart", event => { event.dataTransfer.setData("text/plain", element.id); event.dataTransfer.effectAllowed = "move";
 
-    players.forEach((card, index) => {
-        createCard(card, index);
-    });
+status.textContent = "Player selected! Drag the card into the soccer goal.";
 
-    status.textContent =
-        "Kickoff! Five players are ready. Drag a card into the goal!";
-}
+status.classList.remove("success"); });
 
-discard.addEventListener("dragover", event => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-    discard.classList.add("drag-over");
-});
+hand.appendChild(element); }
 
-discard.addEventListener("dragleave", event => {
-    if (!discard.contains(event.relatedTarget)) {
-        discard.classList.remove("drag-over");
-    }
-});
+// Deal five unique cards to the player function dealCards() { hand.innerHTML = ""; discardedCards.innerHTML = "";
 
-discard.addEventListener("drop", event => {
-    event.preventDefault();
-    discard.classList.remove("drag-over");
+discarded = 0;
 
-    const id = event.dataTransfer.getData("text/plain");
-    const card = document.getElementById(id);
+scoreDisplay.textContent = "0"; remainingDisplay.textContent = handSize; discardCount.textContent = "Goals: 0"; goalMessage.textContent = "DRAG CARD HERE";
 
-    // Only accept cards that are still in the player's hand.
-    if (!card || !hand.contains(card)) {
-        return;
-    }
+discard.classList.remove("scored"); discard.classList.remove("drag-over"); status.classList.remove("success");
 
-    // Move the dragged card into the goal zone.
-    discardedCards.appendChild(card);
-    card.draggable = false;
+dealButton.textContent = "Restart Match";
 
-    discarded++;
+const deck = createDeck(); const players = deck.slice(0, handSize);
 
-    // Update the scoreboard.
-    scoreDisplay.textContent = discarded;
-    remainingDisplay.textContent = handSize - discarded;
-    discardCount.textContent = "Goals: " + discarded;
-    goalMessage.textContent = "GOAL!";
+players.forEach((card, index) => { createCard(card, index); });
 
-    // Confirm that the drop event was triggered.
-    status.classList.add("success");
+status.textContent = "Kickoff! Five players are ready. Drag a card into the goal!"; }
 
-    if (discarded === handSize) {
-        status.textContent =
-            "FULL TIME! You scored 5 goals! Drop event confirmed!";
-        dealButton.textContent = "Play Again";
-    } else {
-        status.textContent =
-            "GOAL! Drop event triggered successfully! " +
-            (handSize - discarded) + " players remaining.";
-    }
-});
+// Allow cards to be dragged over the goal discard.addEventListener("dragover", event => { event.preventDefault();
 
-dealButton.addEventListener("click", dealCards);
-</script>
+event.dataTransfer.dropEffect = "move";
 
-</body>
+discard.classList.add("drag-over"); });
+
+// Remove the highlight when the card leaves the goal discard.addEventListener("dragleave", event => { if (!discard.contains(event.relatedTarget)) { discard.classList.remove("drag-over"); } });
+
+// Handle the drop event when a card enters the goal discard.addEventListener("drop", event => { event.preventDefault();
+
+discard.classList.remove("drag-over");
+
+const id = event.dataTransfer.getData("text/plain"); const card = document.getElementById(id);
+
+// Only accept cards that remain in the player's hand if (!card || !hand.contains(card)) { return; }
+
+// Move the card into the soccer goal discardedCards.appendChild(card);
+
+card.draggable = false;
+
+discarded++;
+
+// Update the scoreboard scoreDisplay.textContent = discarded; remainingDisplay.textContent = handSize - discarded; discardCount.textContent = "Goals: " + discarded;
+
+// Celebrate the goal goalMessage.textContent = "⚽ GOOOAL!";
+
+discard.classList.remove("scored");
+
+// Restart the animation so every goal is celebrated void discard.offsetWidth;
+
+discard.classList.add("scored");
+
+// Confirm that the drop event was triggered status.classList.add("success");
+
+if (discarded === handSize) { status.textContent = "FULL TIME! You scored 5 goals! Drop event confirmed!";
+
+dealButton.textContent = "Play Again"; } else { status.textContent = "GOAL! Drop event triggered successfully! " + (handSize - discarded) + " players remaining."; } });
+
+// Start or restart the match dealButton.addEventListener("click", dealCards); </script>
+
+</body> 
 </html>

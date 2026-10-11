@@ -734,3 +734,165 @@ Assignment 6 Mobile Layout
 
 
 }
+
+* =================================
+   Assignment 7 - Drag and Drop
+================================= */
+
+.card-game-section {
+    text-align: center;
+}
+
+.card-game-intro {
+    max-width: 700px;
+    margin: 0 auto 25px;
+    color: #536174;
+}
+
+/* Deal Cards Button */
+
+.deal-button {
+    display: inline-block;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 7px;
+    background-color: #0b3d91;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.deal-button:hover,
+.deal-button:focus {
+    background-color: #e21b2d;
+}
+
+.deal-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Player's Hand */
+
+#hand {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    min-height: 155px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+/* Playing Cards */
+
+.card {
+    width: 90px;
+    height: 130px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    color: #172033;
+    border: 2px solid #0b3d91;
+    border-radius: 9px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: left;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+}
+
+.card:active {
+    cursor: grabbing;
+}
+
+.card.red {
+    color: #e21b2d;
+}
+
+.card span:last-child {
+    text-align: right;
+}
+
+/* Discard Pile */
+
+#discard {
+    width: 230px;
+    min-height: 160px;
+    margin: 25px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7faff;
+    border: 3px dashed #0b3d91;
+    border-radius: 10px;
+    color: #172033;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#discard p {
+    margin: 5px;
+}
+
+#discard.drag-over {
+    background-color: #eef5ff;
+    border-color: #e21b2d;
+    border-style: solid;
+}
+
+/* Status Message */
+
+#status {
+    min-height: 30px;
+    margin: 20px auto;
+    color: #0b3d91;
+    font-weight: bold;
+}
+
+#status.success {
+    color: #176b45;
+}
+
+/* Discard Counter */
+
+#discardCount {
+    font-weight: bold;
+    color: #c41224;
+}
+
+/* Mobile Layout */
+
+@media (max-width: 600px) {
+    #hand {
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .card {
+        width: 75px;
+        height: 110px;
+        font-size: 1.25rem;
+    }
+
+    #discard {
+        width: 200px;
+        min-height: 140px;
+    }
+
+    .card-game-section {
+        padding: 20px;
+    }
+}

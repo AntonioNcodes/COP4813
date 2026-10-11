@@ -29,9 +29,9 @@
             <h2>Playing Card Game</h2>
 
             <p class="card-game-intro">
-                Click the Deal Cards button to receive five playing cards.
-                Drag any card into the discard pile to discard it.
-                A message will confirm when the drop event is triggered.
+                Click Deal Cards to receive five playing cards.
+                Drag a card into the discard pile to discard it.
+                A success message will confirm when the drop event works.
             </p>
 
             <button type="button" id="dealButton" class="deal-button">
@@ -98,7 +98,7 @@
                 });
             });
 
-            // Shuffle the deck.
+            // Shuffle the deck randomly.
             for (let i = deck.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
 
@@ -108,7 +108,7 @@
             return deck;
         }
 
-        // Display five randomly selected cards.
+        // Deal five different cards to the player.
         function dealCards() {
             hand.innerHTML = "";
             discarded = 0;
@@ -141,7 +141,7 @@
                 cardElement.appendChild(top);
                 cardElement.appendChild(bottom);
 
-                // HTML5 dragstart event.
+                // Drag start event.
                 cardElement.addEventListener("dragstart", function(event) {
                     event.dataTransfer.setData(
                         "text/plain",
@@ -161,7 +161,7 @@
                 "Five cards dealt! Drag a card to the discard pile.";
         }
 
-        // Allow a dragged card to enter the discard pile.
+        // Allow cards to be dropped into the discard pile.
         discard.addEventListener("dragover", function(event) {
             event.preventDefault();
 
@@ -169,14 +169,14 @@
             discard.classList.add("drag-over");
         });
 
-        // Remove the highlight when the card leaves the target.
+        // Remove the highlight when the dragged card leaves.
         discard.addEventListener("dragleave", function(event) {
             if (!discard.contains(event.relatedTarget)) {
                 discard.classList.remove("drag-over");
             }
         });
 
-        // HTML5 drop event: discard the card and confirm success.
+        // Drop event: discard the card and display confirmation.
         discard.addEventListener("drop", function(event) {
             event.preventDefault();
 
@@ -185,33 +185,30 @@
             const cardId = event.dataTransfer.getData("text/plain");
             const cardElement = document.getElementById(cardId);
 
-            // Make sure the dropped item is a card in the player's hand.
+            // Make sure the dropped object is a card in the player's hand.
             if (!cardElement || !hand.contains(cardElement)) {
                 return;
             }
 
             const cardName = cardElement.getAttribute("aria-label");
 
-            // Remove the card from the hand.
+            // Remove the card from the player's hand.
             cardElement.remove();
 
-            // Update the discard count.
+            // Update the discard counter.
             discarded++;
 
             discardCount.textContent =
                 "Cards discarded: " + discarded;
 
-            // Show visible proof that the drop event worked.
+            // Show visible confirmation that the drop event was triggered.
             status.textContent =
                 "SUCCESS! " + cardName + " was discarded.";
 
             status.classList.add("success");
-
-            // Display an alert to demonstrate the triggered event.
-            alert("Drop event triggered! " + cardName + " was discarded.");
         });
 
-        // Deal cards when the user clicks the button.
+        // Deal cards when the button is clicked.
         dealButton.addEventListener("click", dealCards);
     </script>
 

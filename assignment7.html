@@ -1,105 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assignment 7 - Drag and Drop</title>
-<link rel="stylesheet" href="style.css">
-
-<style>
-.card {
-    position: relative;
-    width: 100px;
-    height: 145px;
-    padding: 6px;
-    display: block;
-    background: white;
-    color: #172033;
-    border: 2px solid #172033;
-    border-radius: 9px;
-    box-shadow: 0 4px 8px #0003;
-    font-family: Georgia, serif;
-    cursor: grab;
-    user-select: none;
-}
-.card.red { color: #d71920; }
-.card-corner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 1;
-}
-.card-top { top: 6px; left: 7px; }
-.card-bottom {
-    right: 7px;
-    bottom: 6px;
-    transform: rotate(180deg);
-}
-.card-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 52px;
-}
-#hand {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    min-height: 150px;
-    margin: 25px auto;
-}
-#discard {
-    width: 230px;
-    min-height: 150px;
-    margin: 20px auto;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #f7faff;
-    border: 3px dashed #0b3d91;
-    border-radius: 10px;
-}
-#discard.drag-over {
-    background: #eef5ff;
-    border-color: #e21b2d;
-}
-#status {
-    min-height: 30px;
-    text-align: center;
-    font-weight: bold;
-}
-#status.success { color: #176b45; }
-.deal-button {
-    padding: 12px 25px;
-    background: #0b3d91;
-    color: white;
-    border: none;
-    border-radius: 7px;
-    font-weight: bold;
-    cursor: pointer;
-}
-@media(max-width:600px) {
-    .card { width: 82px; height: 120px; }
-    .card-center { font-size: 42px; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 7 - Soccer Challenge</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
 <header>
-    <h1>Assignment 7: Drag and Drop</h1>
-    <p>JavaScript and HTML5 Card Game</p>
+    <h1>Soccer Challenge</h1>
+    <p>Assignment 7: HTML5 Drag and Drop</p>
 </header>
 
-    <nav>
-        <ul>
+<nav>
+    <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Me</a></li>
         <li><a href="assignment2.html">Assignment 2</a></li>
@@ -107,39 +24,46 @@
         <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
         <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
         <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
-        <li><a href="assignment7.html">Assignment 7 - Drag Drop</a></li>
-        </ul>
-    </nav>
-
+        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
+    </ul>
+</nav>
 
 <main>
-<section class="card-game-section">
-    <h2>Playing Card Game</h2>
-    <p class="card-game-intro">
-        Deal five cards and drag them into the discard pile.
-    </p>
+    <section class="card-game-section">
+        <h2>Soccer Training Ground</h2>
 
-    <button type="button" id="dealButton" class="deal-button">
-        Deal Cards
-    </button>
+        <p class="card-game-intro">
+            Drag your player cards into the goal zone to score!
+        </p>
 
-    <h3>Your Cards</h3>
-    <div id="hand"></div>
+        <div class="scoreboard">
+            <h3>Match Score</h3>
+            <p>Goals Scored: <span id="score">0</span></p>
+            <p>Players Remaining: <span id="remaining">5</span></p>
+        </div>
 
-    <h3>Discard Pile</h3>
-    <div id="discard">
-        <p>Drag a card here</p>
-        <p id="discardCount">Cards discarded: 0</p>
-    </div>
+        <button type="button" id="dealButton" class="deal-button">
+            Start Match
+        </button>
 
-    <p id="status" role="status" aria-live="polite">
-        Click Deal Cards to begin.
-    </p>
-</section>
+        <h3>Your Players</h3>
+        <div id="hand"></div>
+
+        <h3>Goal Zone</h3>
+        <div id="discard">
+            <p id="goalMessage">Drag a player here to score!</p>
+            <div id="discardedCards"></div>
+            <p id="discardCount">Goals: 0</p>
+        </div>
+
+        <p id="status" role="status" aria-live="polite">
+            Click Start Match to begin.
+        </p>
+    </section>
 </main>
 
 <footer>
-    <p>Assignment 7 - Drag and Drop | HTML5 and JavaScript</p>
+    <p>Assignment 7 - Soccer Challenge | HTML5 and JavaScript</p>
 </footer>
 
 <script>
@@ -147,71 +71,114 @@ const hand = document.getElementById("hand");
 const discard = document.getElementById("discard");
 const status = document.getElementById("status");
 const discardCount = document.getElementById("discardCount");
+const discardedCards = document.getElementById("discardedCards");
+const goalMessage = document.getElementById("goalMessage");
+const scoreDisplay = document.getElementById("score");
+const remainingDisplay = document.getElementById("remaining");
 const dealButton = document.getElementById("dealButton");
 
 const suits = [
-    {symbol:"♠", name:"Spades", red:false},
-    {symbol:"♥", name:"Hearts", red:true},
-    {symbol:"♦", name:"Diamonds", red:true},
-    {symbol:"♣", name:"Clubs", red:false}
+    { symbol: "♠", name: "Spades", red: false },
+    { symbol: "♥", name: "Hearts", red: true },
+    { symbol: "♦", name: "Diamonds", red: true },
+    { symbol: "♣", name: "Clubs", red: false }
 ];
-const ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+
+const ranks = [
+    "A", "2", "3", "4", "5", "6", "7",
+    "8", "9", "10", "J", "Q", "K"
+];
+
 let discarded = 0;
+const handSize = 5;
 
 function createDeck() {
     const deck = [];
+
     suits.forEach(suit => {
         ranks.forEach(rank => {
-            deck.push({...suit, rank:rank});
+            deck.push({
+                symbol: suit.symbol,
+                name: suit.name,
+                red: suit.red,
+                rank: rank
+            });
         });
     });
 
+    // Shuffle the deck to deal random cards.
     for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
     }
+
     return deck;
+}
+
+function createCard(card, index) {
+    const element = document.createElement("div");
+
+    element.className = card.red ? "card red" : "card";
+    element.id = "player-" + index;
+    element.draggable = true;
+
+    element.setAttribute(
+        "aria-label",
+        card.rank + " of " + card.name
+    );
+
+    const top = document.createElement("div");
+    top.className = "card-corner card-top";
+    top.innerHTML =
+        "<span>" + card.rank + "</span><span>⚽</span>";
+
+    const center = document.createElement("div");
+    center.className = "card-center";
+    center.textContent = "⚽";
+    center.setAttribute("aria-hidden", "true");
+
+    const bottom = document.createElement("div");
+    bottom.className = "card-corner card-bottom";
+    bottom.innerHTML =
+        "<span>" + card.rank + "</span><span>⚽</span>";
+
+    element.append(top, center, bottom);
+
+    element.addEventListener("dragstart", event => {
+        event.dataTransfer.setData("text/plain", element.id);
+        event.dataTransfer.effectAllowed = "move";
+
+        status.textContent =
+            "Player selected! Drag the card into the goal zone.";
+        status.classList.remove("success");
+    });
+
+    hand.appendChild(element);
 }
 
 function dealCards() {
     hand.innerHTML = "";
+    discardedCards.innerHTML = "";
+
     discarded = 0;
-    discardCount.textContent = "Cards discarded: 0";
+
+    scoreDisplay.textContent = "0";
+    remainingDisplay.textContent = handSize;
+    discardCount.textContent = "Goals: 0";
+    goalMessage.textContent = "Drag a player here to score!";
+
     status.classList.remove("success");
+    dealButton.textContent = "Start Match";
 
-    createDeck().slice(0, 5).forEach((card, index) => {
-        const element = document.createElement("div");
-        element.className = card.red ? "card red" : "card";
-        element.id = "card-" + index;
-        element.draggable = true;
-        element.setAttribute("aria-label", card.rank + " of " + card.name);
+    const deck = createDeck();
+    const players = deck.slice(0, handSize);
 
-        const top = document.createElement("div");
-        top.className = "card-corner card-top";
-        top.innerHTML = "<span>" + card.rank + "</span><span>" + card.symbol + "</span>";
-
-        const center = document.createElement("div");
-        center.className = "card-center";
-        center.textContent = card.symbol;
-        center.setAttribute("aria-hidden", "true");
-
-        const bottom = document.createElement("div");
-        bottom.className = "card-corner card-bottom";
-        bottom.innerHTML = "<span>" + card.rank + "</span><span>" + card.symbol + "</span>";
-
-        element.append(top, center, bottom);
-
-        element.addEventListener("dragstart", event => {
-            event.dataTransfer.setData("text/plain", element.id);
-            event.dataTransfer.effectAllowed = "move";
-            status.textContent = "Dragging " + card.rank + " of " + card.name + "...";
-            status.classList.remove("success");
-        });
-
-        hand.appendChild(element);
+    players.forEach((card, index) => {
+        createCard(card, index);
     });
 
-    status.textContent = "Five cards dealt! Drag a card to the discard pile.";
+    status.textContent =
+        "Kickoff! Five players are ready. Drag a card into the goal!";
 }
 
 discard.addEventListener("dragover", event => {
@@ -233,25 +200,39 @@ discard.addEventListener("drop", event => {
     const id = event.dataTransfer.getData("text/plain");
     const card = document.getElementById(id);
 
-    if (!card || !hand.contains(card)) return;
+    // Only accept cards that are still in the player's hand.
+    if (!card || !hand.contains(card)) {
+        return;
+    }
 
-    const name = card.getAttribute("aria-label");
-    card.remove();
+    // Move the dragged card into the goal zone.
+    discardedCards.appendChild(card);
+    card.draggable = false;
 
     discarded++;
-    discardCount.textContent = "Cards discarded: " + discarded;
+
+    // Update the scoreboard.
+    scoreDisplay.textContent = discarded;
+    remainingDisplay.textContent = handSize - discarded;
+    discardCount.textContent = "Goals: " + discarded;
+    goalMessage.textContent = "GOAL!";
+
+    // Confirm that the drop event was triggered.
     status.classList.add("success");
 
-    if (discarded === 5) {
-        status.textContent = "Congratulations! You cleared your hand!";
+    if (discarded === handSize) {
+        status.textContent =
+            "FULL TIME! You scored 5 goals! Drop event confirmed!";
         dealButton.textContent = "Play Again";
     } else {
-        status.textContent = "SUCCESS! " + name + " was discarded. " +
-            (5 - discarded) + " cards remaining.";
+        status.textContent =
+            "GOAL! Drop event triggered successfully! " +
+            (handSize - discarded) + " players remaining.";
     }
 });
 
 dealButton.addEventListener("click", dealCards);
 </script>
+
 </body>
 </html>

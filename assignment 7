@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Assignment 7 - Drag and Drop</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 7: Drag and Drop</h1>
+        <p>JavaScript and HTML5 Interactive Card Game</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="card-game-section">
+
+            <h2>Playing Card Game</h2>
+
+            <p class="card-game-intro">
+                Click the Deal Cards button to receive five playing cards.
+                Drag any card into the discard pile to discard it.
+                A message will confirm when the drop event is triggered.
+            </p>
+
+            <button type="button" id="dealButton" class="deal-button">
+                Deal Cards
+            </button>
+
+            <h3>Your Cards</h3>
+
+            <div id="hand" aria-label="Your playing cards"></div>
+
+            <h3>Discard Pile</h3>
+
+            <div id="discard">
+                <p>Drag a card here</p>
+                <p id="discardCount">Cards discarded: 0</p>
+            </div>
+
+            <p id="status" role="status" aria-live="polite">
+                Click Deal Cards to begin.
+            </p>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>Assignment 7 - Drag and Drop | HTML5 and JavaScript</p>
+    </footer>
+
+    <script>
+        // Get the HTML elements.
+        const hand = document.getElementById("hand");
+        const discard = document.getElementById("discard");
+        const status = document.getElementById("status");
+        const discardCount = document.getElementById("discardCount");
+        const dealButton = document.getElementById("dealButton");
+
+        // Create the four suits in a standard deck.
+        const suits = [
+            { symbol: "♠", name: "Spades", red: false },
+            { symbol: "♥", name: "Hearts", red: true },
+            { symbol: "♦", name: "Diamonds", red: true },
+            { symbol: "♣", name: "Clubs", red: false }
+        ];
+
+        const ranks = [
+            "A", "2", "3", "4", "5", "6", "7",
+            "8", "9", "10", "J", "Q", "K"
+        ];
+
+        let discarded = 0;
+
+        // Create a standard deck of 52 unique cards.
+        function createDeck() {
+            const deck = [];
+
+            suits.forEach(function(suit) {
+                ranks.forEach(function(rank) {
+                    deck.push({
+                        rank: rank,
+                        suit: suit.symbol,
+                        suitName: suit.name,
+                        red: suit.red
+                    });
+                });
+            });
+
+            // Shuffle the deck.
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+
+            return deck;
+        }
+
+        // Display five randomly selected cards.
+        function dealCards() {
+            hand.innerHTML = "";
+            discarded = 0;
+
+            discardCount.textContent = "Cards discarded: 0";
+            status.classList.remove("success");
+
+            const deck = createDeck();
+            const cards = deck.slice(0, 5);
+
+            cards.forEach(function(card, index) {
+                const cardElement = document.createElement("div");
+
+                cardElement.className =
+                    card.red ? "card red" : "card";
+
+                cardElement.id = "card-" + index;
+                cardElement.draggable = true;
+
+                const cardName = card.rank + " of " + card.suitName;
+
+                cardElement.setAttribute("aria-label", cardName);
+
+                const top = document.createElement("span");
+                top.textContent = card.rank + card.suit;
+
+                const bottom = document.createElement("span");
+                bottom.textContent = card.suit;
+
+                cardElement.appendChild(top);
+                cardElement.appendChild(bottom);
+
+                // HTML5 dragstart event.
+                cardElement.addEventListener("dragstart", function(event) {
+                    event.dataTransfer.setData(
+                        "text/plain",
+                        cardElement.id
+                    );
+
+                    event.dataTransfer.effectAllowed = "move";
+
+                    status.textContent = "Dragging " + cardName + "...";
+                    status.classList.remove("success");
+                });
+
+                hand.appendChild(cardElement);
+            });
+
+            status.textContent =
+                "Five cards dealt! Drag a card to the discard pile.";
+        }
+
+        // Allow a dragged card to enter the discard pile.
+        discard.addEventListener("dragover", function(event) {
+            event.preventDefault();
+
+            event.dataTransfer.dropEffect = "move";
+            discard.classList.add("drag-over");
+        });
+
+        // Remove the highlight when the card leaves the target.
+        discard.addEventListener("dragleave", function(event) {
+            if (!discard.contains(event.relatedTarget)) {
+                discard.classList.remove("drag-over");
+            }
+        });
+
+        // HTML5 drop event: discard the card and confirm success.
+        discard.addEventListener("drop", function(event) {
+            event.preventDefault();
+
+            discard.classList.remove("drag-over");
+
+            const cardId = event.dataTransfer.getData("text/plain");
+            const cardElement = document.getElementById(cardId);
+
+            // Make sure the dropped item is a card in the player's hand.
+            if (!cardElement || !hand.contains(cardElement)) {
+                return;
+            }
+
+            const cardName = cardElement.getAttribute("aria-label");
+
+            // Remove the card from the hand.
+            cardElement.remove();
+
+            // Update the discard count.
+            discarded++;
+
+            discardCount.textContent =
+                "Cards discarded: " + discarded;
+
+            // Show visible proof that the drop event worked.
+            status.textContent =
+                "SUCCESS! " + cardName + " was discarded.";
+
+            status.classList.add("success");
+
+            // Display an alert to demonstrate the triggered event.
+            alert("Drop event triggered! " + cardName + " was discarded.");
+        });
+
+        // Deal cards when the user clicks the button.
+        dealButton.addEventListener("click", dealCards);
+    </script>
+
+</body>
+</html>

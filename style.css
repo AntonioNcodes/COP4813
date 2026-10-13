@@ -1607,6 +1607,7 @@ Assignment 6 Mobile Layout
 
 .field-label { font-size: 0.85rem; letter-spacing: 2px; } }
 
+
 /* =================================
    Assignment 9 - Soccer Animation
 ================================= */
@@ -1620,8 +1621,6 @@ Assignment 6 Mobile Layout
     margin: 15px auto;
 }
 
-/* Soccer Animation Canvas */
-
 #soccerCanvas {
     display: block;
     width: 100%;
@@ -1634,18 +1633,13 @@ Assignment 6 Mobile Layout
     cursor: pointer;
 }
 
-/* Animation Status */
-
 #soccerStatus {
     min-height: 30px;
     color: #0b3d91;
     font-weight: bold;
 }
 
-/* Animation Button */
-
 .soccer-animation-button {
-    display: inline-block;
     padding: 13px 28px;
     margin-top: 10px;
     border: none;
@@ -1658,30 +1652,23 @@ Assignment 6 Mobile Layout
     transition: background-color 0.2s, transform 0.2s;
 }
 
-.soccer-animation-button:hover,
-.soccer-animation-button:focus {
-    background-color: #e21b2d;
-}
-
 .soccer-animation-button:hover {
+    background-color: #e21b2d;
     transform: translateY(-2px);
 }
 
-/* =================================
-   Assignment 9 - Mobile Layout
-================================= */
+.soccer-animation-button:focus-visible {
+    outline: 3px solid #e21b2d;
+    outline-offset: 3px;
+}
 
+/* Mobile layout */
 @media (max-width: 600px) {
-
     .soccer-animation-section {
         padding: 20px;
     }
 
     #soccerCanvas {
         border-width: 3px;
-    }
-
-    .soccer-animation-button {
-        max-width: 100%;
     }
 }

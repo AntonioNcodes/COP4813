@@ -41,11 +41,17 @@ const laserSource = {
 
 function createMirrors() {
     return [
-        { x: 250, y: 145, angle: Math.PI / 4, length: 65 },
-        { x: 430, y: 280, angle: -Math.PI / 4, length: 65 },
-        { x: 610, y: 130, angle: Math.PI / 4, length: 65 }
+        // Mirror 1 redirects the horizontal beam upward
+        { x: 220, y: 225, angle: Math.PI / 4, length: 65 },
+
+        // Mirror 2 redirects the upward beam to the right
+        { x: 220, y: 120, angle: -Math.PI / 4, length: 65 },
+
+        // Mirror 3 redirects the beam downward
+        { x: 450, y: 120, angle: Math.PI / 4, length: 65 }
     ];
 }
+
 
 let mirrors = createMirrors();
 
@@ -338,29 +344,33 @@ function drawEmitter() {
     ctx.restore();
 }
 
+
 // ------------------------------------------
 // Move the target and bounce off the walls
 // ------------------------------------------
 
 function moveTarget() {
+    // Move horizontally
     target.x += target.dx;
-    target.y += target.dy;
 
-    // Bounce horizontally
+    // Bounce off the left and right walls
     if (target.x + target.radius >= WIDTH - 5) {
-        target.x = WIDTH - target.radius - 5;
+        target.x = WIDTH - 5 - target.radius;
         target.dx = -Math.abs(target.dx);
     } else if (target.x - target.radius <= 5) {
-        target.x = target.radius + 5;
+        target.x = 5 + target.radius;
         target.dx = Math.abs(target.dx);
     }
 
-    // Bounce vertically
+    // Move vertically
+    target.y += target.dy;
+
+    // Bounce off the top and bottom walls
     if (target.y + target.radius >= HEIGHT - 5) {
-        target.y = HEIGHT - target.radius - 5;
+        target.y = HEIGHT - 5 - target.radius;
         target.dy = -Math.abs(target.dy);
     } else if (target.y - target.radius <= 5) {
-        target.y = target.radius + 5;
+        target.y = 5 + target.radius;
         target.dy = Math.abs(target.dy);
     }
 }

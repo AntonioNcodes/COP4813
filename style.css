@@ -1607,7 +1607,6 @@ Assignment 6 Mobile Layout
 
 .field-label { font-size: 0.85rem; letter-spacing: 2px; } }
 
-
 /* =================================
    Assignment 9 - Soccer Animation
 ================================= */
@@ -1621,6 +1620,8 @@ Assignment 6 Mobile Layout
     margin: 15px auto;
 }
 
+/* Soccer Animation Canvas */
+
 #soccerCanvas {
     display: block;
     width: 100%;
@@ -1633,11 +1634,15 @@ Assignment 6 Mobile Layout
     cursor: pointer;
 }
 
+/* Animation Status */
+
 #soccerStatus {
     min-height: 30px;
     color: #0b3d91;
     font-weight: bold;
 }
+
+/* Animation Button */
 
 .soccer-animation-button {
     display: inline-block;
@@ -1662,9 +1667,12 @@ Assignment 6 Mobile Layout
     transform: translateY(-2px);
 }
 
-/* Mobile layout */
+/* =================================
+   Assignment 9 - Mobile Layout
+================================= */
 
 @media (max-width: 600px) {
+
     .soccer-animation-section {
         padding: 20px;
     }
@@ -1672,41 +1680,8 @@ Assignment 6 Mobile Layout
     #soccerCanvas {
         border-width: 3px;
     }
-}
 
-.soccer-animation-section {
-    text-align: center;
-}
-
-#soccerCanvas {
-    display: block;
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-    margin: 25px auto;
-    background-color: #20834a;
-    border: 4px solid #0b3d91;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-#soccerStatus {
-    min-height: 30px;
-    color: #0b3d91;
-    font-weight: bold;
-}
-
-.soccer-animation-button {
-    padding: 13px 28px;
-    border: none;
-    border-radius: 7px;
-    background-color: #0b3d91;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.soccer-animation-button:hover {
-    background-color: #e21b2d;
+    .soccer-animation-button {
+        max-width: 100%;
+    }
 }

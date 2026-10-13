@@ -59,7 +59,7 @@ function createAnimals() {
             type: "turtle",
             name: "Sea Turtle",
             x: 590, y: 335,
-            dx: 1.05, dy: -0.45,
+            dx: 0.5, dy: -0.2,
             w: 62, h: 43,
             color: "#66d69a",
             phase: 0

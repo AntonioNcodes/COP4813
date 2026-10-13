@@ -62,32 +62,35 @@
 </footer>
 
 <script>
+
 const canvas = document.getElementById("soccerCanvas");
 const ctx = canvas.getContext("2d");
 const statusText = document.getElementById("soccerStatus");
 const playButton = document.getElementById("playAgain");
 
-let playerX;
-let ballX;
-let ballY;
-let phase;
-let frame;
-let celebrationJump;
+let playerX, playerY;
+let ballX, ballY;
+let defenderX, defenderY;
+let phase, frame;
 let animationId;
 
-// Reset the animation.
 function resetAnimation() {
     cancelAnimationFrame(animationId);
 
     playerX = 100;
-    ballX = 145;
-    ballY = 350;
-    phase = "run";
+    playerY = 390;
+
+    ballX = 135;
+    ballY = 390;
+
+    defenderX = 400;
+    defenderY = 260;
+
+    phase = "dribble";
     frame = 0;
-    celebrationJump = 0;
 
     statusText.textContent =
-        "The player is running toward the goal!";
+        "Dribble toward the middle and get past the defender!";
 
     animate();
 }
@@ -97,23 +100,24 @@ function drawField() {
     ctx.fillStyle = "#20834a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Grass stripes.
-    for (let x = 0; x < canvas.width; x += 100) {
+    // Alternating grass stripes.
+    for (let x = 0; x < 800; x += 100) {
         if ((x / 100) % 2 === 0) {
             ctx.fillStyle = "rgba(255,255,255,0.06)";
-            ctx.fillRect(x, 0, 100, canvas.height);
+            ctx.fillRect(x, 0, 100, 450);
         }
     }
 
-    // Field boundary.
     ctx.strokeStyle = "white";
     ctx.lineWidth = 3;
+
+    // Field boundary.
     ctx.strokeRect(15, 15, 770, 420);
 
     // Halfway line.
     ctx.beginPath();
-    ctx.moveTo(400, 15);
-    ctx.lineTo(400, 435);
+    ctx.moveTo(15, 225);
+    ctx.lineTo(785, 225);
     ctx.stroke();
 
     // Center circle.
@@ -121,34 +125,37 @@ function drawField() {
     ctx.arc(400, 225, 55, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Goal.
-    ctx.fillStyle = "#eeeeee";
-    ctx.fillRect(700, 145, 65, 140);
+    // Penalty area in front of goal.
+    ctx.strokeRect(570, 115, 215, 220);
+    ctx.strokeRect(650, 160, 135, 130);
+
+    // Goal and net.
+    ctx.fillStyle = "#f4f4f4";
+    ctx.fillRect(730, 175, 45, 100);
 
     ctx.strokeStyle = "white";
-    ctx.lineWidth = 6;
-    ctx.strokeRect(700, 145, 65, 140);
+    ctx.lineWidth = 5;
+    ctx.strokeRect(730, 175, 45, 100);
 
-    // Goal net.
     ctx.save();
     ctx.beginPath();
-    ctx.rect(700, 145, 65, 140);
+    ctx.rect(730, 175, 45, 100);
     ctx.clip();
 
-    ctx.strokeStyle = "#8b9b8e";
+    ctx.strokeStyle = "#9aa69b";
     ctx.lineWidth = 1;
 
-    for (let x = 705; x < 765; x += 12) {
+    for (let x = 735; x < 775; x += 10) {
         ctx.beginPath();
-        ctx.moveTo(x, 145);
-        ctx.lineTo(x, 285);
+        ctx.moveTo(x, 175);
+        ctx.lineTo(x, 275);
         ctx.stroke();
     }
 
-    for (let y = 155; y < 285; y += 12) {
+    for (let y = 185; y < 275; y += 10) {
         ctx.beginPath();
-        ctx.moveTo(700, y);
-        ctx.lineTo(765, y);
+        ctx.moveTo(730, y);
+        ctx.lineTo(775, y);
         ctx.stroke();
     }
 
@@ -156,7 +163,7 @@ function drawField() {
 }
 
 // Draw the soccer ball.
-function drawBall(x, y, radius = 12) {
+function drawBall(x, y, radius = 11) {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fillStyle = "white";
@@ -167,63 +174,70 @@ function drawBall(x, y, radius = 12) {
 
     ctx.fillStyle = "#172033";
     ctx.beginPath();
-    ctx.arc(x, y, radius * 0.35, 0, Math.PI * 2);
+    ctx.arc(x, y, radius * 0.3, 0, Math.PI * 2);
     ctx.fill();
 
     for (let i = 0; i < 5; i++) {
         const angle = i * Math.PI * 2 / 5;
-        const px = x + Math.cos(angle) * radius * 0.65;
-        const py = y + Math.sin(angle) * radius * 0.65;
 
         ctx.beginPath();
-        ctx.arc(px, py, radius * 0.18, 0, Math.PI * 2);
+        ctx.arc(
+            x + Math.cos(angle) * radius * 0.65,
+            y + Math.sin(angle) * radius * 0.65,
+            radius * 0.18,
+            0,
+            Math.PI * 2
+        );
         ctx.fill();
     }
 }
 
-// Draw the soccer player.
-function drawPlayer(x, y, celebrating = false) {
-    const bob = phase === "run"
-        ? Math.sin(frame * 0.35) * 4
+// Draw a player with animated legs and arms.
+function drawPlayer(x, y, shirtColor, number, action = "run") {
+    const running = action === "run";
+    const celebrating = action === "celebrate";
+
+    const swing = running
+        ? Math.sin(frame * 0.4) * 10
+        : 0;
+
+    const jump = celebrating
+        ? Math.abs(Math.sin(frame * 0.15)) * 12
         : 0;
 
     ctx.save();
-    ctx.translate(x, y + bob);
+    ctx.translate(x, y - jump);
 
     // Shadow.
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillStyle = "rgba(0,0,0,0.22)";
     ctx.beginPath();
-    ctx.ellipse(0, 39, 22, 6, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 36 + jump, 19, 6, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // Legs.
     ctx.strokeStyle = "#172033";
-    ctx.lineWidth = 9;
+    ctx.lineWidth = 8;
     ctx.lineCap = "round";
 
     if (celebrating) {
         ctx.beginPath();
-        ctx.moveTo(-6, 20);
-        ctx.lineTo(-17, 35);
+        ctx.moveTo(-6, 16);
+        ctx.lineTo(-16, 32);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.moveTo(6, 20);
-        ctx.lineTo(17, 35);
+        ctx.moveTo(6, 16);
+        ctx.lineTo(16, 32);
         ctx.stroke();
     } else {
-        const swing = phase === "run"
-            ? Math.sin(frame * 0.35) * 12
-            : 0;
-
         ctx.beginPath();
-        ctx.moveTo(-6, 18);
-        ctx.lineTo(-10 + swing, 35);
+        ctx.moveTo(-6, 16);
+        ctx.lineTo(-10 + swing, 34);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.moveTo(6, 18);
-        ctx.lineTo(10 - swing, 35);
+        ctx.moveTo(6, 16);
+        ctx.lineTo(10 - swing, 34);
         ctx.stroke();
     }
 
@@ -232,13 +246,13 @@ function drawPlayer(x, y, celebrating = false) {
     ctx.lineWidth = 7;
 
     ctx.beginPath();
-    ctx.moveTo(-10, 35);
-    ctx.lineTo(-17, 36);
+    ctx.moveTo(-10 + (running ? swing : 0), 34);
+    ctx.lineTo(-17 + (running ? swing : 0), 35);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(10, 35);
-    ctx.lineTo(17, 36);
+    ctx.moveTo(10 - (running ? swing : 0), 34);
+    ctx.lineTo(17 - (running ? swing : 0), 35);
     ctx.stroke();
 
     // Arms.
@@ -248,46 +262,42 @@ function drawPlayer(x, y, celebrating = false) {
     if (celebrating) {
         ctx.beginPath();
         ctx.moveTo(-10, -7);
-        ctx.lineTo(-22, -24);
-        ctx.lineTo(-25, -37);
+        ctx.lineTo(-21, -22);
+        ctx.lineTo(-25, -35);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.moveTo(10, -7);
-        ctx.lineTo(22, -24);
-        ctx.lineTo(25, -37);
+        ctx.lineTo(21, -22);
+        ctx.lineTo(25, -35);
         ctx.stroke();
     } else {
-        const swing = phase === "run"
-            ? Math.sin(frame * 0.35) * 10
-            : 0;
-
         ctx.beginPath();
         ctx.moveTo(-10, -7);
-        ctx.lineTo(-20, 5 + swing);
+        ctx.lineTo(-19, 3 + swing * 0.5);
         ctx.stroke();
 
         ctx.beginPath();
         ctx.moveTo(10, -7);
-        ctx.lineTo(20, 5 - swing);
+        ctx.lineTo(19, 3 - swing * 0.5);
         ctx.stroke();
     }
 
     // Jersey.
-    ctx.fillStyle = "#e21b2d";
+    ctx.fillStyle = shirtColor;
     ctx.beginPath();
     ctx.moveTo(-10, -15);
     ctx.lineTo(10, -15);
-    ctx.lineTo(15, 15);
-    ctx.lineTo(-15, 15);
+    ctx.lineTo(15, 14);
+    ctx.lineTo(-15, 14);
     ctx.closePath();
     ctx.fill();
 
     // Jersey number.
     ctx.fillStyle = "white";
-    ctx.font = "bold 13px Arial";
+    ctx.font = "bold 12px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("9", 0, 5);
+    ctx.fillText(number, 0, 4);
 
     // Neck.
     ctx.fillStyle = "#f0b58c";
@@ -308,68 +318,109 @@ function drawPlayer(x, y, celebrating = false) {
     ctx.restore();
 }
 
-// Display the goal message.
+// Display the goal celebration.
 function drawGoalMessage() {
     ctx.save();
     ctx.textAlign = "center";
-    ctx.font = "bold 52px Arial";
+    ctx.font = "bold 48px Arial";
     ctx.lineWidth = 5;
     ctx.strokeStyle = "#0b3d91";
     ctx.fillStyle = "#ffd54a";
-    ctx.strokeText("GOAL!!!", 400, 90);
-    ctx.fillText("GOAL!!!", 400, 90);
+
+    ctx.strokeText("GOAL!!!", 400, 85);
+    ctx.fillText("GOAL!!!", 400, 85);
+
     ctx.restore();
 }
 
-// Animation loop.
+// Main animation loop.
 function animate() {
     frame++;
     drawField();
 
-    if (phase === "run") {
-        playerX += 2.3;
-        ballX = playerX + 40;
-        ballY = 350 + Math.sin(frame * 0.2) * 3;
+    if (phase === "dribble") {
+        // Run diagonally upward toward the center.
+        playerX += 2;
+        playerY -= 1.25;
 
-        if (playerX >= 530) {
-            phase = "kick";
-            frame = 0;
-            statusText.textContent = "The player shoots!";
+        // Keep the ball slightly ahead of the player.
+        ballX = playerX + 25;
+        ballY = playerY + 10 + Math.abs(Math.sin(frame * 0.35)) * 5;
+
+        // Defender moves toward the attacker.
+        if (playerX > 230 && playerX < 390) {
+            defenderX -= 0.6;
+            defenderY += 0.1;
         }
-    } else if (phase === "kick") {
-        ballX += 8;
-        ballY -= 0.2;
 
-        if (ballX >= 725) {
-            phase = "celebrate";
+        if (playerX >= 390) {
+            phase = "pass";
             frame = 0;
+
             statusText.textContent =
-                "GOAL! The player is celebrating!";
+                "He gets past the defender and sets up his shot!";
         }
-    } else if (phase === "celebrate") {
-        celebrationJump =
-            Math.abs(Math.sin(frame * 0.12)) * 12;
     }
 
-    // Draw the player.
+    else if (phase === "pass") {
+        // Move beyond the defender into shooting position.
+        playerX += 1.5;
+        playerY += 0.1;
+
+        ballX = playerX + 25;
+        ballY = playerY + 10;
+
+        if (playerX >= 455) {
+            phase = "shoot";
+            frame = 0;
+
+            statusText.textContent =
+                "He shoots toward the goal!";
+        }
+    }
+
+    else if (phase === "shoot") {
+        // The ball travels toward the goal.
+        ballX += 7;
+        ballY -= 1.5;
+
+        if (ballX >= 740) {
+            ballX = 750;
+            ballY = 220;
+
+            phase = "celebrate";
+            frame = 0;
+
+            statusText.textContent =
+                "GOAL! He scores and celebrates!";
+        }
+    }
+
+    // Draw the defender.
+    drawPlayer(defenderX, defenderY, "#183b91", "4", "run");
+
+    // Draw the attacker and ball.
     if (phase === "celebrate") {
-        drawPlayer(playerX, 350 - celebrationJump, true);
-        drawBall(735, 265, 10);
+        drawPlayer(playerX, playerY, "#e21b2d", "9", "celebrate");
+        drawBall(ballX, ballY, 9);
         drawGoalMessage();
     } else {
-        drawPlayer(playerX, 350, false);
+        drawPlayer(playerX, playerY, "#e21b2d", "9", "run");
         drawBall(ballX, ballY);
     }
 
     animationId = requestAnimationFrame(animate);
 }
 
-// Mouse click and button interactions.
+// Click the field or button to restart.
 canvas.addEventListener("click", resetAnimation);
 playButton.addEventListener("click", resetAnimation);
 
 // Start automatically.
 resetAnimation();
+
+
+    
 </script>
 
 </body>

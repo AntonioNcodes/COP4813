@@ -1,17 +1,15 @@
-
 "use strict";
 
 // ============================================
-// Assignment 9 - Living Bioluminescent Aquarium
+// Assignment 9 - Living Fantasy Aquarium
+// COP4813 Web Systems
 // ============================================
 
 const canvas = document.getElementById("aquariumCanvas");
 const ctx = canvas.getContext("2d");
-
 const statusText = document.getElementById("aquariumStatus");
 const foodButton = document.getElementById("foodButton");
-const pauseButton = document.getElementById("pauseButton");
-const resetButton = document.getElementById("resetButton");
+const resetButton = document.getElementById("resetAquarium");
 
 const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
@@ -19,13 +17,10 @@ const HEIGHT = canvas.height;
 let animals = [];
 let food = [];
 let bubbles = [];
-let particles = [];
-let ripples = [];
-
-let paused = false;
-let animationId = null;
-let previousTime = 0;
-let elapsedTime = 0;
+let seaweed = [];
+let effects = [];
+let animationFrame = 0;
+let running = true;
 
 // --------------------------------------------
 // Create the animals
@@ -35,1205 +30,930 @@ function createAnimals() {
     animals = [
         {
             type: "fish",
-            name: "Tropical Fish",
-            x: 130, y: 145,
-            size: 24,
-            dx: 1.5, dy: 0.6,
-            color: "#35e7ff",
-            glow: "#00d9ff",
-            phase: 0,
-            reaction: 0
+            name: "Neon Fish",
+            x: 125, y: 145,
+            dx: 1.7, dy: 0.8,
+            w: 48, h: 27,
+            color: "#ffad42",
+            phase: 0
         },
         {
             type: "fish",
-            name: "Tropical Fish",
-            x: 250, y: 340,
-            size: 20,
-            dx: -1.2, dy: 0.8,
-            color: "#ff70db",
-            glow: "#ff32ca",
-            phase: 2,
-            reaction: 0
-        },
-        {
-            type: "fish",
-            name: "Tropical Fish",
-            x: 450, y: 220,
-            size: 22,
-            dx: 1.0, dy: -0.8,
-            color: "#ffe66d",
-            glow: "#ffbe0b",
-            phase: 4,
-            reaction: 0
+            name: "Blue Fish",
+            x: 250, y: 255,
+            dx: -1.4, dy: 0.9,
+            w: 43, h: 24,
+            color: "#55e6ff",
+            phase: 1
         },
         {
             type: "jellyfish",
             name: "Jellyfish",
-            x: 330, y: 105,
-            size: 29,
-            dx: 0.45, dy: 0.65,
-            color: "#bc8cff",
-            glow: "#c084fc",
-            phase: 1,
-            reaction: 0
-        },
-        {
-            type: "jellyfish",
-            name: "Jellyfish",
-            x: 710, y: 175,
-            size: 24,
-            dx: -0.4, dy: 0.5,
-            color: "#ff85d5",
-            glow: "#f472b6",
-            phase: 3,
-            reaction: 0
+            x: 410, y: 110,
+            dx: 0.8, dy: 0.65,
+            w: 34, h: 44,
+            color: "#db8cff",
+            phase: 2
         },
         {
             type: "turtle",
             name: "Sea Turtle",
-            x: 620, y: 335,
-            size: 31,
-            dx: -0.8, dy: 0.35,
-            color: "#64f5a4",
-            glow: "#34d399",
-            phase: 0,
-            reaction: 0
+            x: 590, y: 335,
+            dx: 1.05, dy: -0.45,
+            w: 62, h: 43,
+            color: "#66d69a",
+            phase: 0
         },
         {
             type: "ray",
             name: "Manta Ray",
-            x: 480, y: 410,
-            size: 35,
-            dx: 1.0, dy: -0.4,
-            color: "#68dfff",
-            glow: "#38bdf8",
-            phase: 2,
-            reaction: 0
+            x: 365, y: 395,
+            dx: -1.15, dy: -0.55,
+            w: 74, h: 43,
+            color: "#8e9fff",
+            phase: 1
         },
         {
             type: "seahorse",
             name: "Seahorse",
-            x: 790, y: 300,
-            size: 25,
-            dx: -0.45, dy: -0.55,
-            color: "#ffcf70",
-            glow: "#fbbf24",
-            phase: 0,
-            reaction: 0
+            x: 730, y: 205,
+            dx: -0.55, dy: 0.8,
+            w: 39, h: 55,
+            color: "#ffbd65",
+            phase: 2
         },
         {
             type: "shark",
-            name: "Shark",
-            x: 150, y: 410,
-            size: 32,
-            dx: 1.15, dy: -0.35,
-            color: "#91b9d8",
-            glow: "#7dd3fc",
-            phase: 1,
-            reaction: 0
+            name: "Fantasy Shark",
+            x: 690, y: 115,
+            dx: -1.5, dy: 0.55,
+            w: 86, h: 47,
+            color: "#9ab6d4",
+            phase: 0
         }
     ];
 }
 
 // --------------------------------------------
-// Create background bubbles
+// Create decorative background elements
 // --------------------------------------------
 
-function createBubbles() {
+function createBackground() {
     bubbles = [];
+    seaweed = [];
 
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 35; i++) {
         bubbles.push({
             x: Math.random() * WIDTH,
             y: Math.random() * HEIGHT,
-            radius: 1 + Math.random() * 3,
-            speed: 0.3 + Math.random() * 0.8,
-            drift: Math.random() * 2
+            radius: 2 + Math.random() * 5,
+            speed: 0.35 + Math.random() * 0.9,
+            drift: Math.random() * 0.8 - 0.4
+        });
+    }
+
+    for (let i = 0; i < 15; i++) {
+        seaweed.push({
+            x: i * 65 + 10,
+            height: 35 + Math.random() * 55,
+            phase: Math.random() * Math.PI * 2
         });
     }
 }
 
 // --------------------------------------------
-// Draw the underwater background
+// Draw the aquarium background
 // --------------------------------------------
 
 function drawBackground() {
-    const gradient = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+    const water = ctx.createLinearGradient(0, 0, 0, HEIGHT);
+    water.addColorStop(0, "#082c63");
+    water.addColorStop(0.55, "#075078");
+    water.addColorStop(1, "#062a4b");
 
-    gradient.addColorStop(0, "#071a3b");
-    gradient.addColorStop(0.55, "#07385a");
-    gradient.addColorStop(1, "#04172e");
-
-    ctx.fillStyle = gradient;
+    ctx.fillStyle = water;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    // Soft underwater light rays
+    // Sunlight beams
     ctx.save();
+    ctx.globalAlpha = 0.08;
+    ctx.fillStyle = "#7af3ff";
 
-    for (let i = 0; i < 6; i++) {
-        const x = i * 180 - 40;
-        const sway = Math.sin(elapsedTime * 0.3 + i) * 15;
-
-        ctx.fillStyle = "rgba(58, 213, 255, 0.035)";
+    for (let i = 0; i < 5; i++) {
         ctx.beginPath();
-        ctx.moveTo(x + sway, 0);
-        ctx.lineTo(x + 65 + sway, 0);
-        ctx.lineTo(x + 180, HEIGHT);
-        ctx.lineTo(x - 30, HEIGHT);
+        ctx.moveTo(75 + i * 190, 0);
+        ctx.lineTo(125 + i * 190, 0);
+        ctx.lineTo(245 + i * 190, HEIGHT);
+        ctx.lineTo(145 + i * 190, HEIGHT);
         ctx.closePath();
         ctx.fill();
     }
 
     ctx.restore();
 
-    // Faint glowing seabed
-    const floor = ctx.createLinearGradient(
-        0, HEIGHT - 55, 0, HEIGHT
-    );
-
-    floor.addColorStop(0, "rgba(11, 95, 120, 0)");
-    floor.addColorStop(1, "rgba(20, 145, 135, 0.32)");
-
-    ctx.fillStyle = floor;
-    ctx.fillRect(0, HEIGHT - 55, WIDTH, 55);
-
-    // Sand ripples
-    ctx.strokeStyle = "rgba(91, 235, 216, 0.13)";
-    ctx.lineWidth = 1;
-
-    for (let i = 0; i < 9; i++) {
-        ctx.beginPath();
-        ctx.ellipse(
-            i * 120 + 25,
-            HEIGHT - 9,
-            35 + (i % 3) * 10,
-            5,
-            0,
-            0,
-            Math.PI * 2
-        );
-        ctx.stroke();
-    }
-
-    drawSeaweed();
-}
-
-// --------------------------------------------
-// Draw seaweed along the bottom
-// --------------------------------------------
-
-function drawSeaweed() {
-    const positions = [30, 80, 165, 730, 810, 870];
-
-    positions.forEach((x, index) => {
+    // Distant glowing plants
+    for (const plant of seaweed) {
         ctx.save();
-        ctx.translate(x, HEIGHT);
-
-        const sway = Math.sin(elapsedTime * 1.2 + index) * 8;
-
-        ctx.strokeStyle = index % 2 === 0
-            ? "rgba(43, 226, 173, 0.65)"
-            : "rgba(47, 177, 191, 0.65)";
-
+        ctx.strokeStyle = "#22c997";
         ctx.lineWidth = 5;
         ctx.lineCap = "round";
 
-        for (let j = 0; j < 3; j++) {
-            ctx.beginPath();
-            ctx.moveTo(j * 9 - 8, 0);
-            ctx.quadraticCurveTo(
-                j * 10 + sway,
-                -25,
-                j * 6 + sway * 0.6,
-                -55 - j * 10
-            );
-            ctx.stroke();
-        }
+        const sway = Math.sin(animationFrame * 0.025 + plant.phase) * 9;
+
+        ctx.beginPath();
+        ctx.moveTo(plant.x, HEIGHT - 14);
+        ctx.quadraticCurveTo(
+            plant.x + sway,
+            HEIGHT - plant.height / 2,
+            plant.x + sway * 0.5,
+            HEIGHT - plant.height
+        );
+        ctx.stroke();
 
         ctx.restore();
-    });
+    }
+
+    // Sandy ocean floor
+    ctx.fillStyle = "#c4b779";
+    ctx.fillRect(0, HEIGHT - 15, WIDTH, 15);
+
+    ctx.fillStyle = "#e4d39a";
+
+    for (let i = 0; i < WIDTH; i += 24) {
+        ctx.beginPath();
+        ctx.arc(i, HEIGHT - 13, 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Aquarium boundary
+    ctx.strokeStyle = "rgba(147, 230, 255, 0.65)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(2, 2, WIDTH - 4, HEIGHT - 4);
 }
 
 // --------------------------------------------
-// Draw and animate bubbles
+// Animate background bubbles
 // --------------------------------------------
 
-function drawBubbles(delta) {
-    bubbles.forEach(bubble => {
-        bubble.y -= bubble.speed * delta;
-        bubble.x += Math.sin(
-            elapsedTime + bubble.drift
-        ) * 0.12 * delta;
+function drawBubbles() {
+    for (const bubble of bubbles) {
+        bubble.y -= bubble.speed;
+        bubble.x += bubble.drift;
 
-        if (bubble.y < -10) {
-            bubble.y = HEIGHT + 5;
+        if (bubble.y < 8) {
+            bubble.y = HEIGHT - 20;
             bubble.x = Math.random() * WIDTH;
         }
 
-        ctx.beginPath();
-        ctx.arc(
-            bubble.x,
-            bubble.y,
-            bubble.radius,
-            0,
-            Math.PI * 2
-        );
+        if (bubble.x < 5) bubble.x = WIDTH - 5;
+        if (bubble.x > WIDTH - 5) bubble.x = 5;
 
-        ctx.strokeStyle = "rgba(143, 235, 255, 0.5)";
-        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(180, 244, 255, 0.65)";
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.arc(
             bubble.x - bubble.radius * 0.3,
             bubble.y - bubble.radius * 0.3,
-            Math.max(0.5, bubble.radius * 0.2),
+            Math.max(1, bubble.radius * 0.22),
             0,
             Math.PI * 2
         );
-
-        ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
         ctx.fill();
-    });
+    }
 }
 
 // --------------------------------------------
-// Draw a glowing tropical fish
+// Draw a glowing eye
 // --------------------------------------------
 
-function drawFish() {
-    // Tail
-    ctx.fillStyle = this.color;
+function drawEye(x, y, size = 3) {
+    ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.moveTo(-23, 0);
-    ctx.lineTo(-36, -11 + Math.sin(elapsedTime * 7 + this.phase) * 4);
-    ctx.lineTo(-34, 11 + Math.sin(elapsedTime * 7 + this.phase) * 4);
+    ctx.arc(x, y, size + 1, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#10213c";
+    ctx.beginPath();
+    ctx.arc(x + 1, y, size * 0.65, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(x + 1, y - 1, size * 0.25, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+// --------------------------------------------
+// Draw a fantasy fish
+// --------------------------------------------
+
+function drawFish(a) {
+    const tail = Math.sin(animationFrame * 0.16 + a.phase) * 5;
+
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.scale(a.dx < 0 ? -1 : 1, 1);
+
+    // Tail
+    ctx.fillStyle = a.color;
+    ctx.beginPath();
+    ctx.moveTo(-a.w * 0.30, 0);
+    ctx.lineTo(-a.w * 0.55, -a.h * 0.48 + tail);
+    ctx.lineTo(-a.w * 0.52, a.h * 0.48 + tail);
     ctx.closePath();
     ctx.fill();
+
+    // Top fin
+    ctx.fillStyle = "#e5fbff";
+    ctx.globalAlpha = 0.65;
+    ctx.beginPath();
+    ctx.moveTo(-a.w * 0.1, -a.h * 0.35);
+    ctx.lineTo(a.w * 0.12, -a.h * 0.8);
+    ctx.lineTo(a.w * 0.28, -a.h * 0.25);
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
 
     // Body
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = this.glow;
-    ctx.fillStyle = this.color;
-
+    ctx.fillStyle = a.color;
+    ctx.shadowColor = a.color;
+    ctx.shadowBlur = 10;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 25, 15, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, a.w * 0.40, a.h * 0.48, 0, 0, Math.PI * 2);
     ctx.fill();
-
     ctx.shadowBlur = 0;
 
-    // Dorsal fin
-    ctx.fillStyle = "rgba(255,255,255,0.65)";
+    // Side fin
+    ctx.fillStyle = "#ffffff";
+    ctx.globalAlpha = 0.65;
     ctx.beginPath();
-    ctx.moveTo(-7, -11);
-    ctx.lineTo(3, -22);
-    ctx.lineTo(12, -10);
+    ctx.moveTo(0, 0);
+    ctx.lineTo(a.w * 0.12, a.h * 0.42);
+    ctx.lineTo(a.w * 0.30, a.h * 0.10);
     ctx.closePath();
     ctx.fill();
+    ctx.globalAlpha = 1;
 
-    // Stripe
-    ctx.strokeStyle = "rgba(255,255,255,0.65)";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(5, -12);
-    ctx.lineTo(8, 12);
-    ctx.stroke();
+    // Stripes
+    ctx.strokeStyle = "rgba(255,255,255,0.75)";
+    ctx.lineWidth = 2;
 
-    // Eye
-    ctx.fillStyle = "#ffffff";
-    ctx.beginPath();
-    ctx.arc(15, -3, 4, 0, Math.PI * 2);
-    ctx.fill();
+    for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * 7, -a.h * 0.30);
+        ctx.lineTo(i * 7, a.h * 0.30);
+        ctx.stroke();
+    }
 
-    ctx.fillStyle = "#071426";
-    ctx.beginPath();
-    ctx.arc(16, -3, 2, 0, Math.PI * 2);
-    ctx.fill();
+    drawEye(a.w * 0.24, -a.h * 0.08, 2.5);
 
-    // Mouth
-    ctx.strokeStyle = "#123047";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(23, 4);
-    ctx.lineTo(27, 5);
-    ctx.stroke();
+    ctx.restore();
 }
 
 // --------------------------------------------
 // Draw a jellyfish
 // --------------------------------------------
 
-function drawJellyfish() {
-    const pulse = Math.sin(elapsedTime * 2.8 + this.phase) * 0.12;
-    const bellWidth = 23 + pulse * 10;
-    const bellHeight = 19 - pulse * 5;
+function drawJellyfish(a) {
+    const pulse = 1 + Math.sin(animationFrame * 0.07 + a.phase) * 0.08;
+    const tentacleWave = Math.sin(animationFrame * 0.10 + a.phase) * 5;
 
-    ctx.shadowColor = this.glow;
-    ctx.shadowBlur = 22;
+    ctx.save();
+    ctx.translate(a.x, a.y);
 
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.moveTo(-bellWidth, 1);
-    ctx.bezierCurveTo(
-        -bellWidth - 2, -bellHeight,
-        bellWidth + 2, -bellHeight,
-        bellWidth, 1
-    );
-    ctx.quadraticCurveTo(0, 11, -bellWidth, 1);
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-
-    // Glowing spots on the bell
-    ctx.fillStyle = "rgba(255,255,255,0.8)";
-
-    for (let i = -1; i <= 1; i++) {
-        ctx.beginPath();
-        ctx.arc(i * 10, -10, 2, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    // Tentacles sway as the jellyfish moves
-    ctx.strokeStyle = this.color;
+    // Tentacles
     ctx.lineWidth = 3;
-    ctx.lineCap = "round";
+    const jellyColors = ["#ffb4f1", "#9af7ff", "#f5b4ff", "#ffffff"];
 
-    for (let i = -2; i <= 2; i++) {
-        const x = i * 8;
-        const sway = Math.sin(
-            elapsedTime * 3 + this.phase + i
-        ) * 7;
+    for (let i = 0; i < 5; i++) {
+        const tx = (i - 2) * 9;
 
+        ctx.strokeStyle = jellyColors[i % jellyColors.length];
         ctx.beginPath();
-        ctx.moveTo(x, 2);
+        ctx.moveTo(tx, 7);
         ctx.bezierCurveTo(
-            x + sway, 14,
-            x - sway, 25,
-            x + sway, 36
+            tx + tentacleWave, 18,
+            tx - tentacleWave, 29,
+            tx + tentacleWave * 0.5, 39
         );
         ctx.stroke();
     }
+
+    // Bell
+    ctx.shadowColor = a.color;
+    ctx.shadowBlur = 18;
+    ctx.fillStyle = a.color;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, a.w * 0.55 * pulse, a.h * 0.40 * pulse, 0, Math.PI, 0);
+    ctx.lineTo(a.w * 0.55 * pulse, 0);
+    ctx.quadraticCurveTo(0, 12, -a.w * 0.55 * pulse, 0);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Glowing spots
+    ctx.fillStyle = "#fff4ff";
+
+    for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.arc(i * 9, -7, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    ctx.restore();
 }
 
 // --------------------------------------------
 // Draw a sea turtle
 // --------------------------------------------
 
-function drawTurtle() {
-    const flap = Math.sin(elapsedTime * 5 + this.phase) * 7;
+function drawTurtle(a) {
+    const flipper = Math.sin(animationFrame * 0.12 + a.phase) * 7;
 
-    ctx.shadowColor = this.glow;
-    ctx.shadowBlur = 14;
-    ctx.fillStyle = "#389c70";
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.scale(a.dx < 0 ? -1 : 1, 1);
+
+    // Tail
+    ctx.fillStyle = "#66d69a";
+    ctx.beginPath();
+    ctx.moveTo(-a.w * 0.45, 2);
+    ctx.lineTo(-a.w * 0.62, 8);
+    ctx.lineTo(-a.w * 0.43, 10);
+    ctx.fill();
 
     // Flippers
+    ctx.fillStyle = "#52bd88";
+
     ctx.save();
-    ctx.translate(-12, -10);
-    ctx.rotate(-0.5 + flap * 0.02);
+    ctx.rotate(-0.4 + flipper * 0.025);
     ctx.beginPath();
-    ctx.ellipse(-5, -7, 9, 17, -0.5, 0, Math.PI * 2);
+    ctx.ellipse(-12, -a.h * 0.50, 10, 17, -0.7, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
     ctx.save();
-    ctx.translate(-12, 10);
-    ctx.rotate(0.5 - flap * 0.02);
+    ctx.rotate(0.35 - flipper * 0.025);
     ctx.beginPath();
-    ctx.ellipse(-5, 7, 9, 17, 0.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    ctx.save();
-    ctx.translate(12, -11);
-    ctx.rotate(0.5 + flap * 0.02);
-    ctx.beginPath();
-    ctx.ellipse(6, -6, 9, 16, 0.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    ctx.save();
-    ctx.translate(12, 11);
-    ctx.rotate(-0.5 - flap * 0.02);
-    ctx.beginPath();
-    ctx.ellipse(6, 6, 9, 16, -0.5, 0, Math.PI * 2);
+    ctx.ellipse(-8, a.h * 0.43, 10, 16, 0.7, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
     // Shell
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = "#247d58";
     ctx.beginPath();
-    ctx.ellipse(0, 0, 24, 19, 0, 0, Math.PI * 2);
+    ctx.ellipse(-2, 0, a.w * 0.38, a.h * 0.43, 0, Math.PI, 0);
+    ctx.lineTo(a.w * 0.36, 2);
+    ctx.quadraticCurveTo(0, a.h * 0.60, -a.w * 0.38, 2);
     ctx.fill();
 
-    ctx.shadowBlur = 0;
-
-    ctx.strokeStyle = "#c2ffb0";
+    // Shell pattern
+    ctx.strokeStyle = "#9be6a0";
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.ellipse(0, 0, 17, 13, 0, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Shell pattern
-    ctx.beginPath();
-    ctx.moveTo(-12, -8);
-    ctx.lineTo(0, 0);
-    ctx.lineTo(12, -8);
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 13);
-    ctx.moveTo(-17, 4);
-    ctx.lineTo(17, 4);
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(15, 0);
+    ctx.moveTo(-12, -10);
+    ctx.lineTo(-4, 10);
+    ctx.moveTo(7, -10);
+    ctx.lineTo(14, 9);
     ctx.stroke();
 
     // Head
-    ctx.fillStyle = "#69e6a0";
+    ctx.fillStyle = "#75e0a4";
     ctx.beginPath();
-    ctx.ellipse(28, 0, 10, 9, 0, 0, Math.PI * 2);
+    ctx.ellipse(a.w * 0.40, -3, 13, 11, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#102b35";
-    ctx.beginPath();
-    ctx.arc(30, -3, 2, 0, Math.PI * 2);
-    ctx.fill();
+    drawEye(a.w * 0.45, -6, 2.2);
+
+    ctx.restore();
 }
 
 // --------------------------------------------
 // Draw a manta ray
 // --------------------------------------------
 
-function drawRay() {
-    const wing = Math.sin(elapsedTime * 3 + this.phase) * 9;
+function drawRay(a) {
+    const flap = Math.sin(animationFrame * 0.11 + a.phase) * 9;
 
-    ctx.shadowColor = this.glow;
-    ctx.shadowBlur = 18;
-    ctx.fillStyle = this.color;
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.scale(a.dx < 0 ? -1 : 1, 1);
+
+    // Wide wings
+    ctx.fillStyle = a.color;
+    ctx.shadowColor = "#879bff";
+    ctx.shadowBlur = 10;
 
     ctx.beginPath();
-    ctx.moveTo(-27, -7);
-    ctx.quadraticCurveTo(-42, -20 - wing, -46, -27 - wing);
-    ctx.quadraticCurveTo(-36, 0, -28, 12);
-    ctx.quadraticCurveTo(-8, 25, 0, 15);
-    ctx.quadraticCurveTo(8, 25, 28, 12);
-    ctx.quadraticCurveTo(36, 0, 46, -27 - wing);
-    ctx.quadraticCurveTo(42, -20 - wing, 27, -7);
-    ctx.quadraticCurveTo(10, -20, 0, -12);
-    ctx.quadraticCurveTo(-10, -20, -27, -7);
+    ctx.moveTo(-a.w * 0.48, 0);
+    ctx.quadraticCurveTo(-a.w * 0.32, -a.h * 0.65 - flap, 0, -a.h * 0.20);
+    ctx.quadraticCurveTo(a.w * 0.25, -a.h * 0.52 - flap, a.w * 0.48, -a.h * 0.20);
+    ctx.quadraticCurveTo(a.w * 0.35, 0, a.w * 0.22, a.h * 0.30);
+    ctx.quadraticCurveTo(0, a.h * 0.65, -a.w * 0.20, a.h * 0.30);
+    ctx.quadraticCurveTo(-a.w * 0.37, a.h * 0.15, -a.w * 0.48, 0);
     ctx.fill();
 
     ctx.shadowBlur = 0;
 
     // Long tail
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#b5c4ff";
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(0, 13);
-    ctx.quadraticCurveTo(4, 25, 1, 38);
+    ctx.moveTo(-a.w * 0.38, 4);
+    ctx.quadraticCurveTo(-a.w * 0.50, 18, -a.w * 0.58, 28);
     ctx.stroke();
 
     // Eyes
-    ctx.fillStyle = "#061b32";
-    ctx.beginPath();
-    ctx.arc(-13, -5, 2.5, 0, Math.PI * 2);
-    ctx.arc(13, -5, 2.5, 0, Math.PI * 2);
-    ctx.fill();
+    drawEye(-9, -4, 2);
+    drawEye(9, -4, 2);
 
-    // Underside
-    ctx.strokeStyle = "rgba(255,255,255,0.7)";
-    ctx.lineWidth = 1.5;
+    // Smile
+    ctx.strokeStyle = "#263a7a";
     ctx.beginPath();
-    ctx.moveTo(-8, 8);
-    ctx.quadraticCurveTo(0, 15, 8, 8);
+    ctx.arc(0, 1, 7, 0.15, Math.PI - 0.15);
     ctx.stroke();
+
+    ctx.restore();
 }
 
 // --------------------------------------------
 // Draw a seahorse
 // --------------------------------------------
 
-function drawSeahorse() {
-    const bob = Math.sin(elapsedTime * 3 + this.phase) * 3;
+function drawSeahorse(a) {
+    const sway = Math.sin(animationFrame * 0.09 + a.phase) * 4;
 
     ctx.save();
-    ctx.translate(0, bob);
+    ctx.translate(a.x, a.y);
+    ctx.scale(a.dx < 0 ? -1 : 1, 1);
 
-    ctx.shadowColor = this.glow;
-    ctx.shadowBlur = 16;
-    ctx.fillStyle = this.color;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
 
     // Curled tail
-    ctx.lineWidth = 6;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = this.color;
-
+    ctx.strokeStyle = "#dc8b45";
+    ctx.lineWidth = 8;
     ctx.beginPath();
-    ctx.moveTo(-3, 9);
-    ctx.bezierCurveTo(-20, 15, -19, 28, -9, 27);
-    ctx.bezierCurveTo(0, 27, -4, 20, -9, 22);
+    ctx.moveTo(-2, 12);
+    ctx.bezierCurveTo(-14, 21, -16, 32, -7, 32);
+    ctx.bezierCurveTo(1, 32, 0, 24, -6, 26);
     ctx.stroke();
 
     // Body
+    ctx.strokeStyle = a.color;
+    ctx.lineWidth = 13;
     ctx.beginPath();
-    ctx.moveTo(-5, 14);
-    ctx.quadraticCurveTo(-17, 2, -9, -10);
-    ctx.quadraticCurveTo(-6, -18, 0, -15);
-    ctx.quadraticCurveTo(12, -11, 7, 0);
-    ctx.lineTo(4, 13);
-    ctx.quadraticCurveTo(0, 18, -5, 14);
-    ctx.fill();
-
-    // Head
-    ctx.beginPath();
-    ctx.ellipse(7, -16, 9, 8, -0.4, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(0, 17);
+    ctx.quadraticCurveTo(-7, 4 + sway, 0, -5);
+    ctx.quadraticCurveTo(5, -14, 8, -21);
+    ctx.stroke();
 
     // Snout
+    ctx.lineWidth = 5;
     ctx.beginPath();
-    ctx.moveTo(13, -17);
-    ctx.lineTo(23, -14);
-    ctx.lineTo(13, -12);
+    ctx.moveTo(7, -21);
+    ctx.lineTo(18, -22);
+    ctx.stroke();
+
+    // Crown
+    ctx.fillStyle = "#ffdc8b";
+    ctx.beginPath();
+    ctx.moveTo(0, -25);
+    ctx.lineTo(-7, -34);
+    ctx.lineTo(0, -31);
+    ctx.lineTo(5, -37);
+    ctx.lineTo(7, -25);
     ctx.closePath();
     ctx.fill();
 
-    ctx.shadowBlur = 0;
-
-    // Eye
-    ctx.fillStyle = "#172033";
+    // Dorsal fin
+    ctx.fillStyle = "#ffe0a2";
     ctx.beginPath();
-    ctx.arc(9, -18, 2, 0, Math.PI * 2);
+    ctx.moveTo(-5, -1);
+    ctx.lineTo(-17, -9 + sway);
+    ctx.lineTo(-10, 8);
+    ctx.closePath();
     ctx.fill();
 
-    // Dorsal fin
-    ctx.strokeStyle = "#fff0b3";
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.moveTo(-5, -3);
-    ctx.lineTo(-14, -8);
-    ctx.lineTo(-12, 1);
-    ctx.stroke();
+    drawEye(8, -25, 2);
 
     ctx.restore();
 }
 
 // --------------------------------------------
-// Draw a shark
+// Draw a fantasy shark
 // --------------------------------------------
 
-function drawShark() {
-    ctx.shadowColor = this.glow;
-    ctx.shadowBlur = 16;
-    ctx.fillStyle = this.color;
+function drawShark(a) {
+    const tail = Math.sin(animationFrame * 0.16 + a.phase) * 7;
 
-    // Tail
+    ctx.save();
+    ctx.translate(a.x, a.y);
+    ctx.scale(a.dx < 0 ? -1 : 1, 1);
+
+    // Tail fin
+    ctx.fillStyle = "#7299bd";
     ctx.beginPath();
-    ctx.moveTo(-23, 0);
-    ctx.lineTo(-37, -19);
-    ctx.lineTo(-33, 0);
-    ctx.lineTo(-37, 17);
+    ctx.moveTo(-a.w * 0.34, 0);
+    ctx.lineTo(-a.w * 0.53, -a.h * 0.50 + tail);
+    ctx.lineTo(-a.w * 0.48, 0);
+    ctx.lineTo(-a.w * 0.53, a.h * 0.48 + tail);
     ctx.closePath();
-    ctx.fill();
-
-    // Body
-    ctx.beginPath();
-    ctx.moveTo(-29, 0);
-    ctx.quadraticCurveTo(-18, -17, 4, -15);
-    ctx.quadraticCurveTo(22, -13, 30, 0);
-    ctx.quadraticCurveTo(18, 16, -8, 13);
-    ctx.quadraticCurveTo(-23, 10, -29, 0);
     ctx.fill();
 
     // Dorsal fin
     ctx.beginPath();
-    ctx.moveTo(-7, -13);
-    ctx.lineTo(3, -29);
-    ctx.lineTo(11, -12);
+    ctx.moveTo(-a.w * 0.10, -a.h * 0.20);
+    ctx.lineTo(a.w * 0.02, -a.h * 0.65);
+    ctx.lineTo(a.w * 0.23, -a.h * 0.20);
     ctx.closePath();
     ctx.fill();
 
     // Lower fin
     ctx.beginPath();
-    ctx.moveTo(-4, 12);
-    ctx.lineTo(7, 25);
-    ctx.lineTo(12, 12);
+    ctx.moveTo(-a.w * 0.10, a.h * 0.18);
+    ctx.lineTo(a.w * 0.08, a.h * 0.48);
+    ctx.lineTo(a.w * 0.18, a.h * 0.12);
     ctx.closePath();
+    ctx.fill();
+
+    // Body
+    ctx.fillStyle = a.color;
+    ctx.shadowColor = "#8cb8e2";
+    ctx.shadowBlur = 9;
+
+    ctx.beginPath();
+    ctx.moveTo(-a.w * 0.37, 0);
+    ctx.quadraticCurveTo(-a.w * 0.24, -a.h * 0.50, a.w * 0.20, -a.h * 0.28);
+    ctx.lineTo(a.w * 0.48, -a.h * 0.02);
+    ctx.lineTo(a.w * 0.28, a.h * 0.12);
+    ctx.quadraticCurveTo(-a.w * 0.05, a.h * 0.45, -a.w * 0.37, 0);
     ctx.fill();
 
     ctx.shadowBlur = 0;
 
-    // Pale belly
-    ctx.fillStyle = "#e4f6ff";
+    // Pale underside
+    ctx.fillStyle = "#e3f4ff";
     ctx.beginPath();
-    ctx.moveTo(-13, 7);
-    ctx.quadraticCurveTo(7, 16, 23, 5);
-    ctx.quadraticCurveTo(12, 13, -5, 10);
+    ctx.moveTo(-a.w * 0.20, a.h * 0.12);
+    ctx.quadraticCurveTo(a.w * 0.05, a.h * 0.32, a.w * 0.30, a.h * 0.08);
+    ctx.lineTo(a.w * 0.20, a.h * 0.22);
+    ctx.quadraticCurveTo(-a.w * 0.05, a.h * 0.40, -a.w * 0.20, a.h * 0.12);
     ctx.fill();
 
-    // Eye
-    ctx.fillStyle = "#08182a";
-    ctx.beginPath();
-    ctx.arc(19, -5, 2.5, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Gill lines
-    ctx.strokeStyle = "rgba(20, 50, 75, 0.7)";
-    ctx.lineWidth = 1.5;
+    // Gill marks
+    ctx.strokeStyle = "#547c9f";
+    ctx.lineWidth = 2;
 
     for (let i = 0; i < 3; i++) {
         ctx.beginPath();
-        ctx.moveTo(8 + i * 4, -4);
-        ctx.lineTo(6 + i * 4, 5);
+        ctx.moveTo(a.w * 0.02 + i * 5, -3);
+        ctx.lineTo(a.w * 0.01 + i * 5, 8);
         ctx.stroke();
     }
+
+    drawEye(a.w * 0.31, -a.h * 0.13, 3);
+
+    // Teeth
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.moveTo(a.w * 0.35, 2);
+    ctx.lineTo(a.w * 0.39, 7);
+    ctx.lineTo(a.w * 0.42, 2);
+    ctx.fill();
+
+    ctx.restore();
 }
 
 // --------------------------------------------
-// Draw one animal
+// Draw an animal and its selection highlight
 // --------------------------------------------
 
-function drawAnimal(animal) {
+function drawAnimal(a) {
     ctx.save();
 
-    ctx.translate(animal.x, animal.y);
-
-    // Turn the animal toward its direction of travel
-    const facing = animal.dx < 0 ? -1 : 1;
-    ctx.scale(facing, 1);
-
-    // Give the creature a subtle swimming motion
-    const swim = Math.sin(
-        elapsedTime * 2 + animal.phase
-    ) * 1.8;
-
-    ctx.translate(0, swim);
-
-    // Special click reaction: temporarily glow brighter
-    if (animal.reaction > 0) {
-        ctx.shadowColor = "#ffffff";
-        ctx.shadowBlur = 30;
+    if (a.reaction > 0) {
+        ctx.shadowColor = "#fff477";
+        ctx.shadowBlur = 20;
     }
 
-    const scale = animal.size / 30;
-    ctx.scale(scale, scale);
-
-    switch (animal.type) {
+    switch (a.type) {
         case "fish":
-            drawFish.call(animal);
+            drawFish(a);
             break;
-
         case "jellyfish":
-            drawJellyfish.call(animal);
+            drawJellyfish(a);
             break;
-
         case "turtle":
-            drawTurtle.call(animal);
+            drawTurtle(a);
             break;
-
         case "ray":
-            drawRay.call(animal);
+            drawRay(a);
             break;
-
         case "seahorse":
-            drawSeahorse.call(animal);
+            drawSeahorse(a);
             break;
-
         case "shark":
-            drawShark.call(animal);
+            drawShark(a);
             break;
     }
 
     ctx.restore();
 
-    // Draw a subtle outline around a recently clicked animal
-    if (animal.reaction > 0) {
+    // Visible rings after clicking an animal
+    if (a.reaction > 0) {
         ctx.save();
-        ctx.shadowColor = animal.glow;
-        ctx.shadowBlur = 22;
-        ctx.strokeStyle = "rgba(255,255,255,0.7)";
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#fff477";
+        ctx.lineWidth = 3;
+        ctx.globalAlpha = Math.min(1, a.reaction / 15);
 
         ctx.beginPath();
-        ctx.arc(
-            animal.x,
-            animal.y,
-            animal.size * 1.3,
-            0,
-            Math.PI * 2
-        );
+        ctx.arc(a.x, a.y, 20 + (35 - a.reaction) * 1.5, 0, Math.PI * 2);
         ctx.stroke();
+
+        ctx.restore();
+        a.reaction--;
+    }
+
+    // Draw animal labels
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillText(a.name, a.x, a.y + a.h * 0.8 + 13);
+}
+
+// --------------------------------------------
+// Release food into the aquarium
+// --------------------------------------------
+
+function releaseFood(x = 100 + Math.random() * (WIDTH - 200), y = 80) {
+    food.push({
+        x: x,
+        y: y,
+        radius: 5,
+        age: 0,
+        maxAge: 900
+    });
+
+    statusText.textContent = "Food released! Watch the fish chase it.";
+}
+
+// --------------------------------------------
+// Draw food particles
+// --------------------------------------------
+
+function drawFood() {
+    for (const pellet of food) {
+        ctx.save();
+        ctx.shadowColor = "#ffe66d";
+        ctx.shadowBlur = 14;
+        ctx.fillStyle = "#ffe66d";
+
+        ctx.beginPath();
+        ctx.arc(pellet.x, pellet.y, pellet.radius, 0, Math.PI * 2);
+        ctx.fill();
 
         ctx.restore();
     }
 }
 
 // --------------------------------------------
-// Move animals and keep them inside the canvas
+// Update food: fish chase nearby pellets
 // --------------------------------------------
 
-function moveAnimals(delta) {
-    animals.forEach(animal => {
-        // Reduce reaction timer
-        animal.reaction = Math.max(
-            0,
-            animal.reaction - delta / 60
-        );
+function updateFood() {
+    for (let i = food.length - 1; i >= 0; i--) {
+        const pellet = food[i];
+        pellet.age++;
 
-        // Special reaction movement
-        if (animal.reaction > 0 && animal.type === "fish") {
-            animal.x += animal.dx * delta * 1.5;
-            animal.y += animal.dy * delta * 1.5;
-        } else {
-            animal.x += animal.dx * delta;
-            animal.y += animal.dy * delta;
-        }
-
-        // Gentle natural vertical swimming
-        if (animal.type === "jellyfish") {
-            animal.dy += Math.sin(
-                elapsedTime * 1.5 + animal.phase
-            ) * 0.003 * delta;
-        }
-
-        if (animal.type === "seahorse") {
-            animal.dy += Math.sin(
-                elapsedTime * 2 + animal.phase
-            ) * 0.002 * delta;
-        }
-
-        // Stop excessive vertical drift
-        animal.dy = Math.max(-1.5, Math.min(1.5, animal.dy));
-
-        // Keep every creature within the aquarium
-        const margin = animal.size * 1.4;
-
-        if (animal.x >= WIDTH - margin) {
-            animal.x = WIDTH - margin;
-            animal.dx = -Math.abs(animal.dx);
-        } else if (animal.x <= margin) {
-            animal.x = margin;
-            animal.dx = Math.abs(animal.dx);
-        }
-
-        if (animal.y >= HEIGHT - margin) {
-            animal.y = HEIGHT - margin;
-            animal.dy = -Math.abs(animal.dy);
-        } else if (animal.y <= margin) {
-            animal.y = margin;
-            animal.dy = Math.abs(animal.dy);
-        }
-    });
-}
-
-// --------------------------------------------
-// Release glowing fish food
-// --------------------------------------------
-
-function releaseFood(x = WIDTH / 2, y = HEIGHT / 2) {
-    for (let i = 0; i < 7; i++) {
-        food.push({
-            x: x + (Math.random() - 0.5) * 35,
-            y: y + (Math.random() - 0.5) * 20,
-            dx: (Math.random() - 0.5) * 0.8,
-            dy: 0.5 + Math.random() * 0.8,
-            radius: 3 + Math.random() * 2,
-            life: 900
-        });
-    }
-
-    createRipple(x, y, "#67f5c5");
-
-    statusText.textContent =
-        "Glowing food released! Watch the fish chase it.";
-}
-
-// --------------------------------------------
-// Fish chase nearby food
-// --------------------------------------------
-
-function updateFood(delta) {
-    food.forEach(pellet => {
-        pellet.life -= delta;
-
-        // Find the closest fish
         let closestFish = null;
         let closestDistance = Infinity;
 
-        animals.forEach(animal => {
-            if (animal.type !== "fish") return;
+        for (const a of animals) {
+            if (a.type !== "fish") continue;
 
-            const distance = Math.hypot(
-                animal.x - pellet.x,
-                animal.y - pellet.y
-            );
+            const distance = Math.hypot(a.x - pellet.x, a.y - pellet.y);
 
             if (distance < closestDistance) {
                 closestDistance = distance;
-                closestFish = animal;
+                closestFish = a;
             }
-        });
+        }
 
-        // Food attracts the closest fish
-        if (closestFish && closestDistance < 240) {
+        if (closestFish && closestDistance < 230) {
             const angle = Math.atan2(
                 pellet.y - closestFish.y,
                 pellet.x - closestFish.x
             );
 
-            closestFish.dx += Math.cos(angle) * 0.008 * delta;
-            closestFish.dy += Math.sin(angle) * 0.008 * delta;
+            closestFish.dx += Math.cos(angle) * 0.035;
+            closestFish.dy += Math.sin(angle) * 0.035;
 
-            // Keep fish movement at a manageable speed
-            closestFish.dx = Math.max(
-                -2.5, Math.min(2.5, closestFish.dx)
-            );
+            // Keep the fish from becoming too fast
+            closestFish.dx = Math.max(-3, Math.min(3, closestFish.dx));
+            closestFish.dy = Math.max(-2.5, Math.min(2.5, closestFish.dy));
 
-            closestFish.dy = Math.max(
-                -2, Math.min(2, closestFish.dy)
-            );
-        }
-
-        pellet.x += pellet.dx * delta;
-        pellet.y += pellet.dy * delta;
-
-        // Food slowly sinks
-        pellet.dy += 0.0005 * delta;
-    });
-
-    // Remove expired or collected food
-    food = food.filter(pellet => {
-        if (pellet.life <= 0 || pellet.y > HEIGHT - 10) {
-            return false;
-        }
-
-        for (const animal of animals) {
-            if (animal.type !== "fish") continue;
-
-            const distance = Math.hypot(
-                animal.x - pellet.x,
-                animal.y - pellet.y
-            );
-
-            if (distance < animal.size * 0.9) {
-                createParticles(pellet.x, pellet.y, "#67f5c5", 5);
-                return false;
+            // Food is eaten when a fish reaches it
+            if (closestDistance < 22) {
+                food.splice(i, 1);
+                statusText.textContent =
+                    closestFish.name + " found and ate the food!";
+                continue;
             }
         }
 
-        return true;
-    });
-}
+        // Food slowly sinks
+        pellet.y += 0.35;
+        pellet.x += Math.sin(animationFrame * 0.04 + i) * 0.25;
 
-// --------------------------------------------
-// Draw glowing food pellets
-// --------------------------------------------
-
-function drawFood() {
-    food.forEach(pellet => {
-        ctx.save();
-
-        ctx.shadowColor = "#67f5c5";
-        ctx.shadowBlur = 15;
-        ctx.fillStyle = "#a7ffdf";
-
-        ctx.beginPath();
-        ctx.arc(
-            pellet.x,
-            pellet.y,
-            pellet.radius,
-            0,
-            Math.PI * 2
-        );
-        ctx.fill();
-
-        ctx.restore();
-    });
-}
-
-// --------------------------------------------
-// Create a ripple effect
-// --------------------------------------------
-
-function createRipple(x, y, color = "#67e8f9") {
-    ripples.push({
-        x,
-        y,
-        radius: 5,
-        alpha: 1,
-        color
-    });
-}
-
-function drawRipples(delta) {
-    ripples.forEach(ripple => {
-        ripple.radius += 0.8 * delta;
-        ripple.alpha -= 0.018 * delta;
-
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, ripple.alpha);
-        ctx.strokeStyle = ripple.color;
-        ctx.lineWidth = 3;
-        ctx.shadowColor = ripple.color;
-        ctx.shadowBlur = 12;
-
-        ctx.beginPath();
-        ctx.arc(
-            ripple.x,
-            ripple.y,
-            ripple.radius,
-            0,
-            Math.PI * 2
-        );
-        ctx.stroke();
-
-        ctx.restore();
-    });
-
-    ripples = ripples.filter(ripple => ripple.alpha > 0);
-}
-
-// --------------------------------------------
-// Create and draw glowing particles
-// --------------------------------------------
-
-function createParticles(x, y, color, amount = 18) {
-    for (let i = 0; i < amount; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 1 + Math.random() * 3;
-
-        particles.push({
-            x,
-            y,
-            dx: Math.cos(angle) * speed,
-            dy: Math.sin(angle) * speed,
-            radius: 1 + Math.random() * 3,
-            alpha: 1,
-            color
-        });
+        // Remove old food
+        if (pellet.age > pellet.maxAge || pellet.y > HEIGHT - 20) {
+            food.splice(i, 1);
+        }
     }
 }
 
-function drawParticles(delta) {
-    particles.forEach(particle => {
-        particle.x += particle.dx * delta;
-        particle.y += particle.dy * delta;
-        particle.dx *= 0.99;
-        particle.dy *= 0.99;
-        particle.alpha -= 0.018 * delta;
+// --------------------------------------------
+// Move animals and bounce off aquarium walls
+// --------------------------------------------
 
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, particle.alpha);
-        ctx.fillStyle = particle.color;
-        ctx.shadowColor = particle.color;
-        ctx.shadowBlur = 12;
+function moveAnimals() {
+    for (const a of animals) {
+        // Natural swimming movement
+        a.x += a.dx;
+        a.y += a.dy;
 
-        ctx.beginPath();
-        ctx.arc(
-            particle.x,
-            particle.y,
-            particle.radius,
-            0,
-            Math.PI * 2
-        );
-        ctx.fill();
+        a.x += Math.sin(animationFrame * 0.025 + a.phase) * 0.15;
+        a.y += Math.cos(animationFrame * 0.035 + a.phase) * 0.12;
 
-        ctx.restore();
-    });
+        // Bounding margins account for each animal's size
+        const marginX = a.w * 0.58 + 4;
+        const marginY = a.h * 0.65 + 5;
 
-    particles = particles.filter(particle => particle.alpha > 0);
+        // Bounce horizontally
+        if (a.x >= WIDTH - marginX) {
+            a.x = WIDTH - marginX;
+            a.dx = -Math.abs(a.dx);
+        } else if (a.x <= marginX) {
+            a.x = marginX;
+            a.dx = Math.abs(a.dx);
+        }
+
+        // Bounce vertically
+        if (a.y >= HEIGHT - 25 - marginY) {
+            a.y = HEIGHT - 25 - marginY;
+            a.dy = -Math.abs(a.dy);
+        } else if (a.y <= marginY + 5) {
+            a.y = marginY + 5;
+            a.dy = Math.abs(a.dy);
+        }
+
+        // Avoid motion becoming completely stationary
+        if (Math.abs(a.dx) < 0.3) {
+            a.dx = a.dx < 0 ? -0.5 : 0.5;
+        }
+
+        if (Math.abs(a.dy) < 0.2) {
+            a.dy = a.dy < 0 ? -0.35 : 0.35;
+        }
+    }
 }
 
 // --------------------------------------------
-// Handle mouse clicks on the canvas
+// Click detection for animals
 // --------------------------------------------
 
 function handleCanvasClick(event) {
     const rect = canvas.getBoundingClientRect();
 
     // Convert screen coordinates to canvas coordinates
-    const x = (event.clientX - rect.left) * WIDTH / rect.width;
-    const y = (event.clientY - rect.top) * HEIGHT / rect.height;
+    const mouseX = (event.clientX - rect.left) * WIDTH / rect.width;
+    const mouseY = (event.clientY - rect.top) * HEIGHT / rect.height;
 
-    // Find the animal under the mouse
-    let clickedAnimal = null;
-    let closestDistance = Infinity;
+    // Check animals from front to back
+    for (let i = animals.length - 1; i >= 0; i--) {
+        const a = animals[i];
 
-    animals.forEach(animal => {
-        const distance = Math.hypot(
-            animal.x - x,
-            animal.y - y
-        );
+        const hitRadius = Math.max(a.w, a.h) * 0.65;
+        const distance = Math.hypot(mouseX - a.x, mouseY - a.y);
 
-        const hitRadius = animal.size * 1.4;
+        if (distance <= hitRadius) {
+            a.reaction = 30;
 
-        if (
-            distance < hitRadius &&
-            distance < closestDistance
-        ) {
-            clickedAnimal = animal;
-            closestDistance = distance;
+            // Make the creature swim away briefly
+            a.dx *= -1.35;
+            a.dy = a.dy < 0 ? -1.1 : 1.1;
+
+            // Keep movement controlled
+            a.dx = Math.max(-3, Math.min(3, a.dx));
+
+            // Add a glowing reaction burst
+            effects.push({
+                x: a.x,
+                y: a.y,
+                radius: 8,
+                alpha: 1
+            });
+
+            statusText.textContent =
+                "You clicked the " + a.name + "! It reacts and swims away!";
+
+            return;
         }
-    });
-
-    if (clickedAnimal) {
-        interactWithAnimal(clickedAnimal);
-    } else {
-        releaseFood(x, y);
     }
+
+    // If no animal was clicked, release food at the mouse position
+    releaseFood(mouseX, mouseY);
 }
 
 // --------------------------------------------
-// Give every animal its own click response
+// Draw click reaction effects
 // --------------------------------------------
 
-function interactWithAnimal(animal) {
-    animal.reaction = 1.2;
+function drawEffects() {
+    for (let i = effects.length - 1; i >= 0; i--) {
+        const effect = effects[i];
 
-    createRipple(animal.x, animal.y, animal.glow);
-    createParticles(
-        animal.x,
-        animal.y,
-        animal.glow,
-        22
-    );
+        ctx.save();
+        ctx.strokeStyle = "#fff477";
+        ctx.globalAlpha = effect.alpha;
+        ctx.lineWidth = 3;
 
-    switch (animal.type) {
-        case "fish":
-            animal.dx *= -1.8;
-            animal.dy += (Math.random() - 0.5) * 2;
-            statusText.textContent =
-                "The tropical fish darts away in a flash of light!";
-            break;
+        ctx.beginPath();
+        ctx.arc(effect.x, effect.y, effect.radius, 0, Math.PI * 2);
+        ctx.stroke();
 
-        case "jellyfish":
-            animal.dy = -Math.abs(animal.dy) - 0.4;
-            statusText.textContent =
-                "The jellyfish pulses with bioluminescent energy!";
-            break;
+        ctx.restore();
 
-        case "turtle":
-            animal.dx *= -1;
-            animal.dy = -animal.dy;
-            statusText.textContent =
-                "The sea turtle turns and glows brightly!";
-            break;
+        effect.radius += 1.8;
+        effect.alpha -= 0.035;
 
-        case "ray":
-            animal.dx *= -1;
-            animal.dy -= 0.8;
-            statusText.textContent =
-                "The manta ray performs a glowing evasive glide!";
-            break;
-
-        case "seahorse":
-            animal.dy = -1.5;
-            animal.dx += (Math.random() - 0.5) * 1.5;
-            statusText.textContent =
-                "The seahorse spirals upward in a golden glow!";
-            break;
-
-        case "shark":
-            animal.dx *= -1;
-            animal.dy += (Math.random() - 0.5) * 1.8;
-            statusText.textContent =
-                "The shark makes a quick turn and swims away!";
-            break;
+        if (effect.alpha <= 0) {
+            effects.splice(i, 1);
+        }
     }
-
-    // Keep the new movement within reasonable limits
-    animal.dx = Math.max(-2.5, Math.min(2.5, animal.dx));
-    animal.dy = Math.max(-2, Math.min(2, animal.dy));
 }
 
 // --------------------------------------------
 // Main animation loop
 // --------------------------------------------
 
-function animate(timestamp) {
-    if (paused) return;
+function animate() {
+    if (!running) return;
 
-    let delta = previousTime
-        ? (timestamp - previousTime) / 16.67
-        : 1;
-
-    // Avoid huge jumps after a delayed frame
-    delta = Math.min(delta, 2);
-    previousTime = timestamp;
-
-    elapsedTime += delta / 60;
+    animationFrame++;
 
     drawBackground();
-    drawBubbles(delta);
+    drawBubbles();
 
-    moveAnimals(delta);
-    updateFood(delta);
+    moveAnimals();
+    updateFood();
 
-    animals.forEach(drawAnimal);
+    // Draw creatures
+    for (const a of animals) {
+        drawAnimal(a);
+    }
 
     drawFood();
-    drawRipples(delta);
-    drawParticles(delta);
+    drawEffects();
 
-    animationId = requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 }
 
 // --------------------------------------------
-// Pause and resume
-// --------------------------------------------
-
-function togglePause() {
-    paused = !paused;
-
-    if (paused) {
-        cancelAnimationFrame(animationId);
-        pauseButton.textContent = "Resume Aquarium";
-        statusText.textContent =
-            "Aquarium paused. Press Resume Aquarium to continue.";
-    } else {
-        previousTime = 0;
-        pauseButton.textContent = "Pause Aquarium";
-        statusText.textContent = "The aquarium is swimming again!";
-        animationId = requestAnimationFrame(animate);
-    }
-}
-
-// --------------------------------------------
-// Reset everything
+// Reset the aquarium
 // --------------------------------------------
 
 function resetAquarium() {
-    cancelAnimationFrame(animationId);
-
-    paused = false;
-    previousTime = 0;
-    elapsedTime = 0;
-
     food = [];
-    particles = [];
-    ripples = [];
+    effects = [];
+    animationFrame = 0;
 
     createAnimals();
-    createBubbles();
-
-    pauseButton.textContent = "Pause Aquarium";
+    createBackground();
 
     statusText.textContent =
-        "Aquarium reset! Click an animal or release some food.";
+        "Aquarium reset! All six kinds of sea creatures are swimming.";
 
-    animationId = requestAnimationFrame(animate);
+    // The existing animation loop continues running
 }
 
 // --------------------------------------------
-// Connect the buttons and mouse events
+// Set up mouse interactions and controls
 // --------------------------------------------
 
 canvas.addEventListener("click", handleCanvasClick);
 
-foodButton.addEventListener("click", () => {
-    releaseFood(
-        WIDTH * 0.5,
-        HEIGHT * 0.35
-    );
+foodButton.addEventListener("click", function () {
+    releaseFood();
 });
 
-pauseButton.addEventListener("click", togglePause);
 resetButton.addEventListener("click", resetAquarium);
 
 // --------------------------------------------
@@ -1241,6 +961,5 @@ resetButton.addEventListener("click", resetAquarium);
 // --------------------------------------------
 
 createAnimals();
-createBubbles();
-
-animationId = requestAnimationFrame(animate);
+createBackground();
+animate();

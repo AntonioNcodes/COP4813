@@ -1608,3 +1608,135 @@ Assignment 6 Mobile Layout
 .field-label { font-size: 0.85rem; letter-spacing: 2px; } }
 
 
+/* =================================
+   Assignment 9 - Laser Security System
+================================= */
+
+.laser-section {
+    text-align: center;
+}
+
+.laser-section h2 {
+    margin-top: 0;
+}
+
+.laser-section > p {
+    color: #536174;
+}
+
+/* Security System Status */
+
+.game-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    max-width: 800px;
+    margin: 20px auto 0;
+    padding: 12px 15px;
+    background-color: #071a3d;
+    color: #56e6ff;
+    border-radius: 7px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+/* Online Status Indicator */
+
+.status-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background-color: #36f5a1;
+    box-shadow: 0 0 8px #36f5a1;
+}
+
+/* Animation Canvas */
+
+#laserCanvas {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    margin: 15px auto;
+    background-color: #080d18;
+    border: 3px solid #0b3d91;
+    border-radius: 8px;
+    cursor: crosshair;
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.18);
+}
+
+/* Instructions and Game Messages */
+
+#laserMessage {
+    min-height: 48px;
+    margin: 15px auto;
+    padding: 12px;
+    background-color: #eef5ff;
+    border-left: 5px solid #0b3d91;
+    border-radius: 5px;
+    color: #0b3d91;
+    font-family: monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+/* Reset Button */
+
+#resetButton {
+    display: inline-block;
+    padding: 12px 25px;
+    border: 2px solid #0b3d91;
+    border-radius: 7px;
+    background-color: #0b3d91;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+#resetButton:hover,
+#resetButton:focus {
+    background-color: #e21b2d;
+    border-color: #e21b2d;
+}
+
+#resetButton:hover {
+    transform: translateY(-2px);
+}
+
+/* =================================
+   Assignment 9 - Mobile Layout
+================================= */
+
+@media (max-width: 600px) {
+    .laser-section {
+        padding: 20px;
+    }
+
+    .game-info {
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+
+    #laserCanvas {
+        border-width: 2px;
+    }
+
+    #laserMessage {
+        font-size: 0.75rem;
+    }
+
+    #resetButton {
+        width: 100%;
+    }
+}
+
+

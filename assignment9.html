@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 9 - Laser Security System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assignment9.css">
+</head>
+<body>
+
+<header>
+    <h1>Assignment 9 - Laser Security System</h1>
+    <p>JavaScript Animation and Interactive Security Puzzle</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="assignment2.html">Assignments</a></li>
+        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
+        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
+        <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
+        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
+        <li><a href="assignment9.html">Assignment 9 - Animation</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section class="laser-section">
+        <h2>Security Chamber</h2>
+        <p>
+            Click the cyan mirrors to rotate them and redirect
+            the laser beams. Watch the target move around the chamber.
+        </p>
+
+        <div class="game-info">
+            <span><span class="status-dot"></span> SYSTEM ONLINE</span>
+            <span id="targetStatus">TARGET SCANNING</span>
+        </div>
+
+        <canvas id="laserCanvas"
+                width="800"
+                height="450"
+                aria-label="Interactive laser security puzzle">
+        </canvas>
+
+        <p id="laserMessage" aria-live="polite">
+            SYSTEM READY — CLICK A MIRROR TO ROTATE IT
+        </p>
+
+        <button id="resetButton" type="button">Reset System</button>
+    </section>
+
+    <section>
+        <h2>About This Animation</h2>
+        <p>
+            This project uses JavaScript and the HTML canvas to animate
+            a moving target inside a bounded area. Mouse-click events
+            allow the user to rotate mirrors and change the direction
+            of laser beams in real time.
+        </p>
+    </section>
+</main>
+
+<footer>
+    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+</footer>
+
+<script src="assignment9.js"></script>
+</body>
+</html>

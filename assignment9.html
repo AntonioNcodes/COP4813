@@ -4,72 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Assignment 9: An interactive laser security system demonstrating JavaScript canvas animation and mouse-click interaction.">
+
     <title>Assignment 9 - Laser Security System</title>
+
+    <!-- Existing website stylesheet -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Assignment 9 stylesheet -->
     <link rel="stylesheet" href="assignment9.css">
 </head>
+
 <body>
 
-<header>
-    <h1>Assignment 9 - Laser Security System</h1>
-    <p>JavaScript Animation and Interactive Security Puzzle</p>
-</header>
+    <!-- Website Header -->
+    <header>
+        <h1>My COP4813</h1>
+        <p>Web programming and personal portfolio</p>
+    </header>
 
-<nav aria-label="Main navigation">
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Me</a></li>
-        <li><a href="assignment2.html">Assignments</a></li>
-        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
-        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
-        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
-        <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
-        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
-        <li><a href="assignment9.html">Assignment 9 - Animation</a></li>
-    </ul>
-</nav>
+    <!-- Main Navigation -->
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="assignment2.html">Assignments</a></li>
+            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+            <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
+            <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
+            <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
+            <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
+            <li><a href="assignment9.html">Assignment 9 - Animation</a></li>
+        </ul>
+    </nav>
 
-<main>
-    <section class="laser-section">
-        <h2>Security Chamber</h2>
-        <p>
-            Click the cyan mirrors to rotate them and redirect
-            the laser beams. Watch the target move around the chamber.
-        </p>
+    <!-- Main Content -->
+    <main>
 
-        <div class="game-info">
-            <span><span class="status-dot"></span> SYSTEM ONLINE</span>
-            <span id="targetStatus">TARGET SCANNING</span>
-        </div>
+        <section class="laser-section">
 
-        <canvas id="laserCanvas"
+            <h2>Laser Security System</h2>
+
+            <p>
+                Welcome to the Laser Security System. Control the security
+                chamber by rotating the mirrors and redirecting the laser
+                beams. Watch the moving target as it travels around the
+                chamber.
+            </p>
+
+            <!-- Security System Status -->
+            <div class="game-info">
+                <span>
+                    <span class="status-dot"></span>
+                    SYSTEM ONLINE
+                </span>
+
+                <span id="targetStatus">TARGET SCANNING</span>
+            </div>
+
+            <!-- Animation Canvas -->
+            <canvas
+                id="laserCanvas"
                 width="800"
                 height="450"
-                aria-label="Interactive laser security puzzle">
-        </canvas>
+                aria-label="Interactive laser security chamber. Click a cyan mirror to rotate it and redirect the laser."
+                role="img">
+                Your browser does not support the HTML canvas element.
+            </canvas>
 
-        <p id="laserMessage" aria-live="polite">
-            SYSTEM READY — CLICK A MIRROR TO ROTATE IT
-        </p>
+            <!-- Instructions -->
+            <p>
+                <strong>Instructions:</strong>
+                Click a cyan mirror inside the chamber to rotate it.
+                Observe how the laser beam changes direction.
+                The red target moves automatically and bounces off the
+                chamber boundaries.
+            </p>
 
-        <button id="resetButton" type="button">Reset System</button>
-    </section>
+            <!-- Interaction Message -->
+            <p id="laserMessage" aria-live="polite">
+                SYSTEM READY - CLICK A MIRROR TO ROTATE IT
+            </p>
 
-    <section>
-        <h2>About This Animation</h2>
-        <p>
-            This project uses JavaScript and the HTML canvas to animate
-            a moving target inside a bounded area. Mouse-click events
-            allow the user to rotate mirrors and change the direction
-            of laser beams in real time.
-        </p>
-    </section>
-</main>
+            <!-- Reset Button -->
+            <button id="resetButton" type="button">
+                Reset System
+            </button>
 
-<footer>
-    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
-</footer>
+        </section>
 
-<script src="assignment9.js"></script>
+        <!-- Assignment Information -->
+        <section>
+            <h2>About This Assignment</h2>
+
+            <p>
+                This project demonstrates JavaScript animation and
+                mouse-click interaction using the HTML canvas.
+                A moving target travels diagonally across a bounded
+                rectangular area and bounces when it reaches the edges.
+            </p>
+
+            <p>
+                Users can click the cyan mirrors to rotate them and
+                change the direction of the laser beams. The reset
+                button restores the original mirror positions and
+                target movement.
+            </p>
+
+            <h3>JavaScript Concepts Demonstrated</h3>
+
+            <ul>
+                <li>HTML canvas drawing</li>
+                <li>Timer-based animation using requestAnimationFrame()</li>
+                <li>Object movement and boundary collision detection</li>
+                <li>Mouse-click event handling</li>
+                <li>Coordinate calculations and laser reflection</li>
+            </ul>
+        </section>
+
+        <!-- Navigation Back to Assignments -->
+        <section>
+            <h2>Return to Assignments</h2>
+
+            <p>
+                <a href="index.html">Return to the homepage</a>
+                to explore my other COP4813 projects.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Website Footer -->
+    <footer>
+        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+    </footer>
+
+    <!-- Assignment 9 JavaScript -->
+    <script src="assignment9.js"></script>
+
 </body>
 </html>

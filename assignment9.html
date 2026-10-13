@@ -4,144 +4,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assignment 9: Interactive living bioluminescent aquarium built with JavaScript canvas animation.">
 
-    <meta name="description" content="Assignment 9: An interactive laser security system demonstrating JavaScript canvas animation and mouse-click interaction.">
+    <title>Assignment 9 - Living Aquarium</title>
 
-    <title>Assignment 9 - Laser Security System</title>
-
-    <!-- Existing website stylesheet -->
+    <!-- Your existing website stylesheet -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Assignment 9 stylesheet -->
+    <!-- Styles specific to Assignment 9 -->
     <link rel="stylesheet" href="assignment9.css">
-</head>
 
+    <script src="assignment9.js" defer></script>
+</head>
 <body>
 
-    <!-- Website Header -->
-    <header>
-        <h1>My COP4813</h1>
-        <p>Web programming and personal portfolio</p>
-    </header>
+<header>
+    <h1>Living Bioluminescent Aquarium</h1>
+    <p>Assignment 9 - Interactive JavaScript Animation</p>
+</header>
 
-    <!-- Main Navigation -->
-    <nav aria-label="Main navigation">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Me</a></li>
-            <li><a href="assignment2.html">Assignments</a></li>
-            <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
-            <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
-            <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
-            <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
-            <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
-            <li><a href="assignment9.html">Assignment 9 - Animation</a></li>
-        </ul>
-    </nav>
+<nav aria-label="Main navigation">
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="assignment2.html">Assignments</a></li>
+        <li><a href="assignment7.html">Assignment 7</a></li>
+        <li><a href="assignment9.html" aria-current="page">Assignment 9</a></li>
+    </ul>
+</nav>
 
-    <!-- Main Content -->
-    <main>
+<main id="aquarium-main">
 
-        <section class="laser-section">
+    <section class="aquarium-section">
+        <h2>Explore the Deep Ocean</h2>
 
-            <h2>Laser Security System</h2>
+        <p class="aquarium-intro">
+            Welcome to a glowing underwater world! Watch six different
+            sea creatures swim through the aquarium. Click an animal
+            to activate its special reaction, or click the water to
+            release glowing food for the fish.
+        </p>
 
-            <p>
-                Welcome to the Laser Security System. Control the security
-                chamber by rotating the mirrors and redirecting the laser
-                beams. Watch the moving target as it travels around the
-                chamber.
-            </p>
+        <div class="aquarium-legend" aria-label="Aquarium features">
+            <span>✦ Animated sea life</span>
+            <span>✦ Bioluminescent effects</span>
+            <span>✦ Interactive canvas</span>
+        </div>
 
-            <!-- Security System Status -->
-            <div class="game-info">
-                <span>
-                    <span class="status-dot"></span>
-                    SYSTEM ONLINE
-                </span>
-
-                <span id="targetStatus">TARGET SCANNING</span>
-            </div>
-
-            <!-- Animation Canvas -->
+        <div class="aquarium-frame">
             <canvas
-                id="laserCanvas"
-                width="800"
-                height="450"
-                aria-label="Interactive laser security chamber. Click a cyan mirror to rotate it and redirect the laser."
-                role="img">
+                id="aquariumCanvas"
+                width="900"
+                height="520"
+                tabindex="0"
+                role="img"
+                aria-label="Interactive aquarium containing animated tropical fish, jellyfish, sea turtles, manta rays, seahorses, and sharks. Click a creature to interact or click the water to release food."
+            >
                 Your browser does not support the HTML canvas element.
             </canvas>
+            <div class="aquarium-overlay" aria-hidden="true">
+                <span class="live-indicator"></span>
+                LIVE AQUARIUM
+            </div>
+        </div>
 
-            <!-- Instructions -->
-            <p>
-                <strong>Instructions:</strong>
-                Click a cyan mirror inside the chamber to rotate it.
-                Observe how the laser beam changes direction.
-                The red target moves automatically and bounces off the
-                chamber boundaries.
+        <div class="aquarium-controls">
+            <p id="aquariumStatus" role="status" aria-live="polite">
+                The aquarium is alive! Click an animal or release some food.
             </p>
 
-            <!-- Interaction Message -->
-            <p id="laserMessage" aria-live="polite">
-                SYSTEM READY - CLICK A MIRROR TO ROTATE IT
-            </p>
-
-            <!-- Reset Button -->
-            <button id="resetButton" type="button">
-                Reset System
+            <button type="button" id="foodButton" class="aquarium-button">
+                Release Fish Food
             </button>
 
-        </section>
+            <button type="button" id="pauseButton" class="aquarium-button secondary">
+                Pause Aquarium
+            </button>
 
-        <!-- Assignment Information -->
-        <section>
-            <h2>About This Assignment</h2>
+            <button type="button" id="resetButton" class="aquarium-button secondary">
+                Reset Aquarium
+            </button>
+        </div>
 
-            <p>
-                This project demonstrates JavaScript animation and
-                mouse-click interaction using the HTML canvas.
-                A moving target travels diagonally across a bounded
-                rectangular area and bounces when it reaches the edges.
-            </p>
-
-            <p>
-                Users can click the cyan mirrors to rotate them and
-                change the direction of the laser beams. The reset
-                button restores the original mirror positions and
-                target movement.
-            </p>
-
-            <h3>JavaScript Concepts Demonstrated</h3>
-
+        <div class="aquarium-instructions">
+            <h3>How to Interact</h3>
             <ul>
-                <li>HTML canvas drawing</li>
-                <li>Timer-based animation using requestAnimationFrame()</li>
-                <li>Object movement and boundary collision detection</li>
-                <li>Mouse-click event handling</li>
-                <li>Coordinate calculations and laser reflection</li>
+                <li><strong>Click a fish:</strong> It darts away in a burst of light.</li>
+                <li><strong>Click a jellyfish:</strong> It pulses with a glowing ripple.</li>
+                <li><strong>Click a turtle:</strong> It changes direction and glows.</li>
+                <li><strong>Click a manta ray:</strong> It performs a quick glide.</li>
+                <li><strong>Click a seahorse:</strong> It spirals upward briefly.</li>
+                <li><strong>Click a shark:</strong> It makes a quick evasive turn.</li>
+                <li><strong>Click empty water:</strong> Release glowing food that fish can chase.</li>
             </ul>
-        </section>
+        </div>
+    </section>
 
-        <!-- Navigation Back to Assignments -->
-        <section>
-            <h2>Return to Assignments</h2>
+    <section class="aquarium-about">
+        <h2>About This Animation</h2>
+        <p>
+            This project uses the HTML canvas and JavaScript to draw and
+            animate six kinds of marine animals. Timer-based animation
+            updates their positions, keeps them inside the aquarium,
+            and creates glowing effects. Mouse-click events allow the
+            viewer to interact with the animals and their environment.
+        </p>
+    </section>
 
-            <p>
-                <a href="index.html">Return to the homepage</a>
-                to explore my other COP4813 projects.
-            </p>
-        </section>
+</main>
 
-    </main>
-
-    <!-- Website Footer -->
-    <footer>
-        <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
-    </footer>
-
-    <!-- Assignment 9 JavaScript -->
-    <script src="assignment9.js"></script>
+<footer>
+    <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
+</footer>
 
 </body>
 </html>

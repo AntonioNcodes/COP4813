@@ -4,131 +4,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9: Interactive living bioluminescent aquarium built with JavaScript canvas animation.">
+    <meta name="description" content="Assignment 9 - Living Fantasy Aquarium">
+    <title>Assignment 9 - Living Fantasy Aquarium</title>
 
-    <title>Assignment 9 - Living Aquarium</title>
-
-    <!-- Your existing website stylesheet -->
+    <!-- Use the existing stylesheet -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Styles specific to Assignment 9 -->
-    <link rel="stylesheet" href="assignment9.css">
-
-    <script src="assignment9.js" defer></script>
 </head>
+
 <body>
 
 <header>
-    <h1>Living Bioluminescent Aquarium</h1>
-    <p>Assignment 9 - Interactive JavaScript Animation</p>
+    <h1>Living Fantasy Aquarium</h1>
+    <p>Assignment 9 - JavaScript Canvas Animation</p>
 </header>
 
 <nav aria-label="Main navigation">
     <ul>
- <li><a href="index.html">Home</a>
-        </li>
-        <li><a href="about.html">About Me</a>
-        </li>
-        <li><a href="assignment2.html">Assignments</a>
-        </li>
-        <li><a href="assignment3.html">Assignment 3 - Forms</a>
-        </li>
-        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a>
-        </li>
-        <li><a href="assignment5.html">Assignment 5 - Spirograph</a>
-        </li>
-        <li><a href="assignment6.html">Assignment 6 - JSON</a>
-        </li>
-        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a>
-        </li>
-        <li><a href="assignment9.html">Assignment 9 - Living Aquarium</a>
-        </li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="assignment2.html">Assignments</a></li>
+        <li><a href="assignment3.html">Assignment 3 - Forms</a></li>
+        <li><a href="assignment4.html">Assignment 4 - Creating Plots</a></li>
+        <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
+        <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
+        <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
+        <li><a href="assignment9.html">Assignment 9 - Aquarium</a></li>
     </ul>
 </nav>
 
-<main id="aquarium-main">
-
+<main>
     <section class="aquarium-section">
-        <h2>Explore the Deep Ocean</h2>
+        <h2>Discover the Underwater World</h2>
 
         <p class="aquarium-intro">
-            Welcome to a glowing underwater world! Watch six different
-            sea creatures swim through the aquarium. Click an animal
-            to activate its special reaction, or click the water to
-            release glowing food for the fish.
+            Welcome to my living fantasy aquarium! Watch six different
+            sea creatures swim through their underwater habitat.
+            Click an animal to trigger a special reaction, or click
+            anywhere else in the water to release food for the fish.
         </p>
 
-        <div class="aquarium-legend" aria-label="Aquarium features">
-            <span>✦ Animated sea life</span>
-            <span>✦ Bioluminescent effects</span>
-            <span>✦ Interactive canvas</span>
+        <div class="aquarium-legend">
+            <span>🐠 Fish</span>
+            <span>🪼 Jellyfish</span>
+            <span>🐢 Turtle</span>
+            <span>🌊 Ray</span>
+            <span>Seahorse</span>
+            <span>🦈 Shark</span>
         </div>
 
-        <div class="aquarium-frame">
+        <div class="aquarium-controls">
+            <button type="button" id="foodButton">Release Fish Food</button>
+            <button type="button" id="resetAquarium">Reset Aquarium</button>
+        </div>
+
+        <p id="aquariumStatus" role="status" aria-live="polite">
+            Aquarium is ready! Click a creature or release some food.
+        </p>
+
+        <div class="aquarium-canvas-wrap">
             <canvas
                 id="aquariumCanvas"
                 width="900"
                 height="520"
-                tabindex="0"
-                role="img"
-                aria-label="Interactive aquarium containing animated tropical fish, jellyfish, sea turtles, manta rays, seahorses, and sharks. Click a creature to interact or click the water to release food."
-            >
-                Your browser does not support the HTML canvas element.
+                aria-label="Animated fantasy aquarium with swimming fish, jellyfish, turtle, manta ray, seahorse, and shark. Click animals to interact or click the water to release food."
+                role="img">
+                Your browser does not support HTML5 canvas.
             </canvas>
-            <div class="aquarium-overlay" aria-hidden="true">
-                <span class="live-indicator"></span>
-                LIVE AQUARIUM
-            </div>
         </div>
 
-        <div class="aquarium-controls">
-            <p id="aquariumStatus" role="status" aria-live="polite">
-                The aquarium is alive! Click an animal or release some food.
-            </p>
-
-            <button type="button" id="foodButton" class="aquarium-button">
-                Release Fish Food
-            </button>
-
-            <button type="button" id="pauseButton" class="aquarium-button secondary">
-                Pause Aquarium
-            </button>
-
-            <button type="button" id="resetButton" class="aquarium-button secondary">
-                Reset Aquarium
-            </button>
-        </div>
-
-        <div class="aquarium-instructions">
-            <h3>How to Interact</h3>
-            <ul>
-                <li><strong>Click a fish:</strong> It darts away in a burst of light.</li>
-                <li><strong>Click a jellyfish:</strong> It pulses with a glowing ripple.</li>
-                <li><strong>Click a turtle:</strong> It changes direction and glows.</li>
-                <li><strong>Click a manta ray:</strong> It performs a quick glide.</li>
-                <li><strong>Click a seahorse:</strong> It spirals upward briefly.</li>
-                <li><strong>Click a shark:</strong> It makes a quick evasive turn.</li>
-                <li><strong>Click empty water:</strong> Release glowing food that fish can chase.</li>
-            </ul>
-        </div>
-    </section>
-
-    <section class="aquarium-about">
-        <h2>About This Animation</h2>
-        <p>
-            This project uses the HTML canvas and JavaScript to draw and
-            animate six kinds of marine animals. Timer-based animation
-            updates their positions, keeps them inside the aquarium,
-            and creates glowing effects. Mouse-click events allow the
-            viewer to interact with the animals and their environment.
+        <p class="aquarium-help">
+            <strong>How to play:</strong>
+            Click a creature to make it react. Click the water to drop
+            glowing food that nearby fish will chase. Use Reset Aquarium
+            to start over.
         </p>
     </section>
 
+    <section>
+        <h2>About This Assignment</h2>
+        <p>
+            This project demonstrates JavaScript animation using the HTML5
+            canvas. Each sea creature is drawn with canvas shapes and animated
+            using a timer-based animation loop. Mouse events create interactive
+            effects, and the creatures remain within the aquarium boundaries.
+        </p>
+    </section>
 </main>
 
 <footer>
     <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
 </footer>
+
+<!-- Load the aquarium animation after the page elements -->
+<script src="assignment9.js"></script>
 
 </body>
 </html>

@@ -1608,135 +1608,252 @@ Assignment 6 Mobile Layout
 .field-label { font-size: 0.85rem; letter-spacing: 2px; } }
 
 
-/* =================================
-   Assignment 9 - Laser Security System
-================================= */
 
-.laser-section {
+/* =========================================
+   Assignment 9 - Living Bioluminescent Aquarium
+========================================= */
+
+#aquarium-main {
+    max-width: 1100px;
+}
+
+.aquarium-section {
+    overflow: hidden;
+}
+
+.aquarium-intro {
+    max-width: 800px;
+    margin: 0 auto 20px;
     text-align: center;
-}
-
-.laser-section h2 {
-    margin-top: 0;
-}
-
-.laser-section > p {
     color: #536174;
 }
 
-/* Security System Status */
-
-.game-info {
+.aquarium-legend {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
     gap: 10px;
-    max-width: 800px;
-    margin: 20px auto 0;
-    padding: 12px 15px;
-    background-color: #071a3d;
-    color: #56e6ff;
-    border-radius: 7px;
-    font-family: monospace;
-    font-size: 0.85rem;
+    margin: 20px 0;
+}
+
+.aquarium-legend span {
+    padding: 8px 13px;
+    color: #075985;
+    background: #e0f7ff;
+    border: 1px solid #bae6fd;
+    border-radius: 20px;
+    font-size: 0.9rem;
     font-weight: bold;
 }
 
-/* Online Status Indicator */
+/* Aquarium frame */
 
-.status-dot {
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    margin-right: 6px;
-    border-radius: 50%;
-    background-color: #36f5a1;
-    box-shadow: 0 0 8px #36f5a1;
+.aquarium-frame {
+    position: relative;
+    width: 100%;
+    margin: 20px auto;
+    overflow: hidden;
+    background: #031426;
+    border: 5px solid #0b3d91;
+    border-radius: 12px;
+    box-shadow:
+        0 0 12px rgba(0, 191, 255, 0.35),
+        0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
-/* Animation Canvas */
-
-#laserCanvas {
+#aquariumCanvas {
     display: block;
     width: 100%;
-    max-width: 800px;
     height: auto;
-    margin: 15px auto;
-    background-color: #080d18;
-    border: 3px solid #0b3d91;
-    border-radius: 8px;
+    aspect-ratio: 900 / 520;
+    background: #031426;
     cursor: crosshair;
-    box-shadow: 0 0 20px rgba(0, 200, 255, 0.18);
+    touch-action: manipulation;
 }
 
-/* Instructions and Game Messages */
+#aquariumCanvas:focus-visible {
+    outline: 3px solid #67e8f9;
+    outline-offset: -6px;
+}
 
-#laserMessage {
-    min-height: 48px;
-    margin: 15px auto;
-    padding: 12px;
-    background-color: #eef5ff;
-    border-left: 5px solid #0b3d91;
+/* Live aquarium label */
+
+.aquarium-overlay {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    color: #d8fbff;
+    background: rgba(2, 16, 37, 0.78);
+    border: 1px solid rgba(103, 232, 249, 0.4);
     border-radius: 5px;
-    color: #0b3d91;
-    font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: bold;
-    overflow-wrap: anywhere;
+    letter-spacing: 1px;
+    pointer-events: none;
 }
 
-/* Reset Button */
+.live-indicator {
+    width: 8px;
+    height: 8px;
+    background: #67f5c5;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #67f5c5;
+    animation: aquariumBlink 1.5s infinite;
+}
 
-#resetButton {
-    display: inline-block;
-    padding: 12px 25px;
+@keyframes aquariumBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Controls */
+
+.aquarium-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+#aquariumStatus {
+    flex-basis: 100%;
+    min-height: 28px;
+    margin: 0 0 5px;
+    color: #0b3d91;
+    text-align: center;
+    font-weight: bold;
+}
+
+.aquarium-button {
+    padding: 12px 18px;
+    color: white;
+    background: #0b3d91;
     border: 2px solid #0b3d91;
     border-radius: 7px;
-    background-color: #0b3d91;
-    color: white;
     font-family: Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background 0.2s, transform 0.2s;
 }
 
-#resetButton:hover,
-#resetButton:focus {
-    background-color: #e21b2d;
+.aquarium-button:hover,
+.aquarium-button:focus-visible {
+    background: #e21b2d;
     border-color: #e21b2d;
 }
 
-#resetButton:hover {
+.aquarium-button:hover {
     transform: translateY(-2px);
 }
 
-/* =================================
-   Assignment 9 - Mobile Layout
-================================= */
+.aquarium-button.secondary {
+    color: #0b3d91;
+    background: white;
+}
+
+.aquarium-button.secondary:hover,
+.aquarium-button.secondary:focus-visible {
+    color: white;
+    background: #0b3d91;
+    border-color: #0b3d91;
+}
+
+.aquarium-button:focus-visible {
+    outline: 3px solid #67e8f9;
+    outline-offset: 3px;
+}
+
+/* Instructions */
+
+.aquarium-instructions {
+    margin-top: 30px;
+    padding: 22px;
+    background: #f2f8ff;
+    border-left: 5px solid #0b3d91;
+    border-radius: 8px;
+}
+
+.aquarium-instructions h3 {
+    margin-top: 0;
+    color: #0b3d91;
+}
+
+.aquarium-instructions ul {
+    padding-left: 22px;
+}
+
+.aquarium-instructions li {
+    margin: 8px 0;
+}
+
+.aquarium-about p {
+    color: #536174;
+}
+
+/* Mobile layout */
 
 @media (max-width: 600px) {
-    .laser-section {
-        padding: 20px;
+    #aquarium-main {
+        padding: 0 12px;
     }
 
-    .game-info {
-        justify-content: center;
+    .aquarium-section {
+        padding: 18px 12px;
+    }
+
+    .aquarium-frame {
+        border-width: 3px;
+        border-radius: 7px;
+    }
+
+    .aquarium-overlay {
+        top: 7px;
+        left: 7px;
+        padding: 5px 7px;
+        font-size: 0.6rem;
+    }
+
+    .aquarium-legend {
+        gap: 6px;
+    }
+
+    .aquarium-legend span {
         font-size: 0.75rem;
+        padding: 6px 9px;
     }
 
-    #laserCanvas {
-        border-width: 2px;
+    .aquarium-controls {
+        gap: 8px;
     }
 
-    #laserMessage {
-        font-size: 0.75rem;
+    .aquarium-button {
+        padding: 11px 12px;
+        font-size: 0.85rem;
     }
 
-    #resetButton {
-        width: 100%;
+    .aquarium-instructions {
+        padding: 16px;
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .live-indicator {
+        animation: none;
+    }
 
+    .aquarium-button {
+        transition: none;
+    }
+}

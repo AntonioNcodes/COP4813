@@ -1609,22 +1609,18 @@ Assignment 6 Mobile Layout
 
 
 
-/* =========================================
-   Assignment 9 - Living Bioluminescent Aquarium
-========================================= */
 
-#aquarium-main {
-    max-width: 1100px;
-}
+/* ============================================
+   Assignment 9 - Living Fantasy Aquarium
+============================================ */
 
 .aquarium-section {
-    overflow: hidden;
+    text-align: center;
 }
 
 .aquarium-intro {
-    max-width: 800px;
-    margin: 0 auto 20px;
-    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 25px;
     color: #536174;
 }
 
@@ -1637,223 +1633,121 @@ Assignment 6 Mobile Layout
 }
 
 .aquarium-legend span {
-    padding: 8px 13px;
-    color: #075985;
-    background: #e0f7ff;
-    border: 1px solid #bae6fd;
+    display: inline-block;
+    padding: 8px 14px;
+    background-color: #eef5ff;
+    border: 1px solid #d4dee9;
     border-radius: 20px;
+    color: #0b3d91;
     font-size: 0.9rem;
     font-weight: bold;
 }
 
-/* Aquarium frame */
+.aquarium-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
 
-.aquarium-frame {
-    position: relative;
+.aquarium-controls button {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 7px;
+    background-color: #0b3d91;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.aquarium-controls button:hover,
+.aquarium-controls button:focus {
+    background-color: #e21b2d;
+}
+
+.aquarium-controls button:hover {
+    transform: translateY(-2px);
+}
+
+.aquarium-controls button:focus-visible {
+    outline: 3px solid #e21b2d;
+    outline-offset: 3px;
+}
+
+#aquariumStatus {
+    min-height: 28px;
+    margin: 18px auto;
+    color: #0b3d91;
+    font-weight: bold;
+}
+
+.aquarium-canvas-wrap {
     width: 100%;
+    max-width: 900px;
     margin: 20px auto;
     overflow: hidden;
-    background: #031426;
-    border: 5px solid #0b3d91;
-    border-radius: 12px;
-    box-shadow:
-        0 0 12px rgba(0, 191, 255, 0.35),
-        0 8px 20px rgba(0, 0, 0, 0.18);
+    background-color: #031b3b;
+    border: 4px solid #0b3d91;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 #aquariumCanvas {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 900 / 520;
-    background: #031426;
+    background-color: #082c63;
     cursor: crosshair;
     touch-action: manipulation;
 }
 
-#aquariumCanvas:focus-visible {
-    outline: 3px solid #67e8f9;
-    outline-offset: -6px;
-}
-
-/* Live aquarium label */
-
-.aquarium-overlay {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 11px;
-    color: #d8fbff;
-    background: rgba(2, 16, 37, 0.78);
-    border: 1px solid rgba(103, 232, 249, 0.4);
-    border-radius: 5px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    pointer-events: none;
-}
-
-.live-indicator {
-    width: 8px;
-    height: 8px;
-    background: #67f5c5;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #67f5c5;
-    animation: aquariumBlink 1.5s infinite;
-}
-
-@keyframes aquariumBlink {
-    0%, 100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.3;
-    }
-}
-
-/* Controls */
-
-.aquarium-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-#aquariumStatus {
-    flex-basis: 100%;
-    min-height: 28px;
-    margin: 0 0 5px;
-    color: #0b3d91;
-    text-align: center;
-    font-weight: bold;
-}
-
-.aquarium-button {
-    padding: 12px 18px;
-    color: white;
-    background: #0b3d91;
-    border: 2px solid #0b3d91;
-    border-radius: 7px;
-    font-family: Arial, sans-serif;
-    font-size: 0.95rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-}
-
-.aquarium-button:hover,
-.aquarium-button:focus-visible {
-    background: #e21b2d;
-    border-color: #e21b2d;
-}
-
-.aquarium-button:hover {
-    transform: translateY(-2px);
-}
-
-.aquarium-button.secondary {
-    color: #0b3d91;
-    background: white;
-}
-
-.aquarium-button.secondary:hover,
-.aquarium-button.secondary:focus-visible {
-    color: white;
-    background: #0b3d91;
-    border-color: #0b3d91;
-}
-
-.aquarium-button:focus-visible {
-    outline: 3px solid #67e8f9;
-    outline-offset: 3px;
-}
-
-/* Instructions */
-
-.aquarium-instructions {
-    margin-top: 30px;
-    padding: 22px;
-    background: #f2f8ff;
+.aquarium-help {
+    max-width: 750px;
+    margin: 20px auto 0;
+    padding: 16px;
+    background-color: #eef5ff;
     border-left: 5px solid #0b3d91;
-    border-radius: 8px;
-}
-
-.aquarium-instructions h3 {
-    margin-top: 0;
-    color: #0b3d91;
-}
-
-.aquarium-instructions ul {
-    padding-left: 22px;
-}
-
-.aquarium-instructions li {
-    margin: 8px 0;
-}
-
-.aquarium-about p {
+    border-radius: 7px;
     color: #536174;
+    text-align: left;
 }
 
-/* Mobile layout */
+/* ============================================
+   Assignment 9 - Mobile Layout
+============================================ */
 
 @media (max-width: 600px) {
-    #aquarium-main {
-        padding: 0 12px;
-    }
-
     .aquarium-section {
-        padding: 18px 12px;
+        padding: 20px;
     }
 
-    .aquarium-frame {
+    .aquarium-legend {
+        gap: 7px;
+    }
+
+    .aquarium-legend span {
+        padding: 7px 10px;
+        font-size: 0.8rem;
+    }
+
+    .aquarium-controls {
+        flex-direction: column;
+    }
+
+    .aquarium-controls button {
+        width: 100%;
+    }
+
+    .aquarium-canvas-wrap {
         border-width: 3px;
         border-radius: 7px;
     }
 
-    .aquarium-overlay {
-        top: 7px;
-        left: 7px;
-        padding: 5px 7px;
-        font-size: 0.6rem;
-    }
-
-    .aquarium-legend {
-        gap: 6px;
-    }
-
-    .aquarium-legend span {
-        font-size: 0.75rem;
-        padding: 6px 9px;
-    }
-
-    .aquarium-controls {
-        gap: 8px;
-    }
-
-    .aquarium-button {
-        padding: 11px 12px;
-        font-size: 0.85rem;
-    }
-
-    .aquarium-instructions {
-        padding: 16px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .live-indicator {
-        animation: none;
-    }
-
-    .aquarium-button {
-        transition: none;
+    .aquarium-help {
+        padding: 12px;
     }
 }

@@ -1,23 +1,25 @@
 "use strict";
 
-// ============================================
-// MINI GOLF - ASSIGNMENT 9
-// ============================================
+// MINI GOLF - SECTION 1: SETUP
 
 const canvas = document.getElementById("golfCanvas");
 const ctx = canvas.getContext("2d");
 
 const statusText = document.getElementById("golfStatus");
 const levelDisplay = document.getElementById("levelDisplay");
-const shotCountDisplay = document.getElementById("shotCount");
-const totalShotsDisplay = document.getElementById("totalShots");
-const powerUpCountDisplay = document.getElementById("powerUpCount");
-const coinCountDisplay = document.getElementById("coinCount");
+const shotDisplay = document.getElementById("shotCount");
+const totalDisplay = document.getElementById("totalShots");
+const powerDisplay = document.getElementById("powerUpCount");
+const coinDisplay = document.getElementById("coinCount");
 const resetButton = document.getElementById("resetGolf");
-const nextLevelButton = document.getElementById("nextLevel");
+const nextButton = document.getElementById("nextLevel");
 
 const W = canvas.width;
 const H = canvas.height;
+
+const MAX_DRAG = 110;
+const MAX_SPEED = 11;
+const STOP_SPEED = 0.12;
 
 let level = 1;
 let shots = 0;
@@ -27,9 +29,9 @@ let coinsCollected = 0;
 
 let ball;
 let hole;
-let obstacles = [];
-let bunkers = [];
-let waterHazards = [];
+let rocks = [];
+let sand = [];
+let water = [];
 let powerUps = [];
 
 let moving = false;
@@ -41,31 +43,31 @@ let gameComplete = false;
 
 let boostNextShot = false;
 let magnetActive = false;
-let waterShieldActive = false;
+let shieldActive = false;
 
 let pointerX = 0;
 let pointerY = 0;
 let lastSafePosition = { x: 100, y: 400 };
 
-const MAX_DRAG = 110;
-const MAX_SPEED = 11;
-const STOP_SPEED = 0.12;
+function createLevel(number) {
+    ball = {
+        x: 100, y: 400, radius: 12,
+        dx: 0, dy: 0
+    };
 
-function createLevel(n) {
-    ball = { x: 100, y: 400, radius: 12, dx: 0, dy: 0 };
     hole = { x: 775, y: 125, radius: 18 };
 
-    obstacles = [];
-    bunkers = [];
-    waterHazards = [];
+    rocks = [];
+    sand = [];
+    water = [];
     powerUps = [];
 
     boostNextShot = false;
     magnetActive = false;
-    waterShieldActive = false;
+    shieldActive = false;
 
-    if (n === 1) {
-        bunkers.push({ x: 390, y: 280, rx: 75, ry: 38 });
+    if (number === 1) {
+        sand.push({ x: 390, y: 280, rx: 75, ry: 38 });
 
         powerUps.push(
             { x: 210, y: 250, type: "coin", collected: false },
@@ -73,15 +75,15 @@ function createLevel(n) {
         );
     }
 
-    if (n === 2) {
+    if (number === 2) {
         hole.y = 100;
 
-        bunkers.push(
+        sand.push(
             { x: 330, y: 275, rx: 70, ry: 36 },
             { x: 600, y: 330, rx: 65, ry: 32 }
         );
 
-        obstacles.push(
+        rocks.push(
             { x: 360, y: 170, radius: 24 },
             { x: 510, y: 250, radius: 28 },
             { x: 660, y: 170, radius: 22 }
@@ -94,22 +96,22 @@ function createLevel(n) {
         );
     }
 
-    if (n === 3) {
+    if (number === 3) {
         hole = { x: 790, y: 100, radius: 18 };
 
-        bunkers.push(
+        sand.push(
             { x: 280, y: 300, rx: 65, ry: 34 },
             { x: 600, y: 370, rx: 75, ry: 35 }
         );
 
-        obstacles.push(
+        rocks.push(
             { x: 330, y: 175, radius: 25 },
             { x: 470, y: 290, radius: 28 },
             { x: 650, y: 175, radius: 24 },
             { x: 720, y: 300, radius: 22 }
         );
 
-        waterHazards.push({ x: 510, y: 135, rx: 95, ry: 48 });
+        water.push({ x: 510, y: 135, rx: 95, ry: 48 });
 
         powerUps.push(
             { x: 380, y: 410, type: "star", collected: false },
@@ -125,13 +127,14 @@ function createLevel(n) {
 
 function updateScoreboard() {
     levelDisplay.textContent = "Level " + level + " of 3";
-    shotCountDisplay.textContent = shots;
-    totalShotsDisplay.textContent = totalShots;
-    powerUpCountDisplay.textContent = powerUpsCollected;
-    coinCountDisplay.textContent = coinsCollected;
+    shotDisplay.textContent = shots;
+    totalDisplay.textContent = totalShots;
+    powerDisplay.textContent = powerUpsCollected;
+    coinDisplay.textContent = coinsCollected;
 }
 
-// Draw the golf course
+// MINI GOLF - SECTION 2: DRAW COURSE
+
 function drawCourse() {
     const grass = ctx.createLinearGradient(0, 0, W, H);
     grass.addColorStop(0, "#397b48");
@@ -146,23 +149,25 @@ function drawCourse() {
     ctx.ellipse(450, 270, 350, 220, -0.05, 0, Math.PI * 2);
     ctx.fill();
 
-    // Stripes
+    // Grass stripes
     ctx.save();
     ctx.beginPath();
     ctx.ellipse(450, 270, 350, 220, -0.05, 0, Math.PI * 2);
     ctx.clip();
 
     ctx.fillStyle = "rgba(255,255,255,0.09)";
+
     for (let x = 120; x < 850; x += 90) {
         ctx.fillRect(x, 40, 42, 460);
     }
+
     ctx.restore();
 
     // Water
-    for (const water of waterHazards) {
+    for (const item of water) {
         ctx.fillStyle = "#258ac0";
         ctx.beginPath();
-        ctx.ellipse(water.x, water.y, water.rx, water.ry, 0, 0, Math.PI * 2);
+        ctx.ellipse(item.x, item.y, item.rx, item.ry, 0, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.strokeStyle = "#8ee5ff";
@@ -170,16 +175,16 @@ function drawCourse() {
         ctx.stroke();
     }
 
-    // Sand
-    for (const sand of bunkers) {
+    // Sand bunkers
+    for (const item of sand) {
         ctx.fillStyle = "#e9d6a2";
         ctx.beginPath();
-        ctx.ellipse(sand.x, sand.y, sand.rx, sand.ry, -0.2, 0, Math.PI * 2);
+        ctx.ellipse(item.x, item.y, item.rx, item.ry, -0.2, 0, Math.PI * 2);
         ctx.fill();
     }
 
     // Rocks
-    for (const rock of obstacles) {
+    for (const rock of rocks) {
         ctx.fillStyle = "#777e82";
         ctx.beginPath();
         ctx.arc(rock.x, rock.y, rock.radius, 0, Math.PI * 2);
@@ -190,18 +195,18 @@ function drawCourse() {
         ctx.stroke();
     }
 
-    // Green around the hole
+    // Putting green and hole
     ctx.fillStyle = "#a8d98b";
     ctx.beginPath();
     ctx.ellipse(hole.x, hole.y, 65, 50, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Hole and flag
     ctx.fillStyle = "#142319";
     ctx.beginPath();
     ctx.arc(hole.x, hole.y, hole.radius, 0, Math.PI * 2);
     ctx.fill();
 
+    // Flagpole
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -217,20 +222,15 @@ function drawCourse() {
     ctx.closePath();
     ctx.fill();
 
-    // Power-up icons
+    // Power-ups
     const icons = {
-        star: "★",
-        boost: "⚡",
-        magnet: "M",
-        shield: "S",
-        coin: "$"
+        star: "★", boost: "⚡",
+        magnet: "M", shield: "S", coin: "$"
     };
 
     const colors = {
-        star: "#ffcb35",
-        boost: "#26c6da",
-        magnet: "#bb86fc",
-        shield: "#258ac0",
+        star: "#ffb900", boost: "#26c6da",
+        magnet: "#bb86fc", shield: "#258ac0",
         coin: "#ffb300"
     };
 
@@ -255,8 +255,6 @@ function drawCourse() {
 
     ctx.textAlign = "start";
     ctx.textBaseline = "alphabetic";
-
-    // Course information and border
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 16px Arial";
     ctx.fillText("MINI GOLF | LEVEL " + level, 22, 30);
@@ -266,7 +264,6 @@ function drawCourse() {
     ctx.strokeRect(2, 2, W - 4, H - 4);
 }
 
-// Draw the ball
 function drawBall() {
     ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.beginPath();
@@ -291,7 +288,6 @@ function drawBall() {
     ctx.stroke();
 }
 
-// Draw aiming line
 function drawAim() {
     if (!dragging || moving || demoActive) return;
 
@@ -325,6 +321,7 @@ function drawAim() {
     );
 }
 
+// MINI GOLF - SECTION 3: CONTROLS
 
 function getCanvasPosition(event) {
     const rect = canvas.getBoundingClientRect();
@@ -344,8 +341,8 @@ canvas.addEventListener("pointerdown", function (event) {
         dragging = true;
         pointerX = p.x;
         pointerY = p.y;
-        canvas.setPointerCapture(event.pointerId);
 
+        canvas.setPointerCapture(event.pointerId);
         statusText.textContent = "Drag backward to aim, then release!";
     }
 });
@@ -364,8 +361,8 @@ canvas.addEventListener("pointerup", function (event) {
     const p = getCanvasPosition(event);
     pointerX = p.x;
     pointerY = p.y;
-    dragging = false;
 
+    dragging = false;
     shoot();
 });
 
@@ -396,8 +393,8 @@ function shoot() {
     shots++;
     totalShots++;
     moving = true;
-
     magnetActive = false;
+
     lastSafePosition = { x: ball.x, y: ball.y };
 
     updateScoreboard();
@@ -405,22 +402,26 @@ function shoot() {
 }
 
 function isInsideEllipse(x, y, item) {
-    return ((x - item.x) / item.rx) ** 2 +
-           ((y - item.y) / item.ry) ** 2 <= 1;
+    return (
+        ((x - item.x) / item.rx) ** 2 +
+        ((y - item.y) / item.ry) ** 2 <= 1
+    );
 }
 
 function isOnSand(x, y) {
-    return bunkers.some(s => isInsideEllipse(x, y, s));
+    return sand.some(item => isInsideEllipse(x, y, item));
 }
 
 function isInWater(x, y) {
-    return waterHazards.some(w => isInsideEllipse(x, y, w));
+    return water.some(item => isInsideEllipse(x, y, item));
 }
+
+// MINI GOLF - SECTION 4: PHYSICS
 
 function moveBall() {
     if (!moving || demoActive || levelComplete || gameComplete) return;
 
-    // Hole magnet attracts the ball while it is moving
+    // Magnet attracts the ball toward the hole
     if (magnetActive) {
         const dx = hole.x - ball.x;
         const dy = hole.y - ball.y;
@@ -442,7 +443,7 @@ function moveBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Bounce off boundaries
+    // Bounce off course boundaries
     if (ball.x - ball.radius < 10) {
         ball.x = 10 + ball.radius;
         ball.dx = Math.abs(ball.dx) * 0.75;
@@ -464,7 +465,7 @@ function moveBall() {
     }
 
     // Bounce off rocks
-    for (const rock of obstacles) {
+    for (const rock of rocks) {
         const dx = ball.x - rock.x;
         const dy = ball.y - rock.y;
         const distance = Math.hypot(dx, dy);
@@ -486,7 +487,7 @@ function moveBall() {
         }
     }
 
-    // Water hazard and one-use shield
+    // Water hazard
     if (isInWater(ball.x, ball.y)) {
         ball.x = lastSafePosition.x;
         ball.y = lastSafePosition.y;
@@ -495,13 +496,13 @@ function moveBall() {
         moving = false;
         magnetActive = false;
 
-        if (waterShieldActive) {
-            waterShieldActive = false;
-            statusText.textContent = "Water shield saved you! No penalty!";
+        if (shieldActive) {
+            shieldActive = false;
+            statusText.textContent = "Water shield saved you!";
         } else {
             shots++;
             totalShots++;
-            statusText.textContent = "Water hazard! One penalty shot added.";
+            statusText.textContent = "Water hazard! Penalty shot added.";
         }
 
         updateScoreboard();
@@ -518,7 +519,7 @@ function moveBall() {
 
             if (item.type === "star") {
                 boostNextShot = true;
-                statusText.textContent = "STAR! Your next shot gets 50% more power.";
+                statusText.textContent = "Super Shot! Extra power next shot.";
             } else if (item.type === "boost") {
                 ball.dx *= 1.8;
                 ball.dy *= 1.8;
@@ -530,16 +531,16 @@ function moveBall() {
                     ball.dy = ball.dy / speed * 14;
                 }
 
-                statusText.textContent = "SPEED BOOST! The ball accelerates!";
+                statusText.textContent = "Speed boost activated!";
             } else if (item.type === "magnet") {
                 magnetActive = true;
-                statusText.textContent = "HOLE MAGNET! Pulling the ball toward the hole.";
+                statusText.textContent = "Hole magnet activated!";
             } else if (item.type === "shield") {
-                waterShieldActive = true;
-                statusText.textContent = "WATER SHIELD activated! One hazard protected.";
+                shieldActive = true;
+                statusText.textContent = "Water shield activated!";
             } else if (item.type === "coin") {
                 coinsCollected++;
-                statusText.textContent = "BONUS COIN collected!";
+                statusText.textContent = "Bonus coin collected!";
             }
 
             updateScoreboard();
@@ -548,16 +549,18 @@ function moveBall() {
 
     lastSafePosition = { x: ball.x, y: ball.y };
 
-    // Sand slows the ball more than grass
+    // Friction
     const friction = isOnSand(ball.x, ball.y) ? 0.955 : 0.986;
     ball.dx *= friction;
     ball.dy *= friction;
 
     const speed = Math.hypot(ball.dx, ball.dy);
-    const holeDistance = Math.hypot(ball.x - hole.x, ball.y - hole.y);
+    const distanceToHole = Math.hypot(
+        ball.x - hole.x, ball.y - hole.y
+    );
 
-    // Sink the ball if it reaches the hole at low speed
-    if (holeDistance < hole.radius && speed < 4.5) {
+    // Sink the ball
+    if (distanceToHole < hole.radius && speed < 4.5) {
         ball.x = hole.x;
         ball.y = hole.y;
         ball.dx = 0;
@@ -568,10 +571,11 @@ function moveBall() {
 
         if (level === 3) {
             gameComplete = true;
+            nextButton.disabled = true;
             statusText.textContent =
-                "YOU WON! All three levels completed in " + totalShots + " shots!";
+                "YOU WON! Completed all levels in " + totalShots + " shots!";
         } else {
-            nextLevelButton.disabled = false;
+            nextButton.disabled = false;
             statusText.textContent =
                 "Level " + level + " complete! Click Next Level.";
         }
@@ -580,6 +584,7 @@ function moveBall() {
         return;
     }
 
+    // Stop when the ball slows down
     if (Math.abs(ball.dx) < STOP_SPEED &&
         Math.abs(ball.dy) < STOP_SPEED) {
         ball.dx = 0;
@@ -589,11 +594,8 @@ function moveBall() {
         statusText.textContent = "Ball stopped. Aim your next shot!";
     }
 }
-4. assignment9.js — Part 3: Opening animation and game loop
-Paste this at the bottom of the same JavaScript file.
 
-
-javascript
+// MINI GOLF - SECTION 5: START AND RESET
 
 function startPlaying() {
     demoActive = false;
@@ -603,6 +605,8 @@ function startPlaying() {
     ball.y = 400;
     ball.dx = 0;
     ball.dy = 0;
+
+    lastSafePosition = { x: ball.x, y: ball.y };
 
     statusText.textContent =
         "Level " + level + ": Drag backward from the ball to shoot.";
@@ -622,16 +626,16 @@ function resetGame() {
 
     boostNextShot = false;
     magnetActive = false;
-    waterShieldActive = false;
+    shieldActive = false;
 
     demoActive = true;
     demoFrames = 180;
 
-    nextLevelButton.disabled = true;
+    nextButton.disabled = true;
 
-    createLevel(1);
+    createLevel(level);
 
-    // Automatic diagonal bouncing animation
+    // Opening bouncing animation
     ball.dx = 4;
     ball.dy = -3;
     moving = true;
@@ -639,23 +643,30 @@ function resetGame() {
     statusText.textContent = "Welcome! Watch the ball bounce...";
 }
 
-nextLevelButton.addEventListener("click", function () {
+// Restart button
+resetButton.addEventListener("click", resetGame);
+
+// Next level button
+nextButton.addEventListener("click", function () {
     if (!levelComplete || gameComplete) return;
 
     level++;
     shots = 0;
     levelComplete = false;
+    dragging = false;
 
-    nextLevelButton.disabled = true;
+    nextButton.disabled = true;
+
     createLevel(level);
 
     statusText.textContent =
         "Level " + level + " started! Aim carefully.";
 });
 
-resetButton.addEventListener("click", resetGame);
+ // MINI GOLF - SECTION 6: ANIMATION LOOP
 
 function animate() {
+    // Opening animation
     if (demoActive) {
         ball.x += ball.dx;
         ball.y += ball.dy;
@@ -679,12 +690,14 @@ function animate() {
         moveBall();
     }
 
+    // Redraw the course
     ctx.clearRect(0, 0, W, H);
 
     drawCourse();
     drawAim();
     drawBall();
 
+    // Welcome overlay
     if (demoActive) {
         ctx.fillStyle = "rgba(10,35,20,0.85)";
         ctx.fillRect(190, 210, 520, 85);
@@ -695,10 +708,15 @@ function animate() {
         ctx.fillText("WELCOME TO MINI GOLF", W / 2, 245);
 
         ctx.font = "16px Arial";
-        ctx.fillText("Get ready! Your game starts soon.", W / 2, 275);
+        ctx.fillText(
+            "Get ready! Your game starts soon.",
+            W / 2, 275
+        );
+
         ctx.textAlign = "start";
     }
 
+    // Completion overlay
     if (levelComplete || gameComplete) {
         ctx.fillStyle = "rgba(10,35,20,0.88)";
         ctx.fillRect(190, 205, 520, 115);
@@ -714,7 +732,8 @@ function animate() {
 
         ctx.font = "16px Arial";
         ctx.fillText(
-            "Level shots: " + shots + " | Total shots: " + totalShots,
+            "Level shots: " + shots +
+            " | Total shots: " + totalShots,
             W / 2, 277
         );
 
@@ -724,6 +743,6 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// Start the game
+// INITIALIZE THE GAME
 resetGame();
 animate();

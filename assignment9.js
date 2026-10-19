@@ -22,6 +22,14 @@ const hole = {
     radius: 17
 };
 
+// Game settings
+const FRICTION = 0.985;
+const SAND_FRICTION = 0.94;
+const BOUNCE = 0.72;
+const STOP_SPEED = 0.12;
+const MAX_DRAG = 100;
+const MAX_SPEED = 11;
+
 // Golf ball
 let ball;
 
@@ -34,13 +42,6 @@ let won = false;
 let pointerX = 0;
 let pointerY = 0;
 let effects = [];
-
-// Physics settings
-const FRICTION = 0.985;
-const BOUNCE = 0.72;
-const STOP_SPEED = 0.12;
-const MAX_DRAG = 100;
-const MAX_SPEED = 11;
 
 // ============================================
 // Start or reset the game
@@ -79,7 +80,7 @@ function updateScore() {
 // ============================================
 
 function drawCourse() {
-    // Background grass
+    // Grass background
     const grass = ctx.createLinearGradient(
         0, 0, WIDTH, HEIGHT
     );
@@ -90,7 +91,7 @@ function drawCourse() {
     ctx.fillStyle = grass;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    // Outer boundary
+    // Course boundary
     ctx.strokeStyle = "rgba(255,255,255,0.75)";
     ctx.lineWidth = 3;
     ctx.strokeRect(10, 10, WIDTH - 20, HEIGHT - 20);
@@ -148,7 +149,7 @@ function drawCourse() {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Hole shadow
+    // Golf hole
     ctx.fillStyle = "#183923";
     ctx.beginPath();
     ctx.ellipse(
@@ -157,7 +158,6 @@ function drawCourse() {
     );
     ctx.fill();
 
-    // Hole
     ctx.fillStyle = "#101b13";
     ctx.beginPath();
     ctx.arc(
@@ -194,7 +194,7 @@ function drawCourse() {
     ctx.font = "bold 13px Arial";
     ctx.fillText("MINI GOLF", 35, 43);
 
-    // Aim and power hint
+    // Instructions
     if (!won && !moving && !dragging) {
         ctx.fillStyle = "rgba(20,55,34,0.8)";
         ctx.beginPath();
@@ -203,15 +203,45 @@ function drawCourse() {
 
         ctx.fillStyle = "#ffffff";
         ctx.font = "13px Arial";
-        ctx.fillText("Drag the ball to aim and shoot", 33, 82);
+        ctx.fillText(
+            "Drag the ball to aim and shoot",
+            33, 82
+        );
     }
 }
 
 function drawBunker(x, y, rx, ry) {
+    // Sand
     ctx.fillStyle = "#e9d6a2";
     ctx.beginPath();
-    ctx.ellipse(x, y, rx, ry, -0.2, 0, Math.PI * 2);
+    ctx.ellipse(
+        x, y, rx, ry, -0.2,
+        0, Math.PI * 2
+    );
     ctx.fill();
+
+    // Sand texture
+    ctx.save();
+
+    ctx.beginPath();
+    ctx.ellipse(
+        x, y, rx, ry, -0.2,
+        0, Math.PI * 2
+    );
+    ctx.clip();
+
+    ctx.fillStyle = "rgba(155,125,67,0.25)";
+
+    for (let i = 0; i < 28; i++) {
+        const px = x - rx + ((i * 31) % (rx * 2));
+        const py = y - ry + ((i * 17) % (ry * 2));
+
+        ctx.beginPath();
+        ctx.arc(px, py, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    ctx.restore();
 
     ctx.strokeStyle = "rgba(155,125,67,0.35)";
     ctx.lineWidth = 1;
@@ -219,7 +249,7 @@ function drawBunker(x, y, rx, ry) {
 }
 
 function drawTree(x, y, size) {
-    // Trunk
+    // Tree trunk
     ctx.fillStyle = "#755139";
     ctx.fillRect(x - 3, y + 3, 6, size);
 
@@ -241,26 +271,52 @@ function drawTree(x, y, size) {
 }
 
 // ============================================
+// Detect whether the ball is on sand
+// ============================================
+
+function isOnSand(x, y) {
+    const sand1 =
+        ((x - 590) / 75) ** 2 +
+        ((y - 170) / 37) ** 2 <= 1;
+
+    const sand2 =
+        ((x - 460) / 63) ** 2 +
+        ((y - 360) / 29) ** 2 <= 1;
+
+    const sand3 =
+        ((x - 690) / 52) ** 2 +
+        ((y - 420) / 25) ** 2 <= 1;
+
+    return sand1 || sand2 || sand3;
+}
+
+// ============================================
 // Draw the golf ball
 // ============================================
 
 function drawBall() {
     ctx.save();
 
-    // Shadow
+    // Ball shadow
     ctx.fillStyle = "rgba(0,0,0,0.22)";
     ctx.beginPath();
     ctx.ellipse(
-        ball.x + 4, ball.y + 5,
-        ball.radius * 1.2, ball.radius * 0.7,
+        ball.x + 4,
+        ball.y + 5,
+        ball.radius * 1.2,
+        ball.radius * 0.7,
         0, 0, Math.PI * 2
     );
     ctx.fill();
 
-    // White ball gradient
+    // Ball gradient
     const gradient = ctx.createRadialGradient(
-        ball.x - 4, ball.y - 5, 1,
-        ball.x, ball.y, ball.radius * 1.4
+        ball.x - 4,
+        ball.y - 5,
+        1,
+        ball.x,
+        ball.y,
+        ball.radius * 1.4
     );
 
     gradient.addColorStop(0, "#ffffff");
@@ -270,8 +326,10 @@ function drawBall() {
     ctx.fillStyle = gradient;
     ctx.beginPath();
     ctx.arc(
-        ball.x, ball.y,
-        ball.radius, 0, Math.PI * 2
+        ball.x,
+        ball.y,
+        ball.radius,
+        0, Math.PI * 2
     );
     ctx.fill();
 
@@ -279,7 +337,7 @@ function drawBall() {
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Dimples
+    // Golf ball dimples
     ctx.fillStyle = "rgba(125,135,125,0.55)";
 
     const dimples = [
@@ -290,8 +348,10 @@ function drawBall() {
     for (const d of dimples) {
         ctx.beginPath();
         ctx.arc(
-            ball.x + d[0], ball.y + d[1],
-            1, 0, Math.PI * 2
+            ball.x + d[0],
+            ball.y + d[1],
+            1,
+            0, Math.PI * 2
         );
         ctx.fill();
     }
@@ -300,7 +360,7 @@ function drawBall() {
 }
 
 // ============================================
-// Draw the aiming guide
+// Draw the aiming guide and power meter
 // ============================================
 
 function drawAim() {
@@ -316,15 +376,14 @@ function drawAim() {
         return;
     }
 
-    // Limit the length of the guide
     const length = Math.min(distance, MAX_DRAG);
 
     const endX = ball.x + (dx / distance) * length;
     const endY = ball.y + (dy / distance) * length;
 
-    // Dotted aiming line
     ctx.save();
 
+    // Aiming line
     ctx.strokeStyle = "#fff7c2";
     ctx.lineWidth = 3;
     ctx.setLineDash([7, 6]);
@@ -354,13 +413,16 @@ function drawAim() {
 
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 13px Arial";
-    ctx.fillText("POWER: " + power + "%", 33, HEIGHT - 30);
+    ctx.fillText(
+        "POWER: " + power + "%",
+        33, HEIGHT - 30
+    );
 
     ctx.restore();
 }
 
 // ============================================
-// Start a shot
+// Shoot the golf ball
 // ============================================
 
 function shoot() {
@@ -368,14 +430,12 @@ function shoot() {
     const dy = pointerY - ball.y;
     const distance = Math.hypot(dx, dy);
 
-    // Ignore tiny drags
     if (distance < 8) {
         statusText.textContent =
             "Drag farther from the ball to take a shot.";
         return;
     }
 
-    // Limit the shot power
     const power = Math.min(distance, MAX_DRAG);
     const speed = (power / MAX_DRAG) * MAX_SPEED;
 
@@ -398,7 +458,7 @@ function shoot() {
 }
 
 // ============================================
-// Move the ball and simulate friction
+// Move the ball and apply surface physics
 // ============================================
 
 function moveBall() {
@@ -409,7 +469,7 @@ function moveBall() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Bounce off left and right boundaries
+    // Bounce off the left and right boundaries
     if (ball.x - ball.radius < 12) {
         ball.x = 12 + ball.radius;
         ball.dx = Math.abs(ball.dx) * BOUNCE;
@@ -420,7 +480,7 @@ function moveBall() {
         ball.dx = -Math.abs(ball.dx) * BOUNCE;
     }
 
-    // Bounce off top and bottom boundaries
+    // Bounce off the top and bottom boundaries
     if (ball.y - ball.radius < 12) {
         ball.y = 12 + ball.radius;
         ball.dy = Math.abs(ball.dy) * BOUNCE;
@@ -431,9 +491,13 @@ function moveBall() {
         ball.dy = -Math.abs(ball.dy) * BOUNCE;
     }
 
-    // Slow the ball down gradually
-    ball.dx *= FRICTION;
-    ball.dy *= FRICTION;
+    // Apply stronger friction on sand
+    const friction = isOnSand(ball.x, ball.y)
+        ? SAND_FRICTION
+        : FRICTION;
+
+    ball.dx *= friction;
+    ball.dy *= friction;
 
     // Check whether the ball reached the hole
     const distanceToHole = Math.hypot(
@@ -465,7 +529,7 @@ function moveBall() {
         return;
     }
 
-    // Stop when the ball is moving very slowly
+    // Stop the ball when it moves very slowly
     if (
         Math.abs(ball.dx) < STOP_SPEED &&
         Math.abs(ball.dy) < STOP_SPEED
@@ -480,7 +544,7 @@ function moveBall() {
 }
 
 // ============================================
-// Draw the shot and victory effects
+// Draw shot and victory effects
 // ============================================
 
 function drawEffects() {
@@ -494,8 +558,10 @@ function drawEffects() {
 
         ctx.beginPath();
         ctx.arc(
-            effect.x, effect.y,
-            effect.radius, 0, Math.PI * 2
+            effect.x,
+            effect.y,
+            effect.radius,
+            0, Math.PI * 2
         );
         ctx.stroke();
 
@@ -511,7 +577,7 @@ function drawEffects() {
 }
 
 // ============================================
-// Render the complete game
+// Draw the complete game
 // ============================================
 
 function drawGame() {
@@ -522,7 +588,6 @@ function drawGame() {
     drawBall();
     drawEffects();
 
-    // Victory message
     if (won) {
         ctx.fillStyle = "rgba(15,45,27,0.88)";
         ctx.beginPath();
@@ -570,7 +635,6 @@ canvas.addEventListener("pointerdown", function (event) {
         point.y - ball.y
     );
 
-    // Start aiming only when the ball is selected
     if (distance <= ball.radius + 16) {
         dragging = true;
         pointerX = point.x;
@@ -615,6 +679,7 @@ canvas.addEventListener("pointercancel", function () {
     dragging = false;
 });
 
+// New Game button
 resetButton.addEventListener("click", resetGame);
 
 // ============================================

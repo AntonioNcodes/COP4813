@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9 - Interactive Golf Course">
-    <title>Assignment 9 - Golf Ball Animation</title>
+    <meta name="description" content="Assignment 9 - Golf Ball Animation">
+    <title>Assignment 9 - Golf Animation</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,8 +13,8 @@
 <body>
 
 <header>
-    <h1>Interactive Golf Course</h1>
-    <p>Assignment 9 - JavaScript Canvas Animation</p>
+    <h1>My COP4813</h1>
+    <p>Web programming and personal portfolio</p>
 </header>
 
 <nav aria-label="Main navigation">
@@ -31,60 +32,72 @@
 </nav>
 
 <main>
+
     <section class="golf-section">
-        <h2>Welcome to the Golf Course!</h2>
+        <h2>Golf Course</h2>
 
         <p class="golf-intro">
-            Watch the golf ball bounce around the course.
-            Click the ball to hit it in a new direction and
-            change its color. See how many shots you can take!
+            Welcome to the practice green! Watch the golf ball
+            move around the course. Click the ball to hit it in
+            a new direction and change its color. See how many
+            shots you can take.
         </p>
 
-        <div class="golf-legend">
-            <span>⛳ Golf Flag</span>
-            <span>⚪ Golf Ball</span>
-            <span>🌳 Golf Course</span>
-        </div>
+        <div class="golf-dashboard">
+            <div>
+                <p><strong>YOUR SCORE</strong></p>
+                <p class="golf-score" id="shotCount">0 shots</p>
 
-        <div class="golf-controls">
-            <button type="button" id="hitButton">Hit Golf Ball</button>
-            <button type="button" id="resetGolf">Reset Game</button>
-        </div>
+                <p id="golfStatus" role="status" aria-live="polite">
+                    Ready to play!
+                </p>
+            </div>
 
-        <p id="golfStatus" role="status" aria-live="polite">
-            Ready to play! Click the golf ball to take a shot.
-        </p>
+            <div class="golf-controls">
+                <button type="button" id="hitButton">
+                    Hit Ball
+                </button>
+
+                <button type="button" id="resetGolf" class="reset-button">
+                    Reset
+                </button>
+            </div>
+        </div>
 
         <div class="golf-canvas-wrap">
             <canvas
                 id="golfCanvas"
                 width="900"
                 height="520"
-                aria-label="Animated golf course with a golf ball that bounces and responds to clicks."
-                role="img">
+                role="img"
+                aria-label="Animated golf course with a golf ball that bounces off the boundaries and responds to mouse clicks.">
                 Your browser does not support HTML5 canvas.
             </canvas>
         </div>
 
         <p class="golf-help">
             <strong>How to play:</strong>
-            Click the golf ball to change its direction and color,
-            or use the Hit Golf Ball button. The ball bounces off
-            the course boundaries. Click Reset Game to start over.
+            Click directly on the golf ball to change its direction
+            and color. You can also select Hit Ball to change its
+            direction. The ball bounces off the course boundaries.
+            Select Reset to start over.
         </p>
     </section>
 
-    <section>
+    <section class="golf-section">
         <h2>About This Assignment</h2>
+
         <p>
-            This project demonstrates JavaScript animation using the
-            HTML5 canvas. The golf ball moves diagonally across the
-            course and bounces off the boundaries. Mouse-click events
-            allow the player to hit the ball, changing its direction
-            and color. This demonstrates client-side scripting and
-            interactive animation using JavaScript.
+            This project demonstrates client-side JavaScript and
+            HTML5 canvas animation. The golf ball moves diagonally
+            across the course and bounces off the canvas boundaries.
+            Mouse-click events allow the player to change the ball's
+            direction and color. The project also demonstrates
+            JavaScript event listeners, drawing functions, and
+            animation using requestAnimationFrame().
         </p>
     </section>
+
 </main>
 
 <footer>

@@ -1611,20 +1611,21 @@ Assignment 6 Mobile Layout
 
 
 /* ============================================
-   Assignment 9 - Living Fantasy Aquarium
+   Assignment 9 - Interactive Golf Course
 ============================================ */
 
-.aquarium-section {
+.golf-section {
     text-align: center;
 }
 
-.aquarium-intro {
+.golf-intro {
     max-width: 750px;
     margin: 0 auto 25px;
     color: #536174;
+    line-height: 1.6;
 }
 
-.aquarium-legend {
+.golf-legend {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -1632,18 +1633,18 @@ Assignment 6 Mobile Layout
     margin: 20px 0;
 }
 
-.aquarium-legend span {
+.golf-legend span {
     display: inline-block;
     padding: 8px 14px;
-    background-color: #eef5ff;
-    border: 1px solid #d4dee9;
+    background-color: #e8f5e9;
+    border: 1px solid #b7d9b9;
     border-radius: 20px;
-    color: #0b3d91;
+    color: #245c2a;
     font-size: 0.9rem;
     font-weight: bold;
 }
 
-.aquarium-controls {
+.golf-controls {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -1651,11 +1652,11 @@ Assignment 6 Mobile Layout
     margin: 20px 0;
 }
 
-.aquarium-controls button {
+.golf-controls button {
     padding: 13px 22px;
     border: none;
     border-radius: 7px;
-    background-color: #0b3d91;
+    background-color: #246b35;
     color: white;
     font-family: Arial, sans-serif;
     font-size: 1rem;
@@ -1664,56 +1665,57 @@ Assignment 6 Mobile Layout
     transition: background-color 0.2s, transform 0.2s;
 }
 
-.aquarium-controls button:hover,
-.aquarium-controls button:focus {
-    background-color: #e21b2d;
+.golf-controls button:hover,
+.golf-controls button:focus {
+    background-color: #174722;
 }
 
-.aquarium-controls button:hover {
+.golf-controls button:hover {
     transform: translateY(-2px);
 }
 
-.aquarium-controls button:focus-visible {
-    outline: 3px solid #e21b2d;
+.golf-controls button:focus-visible {
+    outline: 3px solid #f4d35e;
     outline-offset: 3px;
 }
 
-#aquariumStatus {
+#golfStatus {
     min-height: 28px;
     margin: 18px auto;
-    color: #0b3d91;
+    color: #246b35;
     font-weight: bold;
 }
 
-.aquarium-canvas-wrap {
+.golf-canvas-wrap {
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
     overflow: hidden;
-    background-color: #031b3b;
-    border: 4px solid #0b3d91;
+    background-color: #176b32;
+    border: 4px solid #245c2a;
     border-radius: 10px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
-#aquariumCanvas {
+#golfCanvas {
     display: block;
     width: 100%;
     height: auto;
-    background-color: #082c63;
+    background-color: #4caf50;
     cursor: crosshair;
     touch-action: manipulation;
 }
 
-.aquarium-help {
+.golf-help {
     max-width: 750px;
     margin: 20px auto 0;
     padding: 16px;
-    background-color: #eef5ff;
-    border-left: 5px solid #0b3d91;
+    background-color: #e8f5e9;
+    border-left: 5px solid #246b35;
     border-radius: 7px;
-    color: #536174;
+    color: #385342;
     text-align: left;
+    line-height: 1.6;
 }
 
 /* ============================================
@@ -1721,33 +1723,33 @@ Assignment 6 Mobile Layout
 ============================================ */
 
 @media (max-width: 600px) {
-    .aquarium-section {
+    .golf-section {
         padding: 20px;
     }
 
-    .aquarium-legend {
+    .golf-legend {
         gap: 7px;
     }
 
-    .aquarium-legend span {
+    .golf-legend span {
         padding: 7px 10px;
         font-size: 0.8rem;
     }
 
-    .aquarium-controls {
+    .golf-controls {
         flex-direction: column;
     }
 
-    .aquarium-controls button {
+    .golf-controls button {
         width: 100%;
     }
 
-    .aquarium-canvas-wrap {
+    .golf-canvas-wrap {
         border-width: 3px;
         border-radius: 7px;
     }
 
-    .aquarium-help {
+    .golf-help {
         padding: 12px;
     }
 }

@@ -1,25 +1,23 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9 - Living Fantasy Aquarium">
-    <title>Assignment 9 - Living Fantasy Aquarium</title>
+    <meta name="description" content="Assignment 9 - Interactive Golf Course">
+    <title>Assignment 9 - Golf Ball Animation</title>
 
-    <!-- Use the existing stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>Living Fantasy Aquarium</h1>
+    <h1>Interactive Golf Course</h1>
     <p>Assignment 9 - JavaScript Canvas Animation</p>
 </header>
 
 <nav aria-label="Main navigation">
-        <ul>
+    <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Me</a></li>
         <li><a href="assignment2.html">Assignment 2 - Web Site</a></li>
@@ -28,65 +26,63 @@
         <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
         <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
         <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
-        <li><a href="assignment9.html">Assignment 9 - Living Aquarium </a></li>
-        </ul>
-    </nav>
+        <li><a href="assignment9.html">Assignment 9 - Golf Animation</a></li>
+    </ul>
+</nav>
 
 <main>
-    <section class="aquarium-section">
-        <h2>Discover the Underwater World</h2>
+    <section class="golf-section">
+        <h2>Welcome to the Golf Course!</h2>
 
-        <p class="aquarium-intro">
-            Welcome to my living fantasy aquarium! Watch six different
-            sea creatures swim through their underwater habitat.
-            Click an animal to trigger a special reaction, or click
-            anywhere else in the water to release food for the fish.
+        <p class="golf-intro">
+            Watch the golf ball bounce around the course.
+            Click the ball to hit it in a new direction and
+            change its color. See how many shots you can take!
         </p>
 
-        <div class="aquarium-legend">
-            <span>🐠 Fish</span>
-            <span>🪼 Jellyfish</span>
-            <span>🐢 Turtle</span>
-            <span>🌊 Ray</span>
-            <span>Seahorse</span>
-            <span>🦈 Shark</span>
+        <div class="golf-legend">
+            <span>⛳ Golf Flag</span>
+            <span>⚪ Golf Ball</span>
+            <span>🌳 Golf Course</span>
         </div>
 
-        <div class="aquarium-controls">
-            <button type="button" id="foodButton">Release Fish Food</button>
-            <button type="button" id="resetAquarium">Reset Aquarium</button>
+        <div class="golf-controls">
+            <button type="button" id="hitButton">Hit Golf Ball</button>
+            <button type="button" id="resetGolf">Reset Game</button>
         </div>
 
-        <p id="aquariumStatus" role="status" aria-live="polite">
-            Aquarium is ready! Click a creature or release some food.
+        <p id="golfStatus" role="status" aria-live="polite">
+            Ready to play! Click the golf ball to take a shot.
         </p>
 
-        <div class="aquarium-canvas-wrap">
+        <div class="golf-canvas-wrap">
             <canvas
-                id="aquariumCanvas"
+                id="golfCanvas"
                 width="900"
                 height="520"
-                aria-label="Animated fantasy aquarium with swimming fish, jellyfish, turtle, manta ray, seahorse, and shark. Click animals to interact or click the water to release food."
+                aria-label="Animated golf course with a golf ball that bounces and responds to clicks."
                 role="img">
                 Your browser does not support HTML5 canvas.
             </canvas>
         </div>
 
-        <p class="aquarium-help">
+        <p class="golf-help">
             <strong>How to play:</strong>
-            Click a creature to make it react. Click the water to drop
-            glowing food that nearby fish will chase. Use Reset Aquarium
-            to start over.
+            Click the golf ball to change its direction and color,
+            or use the Hit Golf Ball button. The ball bounces off
+            the course boundaries. Click Reset Game to start over.
         </p>
     </section>
 
     <section>
         <h2>About This Assignment</h2>
         <p>
-            This project demonstrates JavaScript animation using the HTML5
-            canvas. Each sea creature is drawn with canvas shapes and animated
-            using a timer-based animation loop. Mouse events create interactive
-            effects, and the creatures remain within the aquarium boundaries.
+            This project demonstrates JavaScript animation using the
+            HTML5 canvas. The golf ball moves diagonally across the
+            course and bounces off the boundaries. Mouse-click events
+            allow the player to hit the ball, changing its direction
+            and color. This demonstrates client-side scripting and
+            interactive animation using JavaScript.
         </p>
     </section>
 </main>
@@ -95,7 +91,6 @@
     <p>COP4813 Web Systems - Created by Antonio Nava-Martinez</p>
 </footer>
 
-<!-- Load the aquarium animation after the page elements -->
 <script src="assignment9.js"></script>
 
 </body>

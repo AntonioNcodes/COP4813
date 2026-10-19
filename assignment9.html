@@ -1,18 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9 - Interactive Mini Golf">
-    <title>Assignment 9 - Mini Golf</title>
+
+    <meta name="description"
+          content="Assignment 9 - Three-Level Interactive Mini Golf Game">
+
+    <title>Assignment 9 - Mini Golf Challenge</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>Interactive Mini Golf</h1>
+    <h1>Mini Golf Challenge</h1>
     <p>Assignment 9 - JavaScript Canvas Animation</p>
 </header>
 
@@ -26,63 +29,188 @@
         <li><a href="assignment5.html">Assignment 5 - Spirograph</a></li>
         <li><a href="assignment6.html">Assignment 6 - JSON</a></li>
         <li><a href="assignment7.html">Assignment 7 - Soccer Challenge</a></li>
-        <li><a href="assignment9.html">Assignment 9 - Golf Animation</a></li>
+        <li><a href="assignment9.html">Assignment 9 - Mini Golf</a></li>
     </ul>
 </nav>
 
 <main>
+
     <section class="golf-section">
+
         <h2>Welcome to Mini Golf!</h2>
 
         <p class="golf-intro">
-            Watch the golf ball bounce during the opening animation.
-            Then aim your shot, avoid the sand, and try to sink the ball
-            in as few attempts as possible.
+            Complete three challenging golf levels! Aim your shots,
+            avoid obstacles, collect power-ups, and try to reach
+            each hole in as few shots as possible.
         </p>
 
-        <div class="golf-controls">
-            <button type="button" id="resetGolf">New Game</button>
+        <!-- Game information -->
+        <div class="golf-legend">
+            <span>⛳ Golf Hole</span>
+            <span>⚪ Golf Ball</span>
+            <span>🏖️ Sand Trap</span>
+            <span>🪨 Rock Obstacle</span>
+            <span>⭐ Power-Up</span>
+            <span>💧 Water Hazard</span>
         </div>
 
+        <!-- Scoreboard -->
+        <div class="golf-scoreboard">
+
+            <p>
+                <strong>Level:</strong>
+                <span id="levelDisplay">Loading...</span>
+            </p>
+
+            <p>
+                <strong>Shots:</strong>
+                <span id="shotCount">0</span>
+            </p>
+
+            <p>
+                <strong>Total Shots:</strong>
+                <span id="totalShots">0</span>
+            </p>
+
+            <p>
+                <strong>Power-Ups:</strong>
+                <span id="powerUpCount">0</span>
+            </p>
+
+        </div>
+
+        <!-- Game controls -->
+        <div class="golf-controls">
+
+            <button type="button" id="resetGolf">
+                New Game
+            </button>
+
+            <button type="button" id="nextLevel" disabled>
+                Next Level
+            </button>
+
+        </div>
+
+        <!-- Accessible game messages -->
         <p id="golfStatus" role="status" aria-live="polite">
             Loading golf course...
         </p>
 
-        <p>
-            Shots: <span id="shotCount">0 shots</span>
-        </p>
-
+        <!-- Canvas -->
         <div class="golf-canvas-wrap">
+
             <canvas
                 id="golfCanvas"
                 width="900"
                 height="520"
-                aria-label="Interactive mini golf course"
+                aria-label="Interactive three-level mini golf game. Aim and shoot the golf ball into the hole."
                 role="img">
+
                 Your browser does not support HTML5 canvas.
+                Please use a modern browser to play this game.
+
             </canvas>
+
         </div>
 
-        <p class="golf-help">
-            <strong>How to play:</strong>
-            Wait for the 3-second opening animation to finish.
-            Click and drag from the golf ball in the direction you want
-            to shoot, then release the mouse. Drag farther for more power.
-            The ball slows down on grass and sand. Get it into the hole
-            to complete the game. Use New Game to restart.
-        </p>
+        <!-- Instructions -->
+        <div class="golf-help">
+
+            <h3>How to Play</h3>
+
+            <ol>
+                <li>
+                    Wait for the opening animation to finish.
+                </li>
+
+                <li>
+                    Click and drag from the golf ball to aim your shot.
+                </li>
+
+                <li>
+                    Release the mouse button to shoot. Drag farther
+                    to increase your power.
+                </li>
+
+                <li>
+                    Avoid rocks and water hazards. Sand traps slow
+                    your ball down.
+                </li>
+
+                <li>
+                    Collect power-ups to improve your shots.
+                </li>
+
+                <li>
+                    Get the ball into the hole to complete each level.
+                </li>
+
+                <li>
+                    Complete all three levels to win the game!
+                </li>
+            </ol>
+
+        </div>
+
     </section>
 
+    <!-- Level information -->
     <section>
-        <h2>About This Assignment</h2>
-        <p>
-            This project demonstrates JavaScript animation using HTML5
-            canvas. The golf ball automatically moves diagonally and
-            bounces off the course boundaries during the opening animation.
-            Mouse and pointer events allow the player to aim and shoot.
-            Friction slows the ball, and a shot counter tracks attempts.
-        </p>
+
+        <h2>Your Three Challenges</h2>
+
+        <article>
+            <h3>Level 1 - Beginner</h3>
+            <p>
+                Practice aiming and controlling your shot.
+                Navigate the sand trap and collect a golden
+                power-up to help reach the hole.
+            </p>
+        </article>
+
+        <article>
+            <h3>Level 2 - The Challenge</h3>
+            <p>
+                Avoid rock obstacles and additional sand traps.
+                Plan your shots carefully and look for a speed
+                power-up.
+            </p>
+        </article>
+
+        <article>
+            <h3>Level 3 - The Final Hole</h3>
+            <p>
+                Take on the most difficult course, featuring
+                water hazards, rocks, and sand traps. Finish
+                all three levels to see your final score.
+            </p>
+        </article>
+
     </section>
+
+    <!-- Assignment explanation -->
+    <section>
+
+        <h2>About This Assignment</h2>
+
+        <p>
+            This project demonstrates client-side JavaScript
+            and HTML5 canvas animation. During the opening
+            animation, the golf ball moves diagonally and bounces
+            off the boundaries. The game then allows the player
+            to aim and shoot using mouse or pointer events.
+        </p>
+
+        <p>
+            The game also demonstrates collision detection,
+            movement, friction, power-ups, score tracking,
+            and progression through three levels.
+        </p>
+
+    </section>
+
 </main>
 
 <footer>

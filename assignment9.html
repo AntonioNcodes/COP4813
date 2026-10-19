@@ -1,15 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9 - Interactive Mini Golf">
+    <meta name="description" content="Assignment 9 - Interactive JavaScript Mini Golf">
     <title>Assignment 9 - Mini Golf</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
 <header>
     <h1>Interactive Mini Golf</h1>
     <p>Assignment 9 - JavaScript Canvas Animation</p>
@@ -30,13 +30,14 @@
 </nav>
 
 <main>
+
     <section class="golf-section">
         <h2>Welcome to Mini Golf!</h2>
 
         <p class="golf-intro">
             Watch the golf ball bounce during the opening animation.
             Then aim your shots, avoid obstacles, collect power-ups,
-            and complete all three levels.
+            and complete all three levels!
         </p>
 
         <div class="golf-legend">
@@ -48,16 +49,37 @@
         </div>
 
         <div class="golf-controls">
-            <button type="button" id="resetGolf">Restart Game</button>
-            <button type="button" id="nextLevel" disabled>Next Level</button>
+            <button type="button" id="resetGolf">
+                Restart Game
+            </button>
+
+            <button type="button" id="nextLevel" disabled>
+                Next Level
+            </button>
         </div>
 
         <div class="golf-scoreboard">
             <p id="levelDisplay">Level 1 of 3</p>
-            <p>Shots this level: <span id="shotCount">0</span></p>
-            <p>Total shots: <span id="totalShots">0</span></p>
-            <p>Power-ups: <span id="powerUpCount">0</span></p>
-            <p>Coins: <span id="coinCount">0</span></p>
+
+            <p>
+                Shots this level:
+                <span id="shotCount">0</span>
+            </p>
+
+            <p>
+                Total shots:
+                <span id="totalShots">0</span>
+            </p>
+
+            <p>
+                Power-ups collected:
+                <span id="powerUpCount">0</span>
+            </p>
+
+            <p>
+                Coins collected:
+                <span id="coinCount">0</span>
+            </p>
         </div>
 
         <p id="golfStatus" role="status" aria-live="polite">
@@ -69,7 +91,7 @@
                 id="golfCanvas"
                 width="900"
                 height="520"
-                aria-label="Interactive mini golf game"
+                aria-label="Interactive mini golf game with an animated golf ball, obstacles, and power-ups"
                 role="img">
                 Your browser does not support HTML5 canvas.
             </canvas>
@@ -78,22 +100,25 @@
         <p class="golf-help">
             <strong>How to play:</strong>
             Wait for the opening animation to finish. Click or touch
-            the ball, drag backward to aim, and release to shoot.
-            Collect power-ups, avoid water, and get the ball into the
-            hole. Click Next Level after completing a hole.
+            the golf ball, drag backward to aim, and release to shoot.
+            Collect power-ups, avoid water hazards, and get the ball
+            into the hole. Click Next Level to continue.
         </p>
     </section>
 
     <section>
         <h2>About This Assignment</h2>
+
         <p>
-            This project demonstrates client-side JavaScript using
-            HTML5 canvas. The golf ball animates automatically during
-            the opening screen, bounces within the course boundaries,
-            and responds to pointer input. Additional features include
-            obstacles, friction, power-ups, and three playable levels.
+            This project demonstrates JavaScript animation using the
+            HTML5 canvas. The golf ball moves automatically during the
+            opening animation and bounces off the course boundaries.
+            Players can aim and shoot using mouse or touch interactions.
+            The game also features obstacles, sand friction, collectible
+            power-ups, scoring, and three levels.
         </p>
     </section>
+
 </main>
 
 <footer>
@@ -101,5 +126,6 @@
 </footer>
 
 <script src="assignment9.js"></script>
+
 </body>
 </html>

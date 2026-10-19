@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Assignment 9 - Interactive Mini Golf Game">
+    <meta name="description" content="Assignment 9 - Interactive Mini Golf with JavaScript Animation">
     <title>Assignment 9 - Mini Golf</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>My COP4813</h1>
-    <p>Web programming and personal portfolio</p>
+    <h1>Interactive Mini Golf</h1>
+    <p>Assignment 9 - JavaScript Canvas Animation</p>
 </header>
 
 <nav aria-label="Main navigation">
@@ -31,24 +32,28 @@
 
 <main>
     <section class="golf-section">
-        <h2>Mini Golf Challenge</h2>
+        <h2>Welcome to Mini Golf!</h2>
 
         <p class="golf-intro">
-            Welcome to the practice green! Aim your shot, control
-            your power, and try to get the golf ball into the hole
+            Watch the golf ball move and bounce around the course.
+            Then aim your shots and try to get the ball into the hole
             in as few attempts as possible.
         </p>
 
         <div class="golf-dashboard">
-            <div class="golf-score-panel">
+            <div>
                 <p class="golf-label">YOUR SCORE</p>
                 <p class="golf-score" id="shotCount">0 shots</p>
+            </div>
+
+            <div>
+                <p class="golf-label">GAME STATUS</p>
                 <p id="golfStatus" role="status" aria-live="polite">
-                    Drag from the golf ball to aim your first shot.
+                    Watch the opening animation!
                 </p>
             </div>
 
-            <button type="button" id="resetGolf" class="golf-reset">
+            <button type="button" class="golf-reset" id="resetGolf">
                 New Game
             </button>
         </div>
@@ -58,8 +63,7 @@
                 id="golfCanvas"
                 width="900"
                 height="520"
-                role="img"
-                aria-label="Interactive mini golf course. Drag from the golf ball to aim and release to shoot toward the hole.">
+                aria-label="Interactive mini golf course. The ball moves, bounces, and responds to mouse clicks.">
                 Your browser does not support HTML5 canvas.
             </canvas>
         </div>
@@ -67,25 +71,27 @@
         <div class="golf-instructions">
             <h3>How to Play</h3>
             <ol>
-                <li>Place your pointer on the golf ball.</li>
-                <li>Click or touch and drag toward where you want to shoot.</li>
-                <li>Release to hit the ball. A longer drag creates a stronger shot.</li>
+                <li>Watch the golf ball move diagonally and bounce when the game loads.</li>
+                <li>Click the ball to see a visual flash.</li>
+                <li>Drag from the ball in the direction you want to shoot, then release.</li>
                 <li>Wait for the ball to stop before taking your next shot.</li>
-                <li>Get the ball into the hole to win!</li>
+                <li>Sand bunkers slow the ball down. Try to reach the hole in as few shots as possible.</li>
+                <li>Choose New Game to restart.</li>
             </ol>
         </div>
     </section>
 
-    <section class="golf-section">
+    <section>
         <h2>About This Assignment</h2>
 
         <p>
-            This project demonstrates client-side JavaScript and
-            HTML5 canvas animation. Players aim and shoot a golf
-            ball using mouse or touch events. The ball moves with
-            simulated friction, bounces off the canvas boundaries,
-            and responds to user interaction. The objective is to
-            reach the golf hole in as few shots as possible.
+            This project demonstrates JavaScript animation and
+            client-side interactivity using the HTML5 canvas.
+            The golf ball moves diagonally and bounces off the
+            boundaries during the opening animation. Players can
+            click the ball to trigger a visible effect and drag
+            to aim their shots. The game also demonstrates motion,
+            boundary detection, friction, and mouse events.
         </p>
     </section>
 </main>

@@ -1609,144 +1609,168 @@ Assignment 6 Mobile Layout
 
 
 
-
 /* ============================================
-   Assignment 9 - Interactive Golf Course
+   Assignment 9 - Simple Professional Golf
 ============================================ */
 
 .golf-section {
-    text-align: center;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e3eae3;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+    text-align: left;
+}
+
+.golf-section h2 {
+    margin-top: 0;
+    color: #205b3b;
 }
 
 .golf-intro {
     max-width: 750px;
-    margin: 0 auto 25px;
-    color: #536174;
-    line-height: 1.6;
+    margin: 0 0 22px;
+    color: #58665d;
+    line-height: 1.7;
 }
 
-.golf-legend {
+/* Score panel and game controls */
+
+.golf-dashboard {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 16px;
+    margin: 20px 0 14px;
+    padding: 16px 20px;
+    background: #f1f6f0;
+    border: 1px solid #dce8dc;
+    border-radius: 10px;
 }
 
-.golf-legend span {
-    display: inline-block;
-    padding: 8px 14px;
-    background-color: #e8f5e9;
-    border: 1px solid #b7d9b9;
-    border-radius: 20px;
-    color: #245c2a;
-    font-size: 0.9rem;
+.golf-dashboard p {
+    margin: 4px 0;
+}
+
+.golf-score {
+    color: #205b3b;
+    font-size: 1.35rem;
     font-weight: bold;
+}
+
+#golfStatus {
+    min-height: 24px;
+    color: #536b59;
+    font-size: 0.9rem;
 }
 
 .golf-controls {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin: 20px 0;
+    gap: 10px;
 }
 
 .golf-controls button {
-    padding: 13px 22px;
-    border: none;
+    padding: 11px 20px;
+    border: 1px solid #246442;
     border-radius: 7px;
-    background-color: #246b35;
-    color: white;
+    background: #246442;
+    color: #ffffff;
     font-family: Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
 }
 
-.golf-controls button:hover,
-.golf-controls button:focus {
-    background-color: #174722;
-}
-
 .golf-controls button:hover {
+    background: #17472d;
     transform: translateY(-2px);
 }
 
 .golf-controls button:focus-visible {
-    outline: 3px solid #f4d35e;
+    outline: 3px solid #e8c95b;
     outline-offset: 3px;
 }
 
-#golfStatus {
-    min-height: 28px;
-    margin: 18px auto;
-    color: #246b35;
-    font-weight: bold;
+.golf-controls .reset-button {
+    background: #ffffff;
+    color: #28523a;
+    border-color: #c8d8ca;
 }
+
+.golf-controls .reset-button:hover {
+    background: #e5eee5;
+}
+
+/* Canvas and course border */
 
 .golf-canvas-wrap {
     width: 100%;
     max-width: 900px;
-    margin: 20px auto;
+    margin: 18px auto;
     overflow: hidden;
-    background-color: #176b32;
-    border: 4px solid #245c2a;
-    border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    background: #246b3b;
+    border: 4px solid #e1e9df;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(24, 57, 34, 0.12);
 }
 
 #golfCanvas {
     display: block;
     width: 100%;
     height: auto;
-    background-color: #4caf50;
+    background: #397b48;
     cursor: crosshair;
     touch-action: manipulation;
 }
 
+/* Instructions */
+
 .golf-help {
     max-width: 750px;
-    margin: 20px auto 0;
-    padding: 16px;
-    background-color: #e8f5e9;
-    border-left: 5px solid #246b35;
-    border-radius: 7px;
-    color: #385342;
-    text-align: left;
-    line-height: 1.6;
+    margin: 18px auto 0;
+    padding: 14px 16px;
+    background: #f3f7f2;
+    border-left: 4px solid #4d865a;
+    border-radius: 5px;
+    color: #53665a;
+    font-size: 0.93rem;
+    line-height: 1.7;
 }
 
 /* ============================================
-   Assignment 9 - Mobile Layout
+   Assignment 9 - Responsive Layout
 ============================================ */
 
 @media (max-width: 600px) {
     .golf-section {
-        padding: 20px;
+        margin: 16px auto;
+        padding: 16px;
+        border-radius: 10px;
     }
 
-    .golf-legend {
-        gap: 7px;
-    }
-
-    .golf-legend span {
-        padding: 7px 10px;
-        font-size: 0.8rem;
+    .golf-dashboard {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px;
     }
 
     .golf-controls {
-        flex-direction: column;
+        width: 100%;
     }
 
     .golf-controls button {
-        width: 100%;
+        flex: 1;
+        padding: 11px 12px;
     }
 
     .golf-canvas-wrap {
         border-width: 3px;
-        border-radius: 7px;
+        border-radius: 8px;
     }
 
     .golf-help {

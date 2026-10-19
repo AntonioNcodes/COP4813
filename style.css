@@ -1608,9 +1608,8 @@ Assignment 6 Mobile Layout
 .field-label { font-size: 0.85rem; letter-spacing: 2px; } }
 
 
-
 /* ============================================
-   Assignment 9 - Simple Professional Golf
+   Assignment 9 - Mini Golf Game
 ============================================ */
 
 .golf-section {
@@ -1621,7 +1620,6 @@ Assignment 6 Mobile Layout
     border: 1px solid #e3eae3;
     border-radius: 14px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-    text-align: left;
 }
 
 .golf-section h2 {
@@ -1630,13 +1628,10 @@ Assignment 6 Mobile Layout
 }
 
 .golf-intro {
-    max-width: 750px;
-    margin: 0 0 22px;
     color: #58665d;
     line-height: 1.7;
+    max-width: 760px;
 }
-
-/* Score panel and game controls */
 
 .golf-dashboard {
     display: flex;
@@ -1644,78 +1639,65 @@ Assignment 6 Mobile Layout
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
-    margin: 20px 0 14px;
-    padding: 16px 20px;
+    margin: 22px 0 16px;
+    padding: 17px 20px;
     background: #f1f6f0;
     border: 1px solid #dce8dc;
     border-radius: 10px;
 }
 
 .golf-dashboard p {
-    margin: 4px 0;
+    margin: 5px 0;
+}
+
+.golf-label {
+    color: #637568;
+    font-size: 0.78rem;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .golf-score {
     color: #205b3b;
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
 #golfStatus {
+    max-width: 620px;
     min-height: 24px;
     color: #536b59;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
 }
 
-.golf-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.golf-controls button {
+.golf-reset {
     padding: 11px 20px;
-    border: 1px solid #246442;
+    border: 1px solid #c8d8ca;
     border-radius: 7px;
-    background: #246442;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #28523a;
     font-size: 0.95rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
 }
 
-.golf-controls button:hover {
-    background: #17472d;
-    transform: translateY(-2px);
-}
-
-.golf-controls button:focus-visible {
-    outline: 3px solid #e8c95b;
-    outline-offset: 3px;
-}
-
-.golf-controls .reset-button {
-    background: #ffffff;
-    color: #28523a;
-    border-color: #c8d8ca;
-}
-
-.golf-controls .reset-button:hover {
+.golf-reset:hover {
     background: #e5eee5;
 }
 
-/* Canvas and course border */
+.golf-reset:focus-visible {
+    outline: 3px solid #e8c95b;
+    outline-offset: 3px;
+}
 
 .golf-canvas-wrap {
     width: 100%;
     max-width: 900px;
     margin: 18px auto;
     overflow: hidden;
-    background: #246b3b;
     border: 4px solid #e1e9df;
     border-radius: 12px;
+    background: #28653c;
     box-shadow: 0 4px 12px rgba(24, 57, 34, 0.12);
 }
 
@@ -1723,34 +1705,38 @@ Assignment 6 Mobile Layout
     display: block;
     width: 100%;
     height: auto;
-    background: #397b48;
     cursor: crosshair;
-    touch-action: manipulation;
+    touch-action: none;
 }
 
-/* Instructions */
-
-.golf-help {
-    max-width: 750px;
-    margin: 18px auto 0;
-    padding: 14px 16px;
+.golf-instructions {
+    margin-top: 22px;
+    padding: 17px 20px;
     background: #f3f7f2;
     border-left: 4px solid #4d865a;
-    border-radius: 5px;
+    border-radius: 6px;
     color: #53665a;
-    font-size: 0.93rem;
-    line-height: 1.7;
+    line-height: 1.8;
+}
+
+.golf-instructions h3 {
+    margin-top: 0;
+    color: #28523a;
+}
+
+.golf-instructions ol {
+    padding-left: 22px;
+    margin-bottom: 0;
 }
 
 /* ============================================
-   Assignment 9 - Responsive Layout
+   Assignment 9 - Responsive Mobile Layout
 ============================================ */
 
 @media (max-width: 600px) {
     .golf-section {
         margin: 16px auto;
         padding: 16px;
-        border-radius: 10px;
     }
 
     .golf-dashboard {
@@ -1759,13 +1745,8 @@ Assignment 6 Mobile Layout
         padding: 14px;
     }
 
-    .golf-controls {
+    .golf-reset {
         width: 100%;
-    }
-
-    .golf-controls button {
-        flex: 1;
-        padding: 11px 12px;
     }
 
     .golf-canvas-wrap {
@@ -1773,7 +1754,7 @@ Assignment 6 Mobile Layout
         border-radius: 8px;
     }
 
-    .golf-help {
-        padding: 12px;
+    .golf-instructions {
+        padding: 13px;
     }
 }

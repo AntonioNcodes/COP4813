@@ -1758,3 +1758,66 @@ Assignment 6 Mobile Layout
         padding: 13px;
     }
 }
+
+
+/* =========================================
+   COP4813 Mobile Improvements
+   ========================================= */
+
+@media (max-width: 600px) {
+    /* Make navigation fit the phone screen */
+    nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    nav li {
+        width: 100%;
+    }
+
+    nav a {
+        width: 100%;
+        min-height: 44px;
+        padding: 12px;
+        text-align: left;
+    }
+
+    /* Adjust the header */
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    /* Give content more room on small screens */
+    main {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    section {
+        padding: 18px;
+    }
+
+    /* Keep images inside the screen */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Keep footer text inside the screen */
+    footer {
+        overflow-wrap: anywhere;
+    }
+}
+
+/* Improve keyboard accessibility */
+nav a:focus-visible,
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #ffd54a;
+    outline-offset: 3px;
+}

@@ -12,6 +12,7 @@
     <title>My COP4813 Website | Home</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="index.js" defer></script>
 </head>
 
 <body>
@@ -21,7 +22,21 @@
         <p>Web programming and personal portfolio</p>
     </header>
 
-    <nav class="main-navigation" aria-label="Main navigation">
+    <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-navigation"
+    >
+        <span aria-hidden="true">&#9776;</span>
+        <span class="menu-button-text">Menu</span>
+    </button>
+
+    <nav
+        class="main-navigation"
+        id="site-navigation"
+        aria-label="Main navigation"
+    >
         <ul>
             <li><a href="index.html" aria-current="page">Home</a></li>
             <li><a href="about.html">About Me</a></li>
@@ -82,39 +97,25 @@
 
             <ul class="assignment-list">
                 <li>
-                    <a href="assignment2.html">
-                        Assignment 2 - Website Creation
-                    </a>
+                    <a href="assignment2.html">Assignment 2 - Website Creation</a>
                 </li>
                 <li>
-                    <a href="assignment3.html">
-                        Assignment 3 - Forms
-                    </a>
+                    <a href="assignment3.html">Assignment 3 - Forms</a>
                 </li>
                 <li>
-                    <a href="assignment4.html">
-                        Assignment 4 - Creating Plots
-                    </a>
+                    <a href="assignment4.html">Assignment 4 - Creating Plots</a>
                 </li>
                 <li>
-                    <a href="assignment5.html">
-                        Assignment 5 - Spirograph
-                    </a>
+                    <a href="assignment5.html">Assignment 5 - Spirograph</a>
                 </li>
                 <li>
-                    <a href="assignment6.html">
-                        Assignment 6 - JSON
-                    </a>
+                    <a href="assignment6.html">Assignment 6 - JSON</a>
                 </li>
                 <li>
-                    <a href="assignment7.html">
-                        Assignment 7 - Soccer Challenge
-                    </a>
+                    <a href="assignment7.html">Assignment 7 - Soccer Challenge</a>
                 </li>
                 <li>
-                    <a href="assignment9.html">
-                        Assignment 9 - Golf Animation
-                    </a>
+                    <a href="assignment9.html">Assignment 9 - Golf Animation</a>
                 </li>
             </ul>
         </section>

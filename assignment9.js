@@ -910,3 +910,5 @@ function initializeGame() {
 }
 
 initializeGame();
+
+console.log("Mini Golf JavaScript is loading!");

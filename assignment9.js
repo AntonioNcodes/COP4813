@@ -1,8 +1,7 @@
-
 "use strict";
 
 // ASSIGNMENT 9: INTERACTIVE MINI GOLF
-// Part 1: Setup, game variables, and levels
+// PART 1: SETUP AND GAME VARIABLES
 
 const canvas = document.getElementById("golfCanvas");
 const ctx = canvas.getContext("2d");
@@ -25,6 +24,16 @@ const MAX_SPEED = 10;
 const FRICTION = 0.985;
 const STOP_SPEED = 0.08;
 
+const BALL_COLORS = [
+    "#ffffff",
+    "#ff5252",
+    "#ffd740",
+    "#40c4ff",
+    "#e040fb",
+    "#69f0ae",
+    "#ff9100"
+];
+
 let level = 1;
 let shots = 0;
 let totalShots = 0;
@@ -44,19 +53,15 @@ let gameComplete = false;
 
 let pointerX = 0;
 let pointerY = 0;
-let ballColor = "#ffffff";
-let colorIndex = 0;
 
-const ballColors = [
-    "#ffffff",
-    "#ff5252",
-    "#ffd740",
-    "#40c4ff",
-    "#e040fb",
-    "#69f0ae",
-    "#ff9100"
-];
+let ballColorIndex = 0;
+let ballColor = BALL_COLORS[ballColorIndex];
 
+let openingFrames = 180;
+let lastSafePosition = { x: 100, y: 400 };
+let boostNextShot = false;
+
+// Create a level with a starting ball and hole.
 function createLevel(number) {
     ball = {
         x: 100,
@@ -67,8 +72,8 @@ function createLevel(number) {
     };
 
     hole = {
-        x: 790,
-        y: 100,
+        x: 780,
+        y: 120,
         radius: 19
     };
 
@@ -76,57 +81,62 @@ function createLevel(number) {
     powerUps = [];
 
     if (number === 1) {
-        hole = { x: 780, y: 120, radius: 19 };
-
         rocks.push(
-            { x: 350, y: 250, radius: 25 },
-            { x: 540, y: 360, radius: 28 }
+            { x: 360, y: 260, radius: 25 }
         );
 
         powerUps.push(
             { x: 240, y: 300, type: "star", collected: false },
-            { x: 490, y: 150, type: "coin", collected: false }
+            { x: 500, y: 150, type: "coin", collected: false }
         );
     }
 
     if (number === 2) {
-        hole = { x: 790, y: 90, radius: 19 };
+        hole.y = 100;
 
         rocks.push(
-            { x: 300, y: 190, radius: 28 },
-            { x: 430, y: 330, radius: 30 },
-            { x: 600, y: 200, radius: 25 },
-            { x: 690, y: 350, radius: 25 }
+            { x: 310, y: 200, radius: 27 },
+            { x: 470, y: 320, radius: 30 },
+            { x: 630, y: 210, radius: 25 }
         );
 
         powerUps.push(
-            { x: 240, y: 250, type: "star", collected: false },
-            { x: 500, y: 110, type: "coin", collected: false },
-            { x: 650, y: 260, type: "boost", collected: false }
+            { x: 260, y: 260, type: "star", collected: false },
+            { x: 520, y: 120, type: "coin", collected: false },
+            { x: 650, y: 330, type: "boost", collected: false }
         );
     }
 
     if (number === 3) {
-        hole = { x: 790, y: 100, radius: 19 };
+        hole = {
+            x: 790,
+            y: 100,
+            radius: 19
+        };
 
         rocks.push(
-            { x: 260, y: 180, radius: 25 },
-            { x: 390, y: 330, radius: 30 },
-            { x: 520, y: 180, radius: 27 },
-            { x: 640, y: 320, radius: 30 },
-            { x: 720, y: 200, radius: 22 }
+            { x: 280, y: 180, radius: 25 },
+            { x: 420, y: 330, radius: 30 },
+            { x: 560, y: 180, radius: 27 },
+            { x: 680, y: 300, radius: 28 }
         );
 
         powerUps.push(
-            { x: 220, y: 300, type: "star", collected: false },
-            { x: 470, y: 410, type: "coin", collected: false },
-            { x: 680, y: 130, type: "boost", collected: false }
+            { x: 230, y: 300, type: "star", collected: false },
+            { x: 480, y: 420, type: "coin", collected: false },
+            { x: 690, y: 150, type: "boost", collected: false }
         );
     }
+
+    lastSafePosition = {
+        x: ball.x,
+        y: ball.y
+    };
 
     updateScoreboard();
 }
 
+// Update the numbers displayed in the HTML.
 function updateScoreboard() {
     levelDisplay.textContent = "Level " + level + " of 3";
     shotDisplay.textContent = shots;
@@ -136,10 +146,10 @@ function updateScoreboard() {
 }
 
 
- // PART 2: DRAW THE COURSE, HOLE, OBSTACLES, AND BALL
+ // PART 2: DRAW THE COURSE, POWER-UPS, AND BALL
 
 function drawCourse() {
-    // Green grass background
+    // Grass background
     const grass = ctx.createLinearGradient(0, 0, W, H);
     grass.addColorStop(0, "#39834b");
     grass.addColorStop(1, "#174d2b");
@@ -147,7 +157,7 @@ function drawCourse() {
     ctx.fillStyle = grass;
     ctx.fillRect(0, 0, W, H);
 
-    // Lighter putting area
+    // Putting area
     ctx.fillStyle = "#83c76c";
     ctx.beginPath();
     ctx.ellipse(450, 270, 360, 220, 0, 0, Math.PI * 2);
@@ -167,13 +177,12 @@ function drawCourse() {
 
     ctx.restore();
 
-    // Hole
+    // Draw the hole and rim
     ctx.fillStyle = "#16351f";
     ctx.beginPath();
     ctx.arc(hole.x, hole.y, hole.radius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Hole rim
     ctx.strokeStyle = "#d5e8bd";
     ctx.lineWidth = 4;
     ctx.stroke();
@@ -186,7 +195,7 @@ function drawCourse() {
     ctx.lineTo(hole.x, hole.y - 55);
     ctx.stroke();
 
-    // Red flag
+    // Flag
     ctx.fillStyle = "#ff4545";
     ctx.beginPath();
     ctx.moveTo(hole.x, hole.y - 55);
@@ -195,17 +204,11 @@ function drawCourse() {
     ctx.closePath();
     ctx.fill();
 
-    // Rocks
+    // Draw rocks
     for (const rock of rocks) {
         ctx.fillStyle = "#737b80";
         ctx.beginPath();
-        ctx.arc(
-            rock.x,
-            rock.y,
-            rock.radius,
-            0,
-            Math.PI * 2
-        );
+        ctx.arc(rock.x, rock.y, rock.radius, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.strokeStyle = "#d6dadd";
@@ -213,8 +216,8 @@ function drawCourse() {
         ctx.stroke();
     }
 
-    // Power-ups
-    const powerUpStyles = {
+    // Draw power-ups
+    const styles = {
         star: { color: "#ffbf00", symbol: "★" },
         coin: { color: "#f5a623", symbol: "$" },
         boost: { color: "#20c9df", symbol: "⚡" }
@@ -223,7 +226,7 @@ function drawCourse() {
     for (const item of powerUps) {
         if (item.collected) continue;
 
-        const style = powerUpStyles[item.type];
+        const style = styles[item.type];
 
         ctx.fillStyle = style.color;
         ctx.beginPath();
@@ -241,7 +244,7 @@ function drawCourse() {
         ctx.fillText(style.symbol, item.x, item.y);
     }
 
-    // Course label
+    // Level label
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     ctx.fillStyle = "#ffffff";
@@ -269,7 +272,7 @@ function drawBall() {
     );
     ctx.fill();
 
-    // Shiny golf ball
+    // Shiny ball using the current color
     const gradient = ctx.createRadialGradient(
         ball.x - 4,
         ball.y - 5,
@@ -281,25 +284,19 @@ function drawBall() {
 
     gradient.addColorStop(0, "#ffffff");
     gradient.addColorStop(0.45, ballColor);
-    gradient.addColorStop(1, "#777777");
+    gradient.addColorStop(1, "#555555");
 
     ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.arc(
-        ball.x,
-        ball.y,
-        ball.radius,
-        0,
-        Math.PI * 2
-    );
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = "#e4e4e4";
+    ctx.strokeStyle = "#333333";
     ctx.lineWidth = 1;
     ctx.stroke();
 }
 
-// Draw the aiming guide while dragging the ball
+// Show the aiming line while dragging backward.
 function drawAim() {
     if (!dragging || demoActive || moving) return;
 
@@ -312,7 +309,6 @@ function drawAim() {
     const length = Math.min(distance, MAX_DRAG);
 
     ctx.save();
-
     ctx.strokeStyle = "#fff176";
     ctx.lineWidth = 3;
     ctx.setLineDash([7, 5]);
@@ -320,14 +316,12 @@ function drawAim() {
     ctx.beginPath();
     ctx.moveTo(ball.x, ball.y);
     ctx.lineTo(
-        ball.x + (dx / distance) * length,
-        ball.y + (dy / distance) * length
+        ball.x + dx / distance * length,
+        ball.y + dy / distance * length
     );
     ctx.stroke();
-
     ctx.restore();
 
-    // Shot power indicator
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 15px Arial";
     ctx.textAlign = "left";
@@ -340,56 +334,40 @@ function drawAim() {
 }
 
 
- // PART 3: MOUSE CONTROLS, AIMING, AND BALL COLOR
+ // PART 3: POINTER CONTROLS AND BALL COLOR
 
-let isDragging = false;
-let aimX = 0;
-let aimY = 0;
-let ballColor = "#ffffff";
-let colorIndex = 0;
-
-const ballColors = [
-    "#ffffff",
-    "#ff5252",
-    "#ffd740",
-    "#40c4ff",
-    "#e040fb",
-    "#69f0ae"
-];
-
-function getMousePosition(event) {
+function getPointerPosition(event) {
     const rect = canvas.getBoundingClientRect();
 
     return {
-        x: (event.clientX - rect.left) * canvas.width / rect.width,
-        y: (event.clientY - rect.top) * canvas.height / rect.height
+        x: (event.clientX - rect.left) * W / rect.width,
+        y: (event.clientY - rect.top) * H / rect.height
     };
 }
 
-// Click or touch the ball to change its color.
 canvas.addEventListener("pointerdown", function (event) {
     if (demoActive || moving || levelComplete || gameComplete) {
         return;
     }
 
-    const position = getMousePosition(event);
+    const position = getPointerPosition(event);
+
     const distance = Math.hypot(
         position.x - ball.x,
         position.y - ball.y
     );
 
+    // Only start aiming if the player clicks the ball.
     if (distance <= ball.radius + 15) {
-        isDragging = true;
         dragging = true;
-
-        aimX = position.x;
-        aimY = position.y;
-
         pointerX = position.x;
         pointerY = position.y;
 
-        colorIndex = (colorIndex + 1) % ballColors.length;
-        ballColor = ballColors[colorIndex];
+        // Assignment requirement: respond to a click by changing color.
+        ballColorIndex =
+            (ballColorIndex + 1) % BALL_COLORS.length;
+
+        ballColor = BALL_COLORS[ballColorIndex];
 
         canvas.setPointerCapture(event.pointerId);
 
@@ -399,27 +377,22 @@ canvas.addEventListener("pointerdown", function (event) {
 });
 
 canvas.addEventListener("pointermove", function (event) {
-    if (!isDragging) return;
+    if (!dragging) return;
 
-    const position = getMousePosition(event);
-
-    aimX = position.x;
-    aimY = position.y;
+    const position = getPointerPosition(event);
 
     pointerX = position.x;
     pointerY = position.y;
 });
 
 canvas.addEventListener("pointerup", function () {
-    if (!isDragging) return;
+    if (!dragging) return;
 
-    isDragging = false;
     dragging = false;
 
-    const distance = Math.hypot(
-        ball.x - aimX,
-        ball.y - aimY
-    );
+    const dx = ball.x - pointerX;
+    const dy = ball.y - pointerY;
+    const distance = Math.hypot(dx, dy);
 
     if (distance < 8) {
         statusText.textContent =
@@ -430,104 +403,143 @@ canvas.addEventListener("pointerup", function () {
     const power = Math.min(distance, MAX_DRAG);
     const speed = power / MAX_DRAG * MAX_SPEED;
 
-    ball.dx = (ball.x - aimX) / distance * speed;
-    ball.dy = (ball.y - aimY) / distance * speed;
+    ball.dx = dx / distance * speed;
+    ball.dy = dy / distance * speed;
+
+    // Apply a collected boost to this shot.
+    if (boostNextShot) {
+        ball.dx *= 1.4;
+        ball.dy *= 1.4;
+
+        boostNextShot = false;
+    }
 
     shots++;
     totalShots++;
-
     moving = true;
-    lastSafePosition = { x: ball.x, y: ball.y };
+
+    lastSafePosition = {
+        x: ball.x,
+        y: ball.y
+    };
 
     updateScoreboard();
 
     statusText.textContent =
-        "Shot taken! Watch the ball roll toward the hole.";
+        "Shot taken! Watch the ball roll.";
 });
 
 canvas.addEventListener("pointercancel", function () {
-    isDragging = false;
     dragging = false;
 });
 
 
- // PART 4: BALL MOVEMENT, BOUNCING, AND PHYSICS
-
-const FRICTION = 0.985;
-const WALL_BOUNCE = 0.8;
-const ROCK_BOUNCE = 0.75;
+ // PART 4: BALL PHYSICS AND POWER-UPS
 
 function updateBall() {
     if (!moving || demoActive || levelComplete || gameComplete) {
         return;
     }
 
-    // Move the ball
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Bounce off the left and right walls
+    // Bounce off the course walls.
     if (ball.x - ball.radius < 10) {
         ball.x = 10 + ball.radius;
-        ball.dx = Math.abs(ball.dx) * WALL_BOUNCE;
+        ball.dx = Math.abs(ball.dx) * 0.8;
     }
 
-    if (ball.x + ball.radius > canvas.width - 10) {
-        ball.x = canvas.width - 10 - ball.radius;
-        ball.dx = -Math.abs(ball.dx) * WALL_BOUNCE;
+    if (ball.x + ball.radius > W - 10) {
+        ball.x = W - 10 - ball.radius;
+        ball.dx = -Math.abs(ball.dx) * 0.8;
     }
 
-    // Bounce off the top and bottom walls
     if (ball.y - ball.radius < 10) {
         ball.y = 10 + ball.radius;
-        ball.dy = Math.abs(ball.dy) * WALL_BOUNCE;
+        ball.dy = Math.abs(ball.dy) * 0.8;
     }
 
-    if (ball.y + ball.radius > canvas.height - 10) {
-        ball.y = canvas.height - 10 - ball.radius;
-        ball.dy = -Math.abs(ball.dy) * WALL_BOUNCE;
+    if (ball.y + ball.radius > H - 10) {
+        ball.y = H - 10 - ball.radius;
+        ball.dy = -Math.abs(ball.dy) * 0.8;
     }
 
-    // Bounce off rocks
+    // Bounce off rocks.
     for (const rock of rocks) {
         const dx = ball.x - rock.x;
         const dy = ball.y - rock.y;
         const distance = Math.hypot(dx, dy);
-        const minimumDistance = ball.radius + rock.radius;
+        const minimum = ball.radius + rock.radius;
 
-        if (distance < minimumDistance && distance > 0) {
+        if (distance < minimum && distance > 0) {
             const nx = dx / distance;
             const ny = dy / distance;
 
-            // Move the ball outside the rock
-            ball.x = rock.x + nx * minimumDistance;
-            ball.y = rock.y + ny * minimumDistance;
+            ball.x = rock.x + nx * minimum;
+            ball.y = rock.y + ny * minimum;
 
-            // Reverse the part of velocity aimed at the rock
             const dot = ball.dx * nx + ball.dy * ny;
 
             if (dot < 0) {
-                ball.dx -= 2 * dot * nx;
-                ball.dy -= 2 * dot * ny;
-
-                ball.dx *= ROCK_BOUNCE;
-                ball.dy *= ROCK_BOUNCE;
+                ball.dx = (ball.dx - 2 * dot * nx) * 0.75;
+                ball.dy = (ball.dy - 2 * dot * ny) * 0.75;
             }
         }
     }
 
-    // Slow the ball down naturally
+    // Collect power-ups.
+    for (const item of powerUps) {
+        if (item.collected) continue;
+
+        const distance = Math.hypot(
+            ball.x - item.x,
+            ball.y - item.y
+        );
+
+        if (distance < ball.radius + 16) {
+            item.collected = true;
+            powerUpsCollected++;
+
+            if (item.type === "star") {
+                // A star makes the next shot stronger.
+                boostNextShot = true;
+                statusText.textContent =
+                    "Super Shot collected! Your next shot is stronger.";
+            }
+
+            if (item.type === "boost") {
+                ball.dx *= 1.4;
+                ball.dy *= 1.4;
+
+                statusText.textContent = "Speed boost collected!";
+            }
+
+            if (item.type === "coin") {
+                coinsCollected++;
+                statusText.textContent = "Bonus coin collected!";
+            }
+
+            updateScoreboard();
+        }
+    }
+
+    lastSafePosition = {
+        x: ball.x,
+        y: ball.y
+    };
+
+    // Friction gradually slows the ball down.
     ball.dx *= FRICTION;
     ball.dy *= FRICTION;
 
-    // Check whether the ball reaches the hole
+    const speed = Math.hypot(ball.dx, ball.dy);
     const distanceToHole = Math.hypot(
         ball.x - hole.x,
         ball.y - hole.y
     );
 
-    const speed = Math.hypot(ball.dx, ball.dy);
-
+    // Sink the ball when it reaches the hole slowly enough.
     if (distanceToHole < hole.radius && speed < 4) {
         ball.x = hole.x;
         ball.y = hole.y;
@@ -540,10 +552,12 @@ function updateBall() {
         if (level === 3) {
             gameComplete = true;
             nextButton.disabled = true;
+
             statusText.textContent =
                 "You won! All three levels completed!";
         } else {
             nextButton.disabled = false;
+
             statusText.textContent =
                 "Level complete! Click Next Level to continue.";
         }
@@ -552,9 +566,11 @@ function updateBall() {
         return;
     }
 
-    // Stop the ball when it has almost stopped rolling
-    if (Math.abs(ball.dx) < 0.08 &&
-        Math.abs(ball.dy) < 0.08) {
+    // Stop the ball when it nearly stops rolling.
+    if (
+        Math.abs(ball.dx) < STOP_SPEED &&
+        Math.abs(ball.dy) < STOP_SPEED
+    ) {
         ball.dx = 0;
         ball.dy = 0;
         moving = false;
@@ -564,162 +580,29 @@ function updateBall() {
     }
 }
 
-// Draw the golf ball with its current color
-function drawColoredBall() {
-    ctx.save();
 
-    // Shadow
-    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-    ctx.beginPath();
-    ctx.ellipse(
-        ball.x + 4,
-        ball.y + 5,
-        ball.radius + 2,
-        ball.radius * 0.65,
-        0, 0, Math.PI * 2
-    );
-    ctx.fill();
-
-    // Ball color
-    const gradient = ctx.createRadialGradient(
-        ball.x - 4,
-        ball.y - 5,
-        1,
-        ball.x,
-        ball.y,
-        ball.radius * 1.4
-    );
-
-    gradient.addColorStop(0, "#ffffff");
-    gradient.addColorStop(0.35, ballColor);
-    gradient.addColorStop(1, "#555555");
-
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = "#333333";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    ctx.restore();
-}
-
-// PART 5: LEVEL PROGRESSION, RESTART, AND SCORING
+ // PART 5: RESTART AND LEVEL PROGRESSION
 
 function startNewLevel() {
     moving = false;
     dragging = false;
-    isDragging = false;
 
     levelComplete = false;
     gameComplete = false;
 
     boostNextShot = false;
-    magnetActive = false;
-    shieldActive = false;
+    ballColorIndex = 0;
+    ballColor = BALL_COLORS[ballColorIndex];
 
-    ball = {
-        x: 100,
-        y: 400,
-        radius: 12,
-        dx: 0,
-        dy: 0
-    };
-
-    // Reset the ball color for the new level
-    ballColor = "#ffffff";
-    colorIndex = 0;
-
-    // Set the hole position for each level
-    if (level === 1) {
-        hole = { x: 775, y: 125, radius: 18 };
-    } else if (level === 2) {
-        hole = { x: 775, y: 100, radius: 18 };
-    } else {
-        hole = { x: 790, y: 100, radius: 18 };
-    }
-
-    lastSafePosition = {
-        x: ball.x,
-        y: ball.y
-    };
-
-    // Remove old obstacles and power-ups
-    rocks = [];
-    sand = [];
-    water = [];
-    powerUps = [];
-
-    // Level 1 course
-    if (level === 1) {
-        sand.push({
-            x: 390, y: 280, rx: 75, ry: 38
-        });
-
-        powerUps.push(
-            { x: 210, y: 250, type: "coin", collected: false },
-            { x: 270, y: 335, type: "star", collected: false }
-        );
-    }
-
-    // Level 2 course
-    if (level === 2) {
-        sand.push(
-            { x: 330, y: 275, rx: 70, ry: 36 },
-            { x: 600, y: 330, rx: 65, ry: 32 }
-        );
-
-        rocks.push(
-            { x: 360, y: 170, radius: 24 },
-            { x: 510, y: 250, radius: 28 },
-            { x: 660, y: 170, radius: 22 }
-        );
-
-        powerUps.push(
-            { x: 470, y: 390, type: "boost", collected: false },
-            { x: 690, y: 240, type: "magnet", collected: false },
-            { x: 430, y: 100, type: "coin", collected: false }
-        );
-    }
-
-    // Level 3 course
-    if (level === 3) {
-        sand.push(
-            { x: 280, y: 300, rx: 65, ry: 34 },
-            { x: 600, y: 370, rx: 75, ry: 35 }
-        );
-
-        rocks.push(
-            { x: 330, y: 175, radius: 25 },
-            { x: 470, y: 290, radius: 28 },
-            { x: 650, y: 175, radius: 24 },
-            { x: 720, y: 300, radius: 22 }
-        );
-
-        water.push({
-            x: 510, y: 135, rx: 95, ry: 48
-        });
-
-        powerUps.push(
-            { x: 380, y: 410, type: "star", collected: false },
-            { x: 690, y: 420, type: "boost", collected: false },
-            { x: 400, y: 100, type: "shield", collected: false },
-            { x: 580, y: 220, type: "coin", collected: false }
-        );
-    }
+    createLevel(level);
 
     nextButton.disabled = true;
-
-    updateScoreboard();
 
     statusText.textContent =
         "Level " + level +
         ": Click the ball, drag backward, and release to shoot.";
 }
 
-// Restart the complete game
 function restartGame() {
     level = 1;
     shots = 0;
@@ -728,51 +611,59 @@ function restartGame() {
     coinsCollected = 0;
 
     demoActive = false;
-    demoFrames = 0;
+    openingFrames = 0;
 
     startNewLevel();
 
     statusText.textContent =
-        "Welcome to Mini Golf! Aim for the hole.";
+        "Game restarted! Aim for the hole.";
 }
 
-// Move to the next level
 function goToNextLevel() {
     if (!levelComplete || gameComplete) {
         return;
     }
 
     level++;
-
     shots = 0;
 
     startNewLevel();
 }
 
-// Connect the buttons
+// Connect the HTML buttons to their functions.
 resetButton.addEventListener("click", restartGame);
 
 nextButton.addEventListener("click", goToNextLevel);
 
 
- // PART 6: ANIMATION LOOP AND GAME START
 
-let openingFrames = 180;
+ // PART 6: OPENING ANIMATION AND GAME LOOP
 
 function runOpeningAnimation() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    // Bounce off the left and right boundaries
-    if (ball.x - ball.radius <= 10 ||
-        ball.x + ball.radius >= canvas.width - 10) {
+    // Bounce off the canvas boundaries.
+    if (
+        ball.x - ball.radius <= 10 ||
+        ball.x + ball.radius >= W - 10
+    ) {
         ball.dx *= -1;
     }
 
-    // Bounce off the top and bottom boundaries
-    if (ball.y - ball.radius <= 10 ||
-        ball.y + ball.radius >= canvas.height - 10) {
+    if (
+        ball.y - ball.radius <= 10 ||
+        ball.y + ball.radius >= H - 10
+    ) {
         ball.dy *= -1;
+    }
+
+    // Change the ball's color periodically during the animation.
+    if (openingFrames % 20 === 0) {
+        ballColorIndex =
+            (ballColorIndex + 1) % BALL_COLORS.length;
+
+        ballColor = BALL_COLORS[ballColorIndex];
     }
 
     openingFrames--;
@@ -803,20 +694,22 @@ function drawOpeningScreen() {
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.font = "bold 27px Arial";
+
     ctx.fillText(
-        "WELCOME TO MINI GOLF",
-        canvas.width / 2,
+        "ASSIGNMENT 9",
+        W / 2,
         235
     );
 
     ctx.font = "16px Arial";
+
     ctx.fillText(
-        "Watch the ball bounce before you play!",
-        canvas.width / 2,
+        "Part 1: Animation | Part 2: Mouse Interaction",
+        W / 2,
         270
     );
 
-    ctx.textAlign = "start";
+    ctx.textAlign = "left";
 }
 
 function drawCompletionScreen() {
@@ -829,50 +722,34 @@ function drawCompletionScreen() {
 
     ctx.fillText(
         gameComplete ? "YOU WON!" : "LEVEL COMPLETE!",
-        canvas.width / 2,
+        W / 2,
         240
     );
 
     ctx.font = "17px Arial";
+
     ctx.fillText(
         "Shots this level: " + shots +
         " | Total shots: " + totalShots,
-        canvas.width / 2,
+        W / 2,
         275
     );
 
-    ctx.textAlign = "start";
+    ctx.textAlign = "left";
 }
 
 function gameLoop() {
-    // Update the game
     if (demoActive) {
         runOpeningAnimation();
     } else {
         updateBall();
     }
 
-    // Redraw everything
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, W, H);
 
     drawCourse();
-
-    // Draw the aiming line while dragging
-    if (isDragging && !demoActive) {
-        ctx.save();
-        ctx.strokeStyle = "#fff4a8";
-        ctx.lineWidth = 3;
-        ctx.setLineDash([7, 5]);
-
-        ctx.beginPath();
-        ctx.moveTo(ball.x, ball.y);
-        ctx.lineTo(aimX, aimY);
-        ctx.stroke();
-
-        ctx.restore();
-    }
-
-    drawColoredBall();
+    drawAim();
+    drawBall();
 
     if (demoActive) {
         drawOpeningScreen();
@@ -885,9 +762,8 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// INITIALIZE THE GAME
 function initializeGame() {
-    startNewLevel();
+    createLevel(level);
 
     demoActive = true;
     moving = true;
@@ -903,12 +779,14 @@ function initializeGame() {
         y: ball.y
     };
 
+    nextButton.disabled = true;
+
     statusText.textContent =
         "Welcome! Watch the opening animation.";
 
     gameLoop();
 }
 
+// Start the game.
 initializeGame();
 
-console.log("Mini Golf JavaScript is loading!");

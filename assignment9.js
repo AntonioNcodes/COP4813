@@ -348,6 +348,15 @@ function drawCourse() {
     ctx.font = "bold 17px Arial";
     ctx.fillText("MINI GOLF - LEVEL " + level, 22, 30);
 
+    ctx.fillStyle = "#ffffff";
+ctx.font = "bold 16px Arial";
+ctx.fillText(
+    "Water: " + waterHazards.length +
+    " | Sand: " + sandTraps.length,
+    22,
+    55
+);
+
     // Course boundary
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 5;

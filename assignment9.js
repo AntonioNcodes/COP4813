@@ -44,6 +44,8 @@ let ball;
 let hole;
 let rocks = [];
 let powerUps = [];
+let waterHazards = [];
+let sandTraps = [];
 
 let moving = false;
 let dragging = false;
@@ -77,8 +79,10 @@ function createLevel(number) {
         radius: 19
     };
 
-    rocks = [];
-    powerUps = [];
+   rocks = [];
+powerUps = [];
+waterHazards = [];
+sandTraps = [];
 
     if (number === 1) {
         rocks.push(
@@ -89,6 +93,13 @@ function createLevel(number) {
             { x: 240, y: 300, type: "star", collected: false },
             { x: 500, y: 150, type: "coin", collected: false }
         );
+        waterHazards.push(
+    { x: 450, y: 390, rx: 65, ry: 35 }
+);
+
+sandTraps.push(
+    { x: 600, y: 250, rx: 65, ry: 40 }
+);
     }
 
     if (number === 2) {
@@ -105,6 +116,13 @@ function createLevel(number) {
             { x: 520, y: 120, type: "coin", collected: false },
             { x: 650, y: 330, type: "boost", collected: false }
         );
+        waterHazards.push(
+    { x: 390, y: 400, rx: 70, ry: 40 }
+);
+
+sandTraps.push(
+    { x: 550, y: 230, rx: 70, ry: 40 }
+);
     }
 
     if (number === 3) {
@@ -126,6 +144,13 @@ function createLevel(number) {
             { x: 480, y: 420, type: "coin", collected: false },
             { x: 690, y: 150, type: "boost", collected: false }
         );
+        waterHazards.push(
+    { x: 360, y: 260, rx: 65, ry: 40 }
+);
+
+sandTraps.push(
+    { x: 600, y: 400, rx: 75, ry: 40 }
+);
     }
 
     lastSafePosition = {
@@ -524,14 +549,51 @@ function updateBall() {
         }
     }
 
+    
+for (const water of waterHazards) {
+    const dx = (ball.x - water.x) / (water.rx + ball.radius);
+    const dy = (ball.y - water.y) / (water.ry + ball.radius);
+
+    if (dx * dx + dy * dy <= 1) {
+        ball.x = lastSafePosition.x;
+        ball.y = lastSafePosition.y;
+
+        ball.dx = 0;
+        ball.dy = 0;
+        moving = false;
+
+        statusText.textContent =
+            "Splash! The ball returned to its last safe spot.";
+
+        return;
+    }
+}
+
+
     lastSafePosition = {
         x: ball.x,
         y: ball.y
     };
 
     // Friction gradually slows the ball down.
-    ball.dx *= FRICTION;
-    ball.dy *= FRICTION;
+    
+let onSand = false;
+
+for (const sand of sandTraps) {
+    const dx = (ball.x - sand.x) / sand.rx;
+    const dy = (ball.y - sand.y) / sand.ry;
+
+    if (dx * dx + dy * dy <= 1) {
+        onSand = true;
+        break;
+    }
+}
+
+const friction = onSand ? 0.94 : FRICTION;
+
+ball.dx *= friction;
+ball.dy *= friction;
+
 
     const speed = Math.hypot(ball.dx, ball.dy);
     const distanceToHole = Math.hypot(

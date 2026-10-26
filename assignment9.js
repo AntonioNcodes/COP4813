@@ -12,8 +12,7 @@
 (() => {
     "use strict";
 
-    let canvas = document.getElementById("gameCanvas") ||
-                 document.querySelector("canvas");
+    let canvas = document.getElementById("golfCanvas");
 
     if (!canvas) {
         document.body.innerHTML = `
@@ -49,9 +48,9 @@
         "#c6a0ff"
     ];
 
-    const statusElement = document.getElementById("gameStatus");
-    const restartButton = document.getElementById("restartButton");
-    const nextButton = document.getElementById("nextButton");
+    const statusElement = document.getElementById("golfStatus");
+    const restartButton = document.getElementById("resetGolf");
+    const nextButton = document.getElementById("nextLevel");
 
     let phase = "loading";
     let phaseStart = performance.now();

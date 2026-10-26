@@ -203,6 +203,78 @@ function drawCourse() {
     ctx.restore();
 
     // Draw the hole and rim
+    
+    // Draw water hazards
+    for (const water of waterHazards) {
+        ctx.fillStyle = "#168de2";
+        ctx.beginPath();
+        ctx.ellipse(
+            water.x, water.y,
+            water.rx, water.ry,
+            0, 0, Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.strokeStyle = "#8be9ff";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Water ripples
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(
+            water.x - 15, water.y - 5,
+            water.rx * 0.35, water.ry * 0.18,
+            0, 0, Math.PI * 2
+        );
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 14px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("WATER", water.x, water.y + 5);
+    }
+
+    // Draw sand traps
+    for (const sand of sandTraps) {
+        ctx.fillStyle = "#d9bd7e";
+        ctx.beginPath();
+        ctx.ellipse(
+            sand.x, sand.y,
+            sand.rx, sand.ry,
+            0, 0, Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.strokeStyle = "#f5dfa5";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Sand texture
+        ctx.fillStyle = "rgba(117, 85, 43, 0.55)";
+        for (let i = 0; i < 12; i++) {
+            const angle = i * 2.399;
+            const radius = 0.65 * Math.sqrt(i / 12);
+            const dotX =
+                sand.x + Math.cos(angle) * sand.rx * radius;
+            const dotY =
+                sand.y + Math.sin(angle) * sand.ry * radius;
+
+            ctx.beginPath();
+            ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        ctx.fillStyle = "#75552b";
+        ctx.font = "bold 14px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("SAND", sand.x, sand.y + 5);
+    }
+
+
     ctx.fillStyle = "#16351f";
     ctx.beginPath();
     ctx.arc(hole.x, hole.y, hole.radius, 0, Math.PI * 2);

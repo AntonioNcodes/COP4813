@@ -1,935 +1,1066 @@
-"use strict";
 
-// ASSIGNMENT 9: INTERACTIVE MINI GOLF
-// PART 1: SETUP AND GAME VARIABLES
+/*
+ COP4813 Assignment 9 — Mini Golf Adventure
+ PART 1: Bouncing ball animation
+ PART 2: Mouse-click response
+ PART 3: Loading screen and transition to mini golf
+ PART 4: Mini-golf levels and ball physics
+ PART 5: Power-ups
+ PART 6: Water hazards and sand traps
+*/
 
-const canvas = document.getElementById("golfCanvas");
-const ctx = canvas.getContext("2d");
+(() => {
+    "use strict";
 
-const statusText = document.getElementById("golfStatus");
-const levelDisplay = document.getElementById("levelDisplay");
-const shotDisplay = document.getElementById("shotCount");
-const totalDisplay = document.getElementById("totalShots");
-const powerDisplay = document.getElementById("powerUpCount");
-const coinDisplay = document.getElementById("coinCount");
+    let canvas = document.getElementById("gameCanvas") ||
+                 document.querySelector("canvas");
 
-const resetButton = document.getElementById("resetGolf");
-const nextButton = document.getElementById("nextLevel");
+    if (!canvas) {
+        document.body.innerHTML = `
+            <main style="max-width:960px;margin:20px auto;font-family:Arial;color:white;background:#102318;padding:16px">
+                <h1>Mini Golf Adventure</h1>
+                <p>Drag backward from the ball and release to shoot!</p>
+                <canvas id="gameCanvas" width="900" height="540"
+                    style="width:100%;height:auto;border:4px solid white;touch-action:none">
+                </canvas>
+                <p id="gameStatus">Get ready!</p>
+                <button id="restartButton">Restart level</button>
+                <button id="nextButton">Next level</button>
+            </main>
+        `;
+        document.body.style.background = "#102318";
+        canvas = document.getElementById("gameCanvas");
+    }
 
-const W = canvas.width;
-const H = canvas.height;
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width || 900;
+    const H = canvas.height || 540;
 
-const MAX_DRAG = 100;
-const MAX_SPEED = 10;
-const FRICTION = 0.985;
-const STOP_SPEED = 0.08;
+    const BALL_RADIUS = 10;
+    const MAX_DRAG = 115;
+    const GRASS_FRICTION = 0.985;
 
-const BALL_COLORS = [
-    "#ffffff",
-    "#ff5252",
-    "#ffd740",
-    "#40c4ff",
-    "#e040fb",
-    "#69f0ae",
-    "#ff9100"
-];
+    const COLORS = [
+        "#ffffff",
+        "#ff5c8a",
+        "#ffd166",
+        "#66e3ff",
+        "#b8f28b",
+        "#c6a0ff"
+    ];
 
-let level = 1;
-let shots = 0;
-let totalShots = 0;
-let powerUpsCollected = 0;
-let coinsCollected = 0;
+    const statusElement = document.getElementById("gameStatus");
+    const restartButton = document.getElementById("restartButton");
+    const nextButton = document.getElementById("nextButton");
 
-let ball;
-let hole;
-let rocks = [];
-let powerUps = [];
-let waterHazards = [];
-let sandTraps = [];
+    let phase = "loading";
+    let phaseStart = performance.now();
 
-let moving = false;
-let dragging = false;
-let demoActive = true;
-let levelComplete = false;
-let gameComplete = false;
+    const LOADING_DURATION = 1400;
+    const DEMO_DURATION = 4200;
 
-let pointerX = 0;
-let pointerY = 0;
-
-let ballColorIndex = 0;
-let ballColor = BALL_COLORS[ballColorIndex];
-
-let openingFrames = 180;
-let lastSafePosition = { x: 100, y: 400 };
-let boostNextShot = false;
-
-// Create a level with a starting ball and hole.
-function createLevel(number) {
-    ball = {
-        x: 100,
-        y: 400,
-        radius: 12,
-        dx: 0,
-        dy: 0
+    // PART 1: The ball moves diagonally and bounces inside a rectangle.
+    const demo = {
+        x: W * 0.20,
+        y: H * 0.22,
+        radius: 18,
+        dx: 3.2,
+        dy: 2.3,
+        color: "#ffffff",
+        clicks: 0
     };
 
-    hole = {
-        x: 780,
-        y: 120,
-        radius: 19
-    };
+    // Mini-golf game variables.
+    let level = 1;
+    let ball;
+    let hole;
+    let rocks = [];
+    let powerUps = [];
+    let waterHazards = [];
+    let sandTraps = [];
+    let particles = [];
 
-   rocks = [];
-powerUps = [];
-waterHazards = [];
-sandTraps = [];
+    let moving = false;
+    let dragging = false;
+    let pointerX = 0;
+    let pointerY = 0;
 
-    if (number === 1) {
-        rocks.push(
-            { x: 360, y: 260, radius: 25 }
-        );
+    let shotCount = 0;
+    let coinsCollected = 0;
+    let powerUpsCollected = 0;
+    let boostNextShot = false;
+    let completed = false;
 
-        powerUps.push(
-            { x: 240, y: 300, type: "star", collected: false },
-            { x: 500, y: 150, type: "coin", collected: false }
-        );
-        waterHazards.push(
-    { x: 450, y: 390, rx: 65, ry: 35 }
-);
-
-sandTraps.push(
-    { x: 600, y: 250, rx: 65, ry: 40 }
-);
-    }
-
-    if (number === 2) {
-        hole.y = 100;
-
-        rocks.push(
-            { x: 310, y: 200, radius: 27 },
-            { x: 470, y: 320, radius: 30 },
-            { x: 630, y: 210, radius: 25 }
-        );
-
-        powerUps.push(
-            { x: 260, y: 260, type: "star", collected: false },
-            { x: 520, y: 120, type: "coin", collected: false },
-            { x: 650, y: 330, type: "boost", collected: false }
-        );
-        waterHazards.push(
-    { x: 390, y: 400, rx: 70, ry: 40 }
-);
-
-sandTraps.push(
-    { x: 550, y: 230, rx: 70, ry: 40 }
-);
-    }
-
-    if (number === 3) {
-        hole = {
-            x: 790,
-            y: 100,
-            radius: 19
-        };
-
-        rocks.push(
-            { x: 280, y: 180, radius: 25 },
-            { x: 420, y: 330, radius: 30 },
-            { x: 560, y: 180, radius: 27 },
-            { x: 680, y: 300, radius: 28 }
-        );
-
-        powerUps.push(
-            { x: 230, y: 300, type: "star", collected: false },
-            { x: 480, y: 420, type: "coin", collected: false },
-            { x: 690, y: 150, type: "boost", collected: false }
-        );
-        waterHazards.push(
-    { x: 360, y: 260, rx: 65, ry: 40 }
-);
-
-sandTraps.push(
-    { x: 600, y: 400, rx: 75, ry: 40 }
-);
-    }
-
-    lastSafePosition = {
-        x: ball.x,
-        y: ball.y
-    };
-
-    updateScoreboard();
-}
-
-// Update the numbers displayed in the HTML.
-function updateScoreboard() {
-    levelDisplay.textContent = "Level " + level + " of 3";
-    shotDisplay.textContent = shots;
-    totalDisplay.textContent = totalShots;
-    powerDisplay.textContent = powerUpsCollected;
-    coinDisplay.textContent = coinsCollected;
-}
-
-
- // PART 2: DRAW THE COURSE, POWER-UPS, AND BALL
-
-function drawCourse() {
-    // Grass background
-    const grass = ctx.createLinearGradient(0, 0, W, H);
-    grass.addColorStop(0, "#39834b");
-    grass.addColorStop(1, "#174d2b");
-
-    ctx.fillStyle = grass;
-    ctx.fillRect(0, 0, W, H);
-
-    // Putting area
-    ctx.fillStyle = "#83c76c";
-    ctx.beginPath();
-    ctx.ellipse(450, 270, 360, 220, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Grass stripes
-    ctx.save();
-    ctx.beginPath();
-    ctx.ellipse(450, 270, 360, 220, 0, 0, Math.PI * 2);
-    ctx.clip();
-
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
-
-    for (let x = 100; x < W; x += 80) {
-        ctx.fillRect(x, 40, 35, H - 80);
-    }
-
-    ctx.restore();
-
-    // Draw the hole and rim
+    let ballColor = COLORS[0];
     
-    // Draw water hazards
-    for (const water of waterHazards) {
-        ctx.fillStyle = "#168de2";
-        ctx.beginPath();
-        ctx.ellipse(
-            water.x, water.y,
-            water.rx, water.ry,
-            0, 0, Math.PI * 2
-        );
-        ctx.fill();
+let ballColorIndex = 0;
 
-        ctx.strokeStyle = "#8be9ff";
-        ctx.lineWidth = 3;
-        ctx.stroke();
+function changeBallColor() {
+    ballColorIndex = (ballColorIndex + 1) % COLORS.length;
+    ballColor = COLORS[ballColorIndex];
+}
 
-        // Water ripples
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.65)";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.ellipse(
-            water.x - 15, water.y - 5,
-            water.rx * 0.35, water.ry * 0.18,
-            0, 0, Math.PI * 2
-        );
-        ctx.stroke();
+    let lastSafePosition = { x: W * 0.12, y: H * 0.82 };
 
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 14px Arial";
+    function setStatus(message) {
+        if (statusElement) {
+            statusElement.textContent = message;
+        }
+    }
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function drawCenteredText(text, x, y, font, color = "#ffffff") {
+        ctx.fillStyle = color;
+        ctx.font = font;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText("WATER", water.x, water.y + 5);
+        ctx.fillText(text, x, y);
     }
 
-    // Draw sand traps
-    for (const sand of sandTraps) {
-        ctx.fillStyle = "#d9bd7e";
-        ctx.beginPath();
-        ctx.ellipse(
-            sand.x, sand.y,
-            sand.rx, sand.ry,
-            0, 0, Math.PI * 2
+    // PART 3: Loading screen.
+    function drawLoadingScreen(now) {
+        const gradient = ctx.createLinearGradient(0, 0, W, H);
+        gradient.addColorStop(0, "#102c1b");
+        gradient.addColorStop(1, "#39834b");
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
+
+        drawCenteredText(
+            "MINI GOLF ADVENTURE",
+            W / 2,
+            H * 0.31,
+            `bold ${Math.min(42, W * 0.052)}px Arial`
         );
-        ctx.fill();
 
-        ctx.strokeStyle = "#f5dfa5";
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        drawCenteredText(
+            "Loading the course...",
+            W / 2,
+            H * 0.42,
+            "bold 22px Arial",
+            "#d9f5d0"
+        );
 
-        // Sand texture
-        ctx.fillStyle = "rgba(117, 85, 43, 0.55)";
-        for (let i = 0; i < 12; i++) {
-            const angle = i * 2.399;
-            const radius = 0.65 * Math.sqrt(i / 12);
-            const dotX =
-                sand.x + Math.cos(angle) * sand.rx * radius;
-            const dotY =
-                sand.y + Math.sin(angle) * sand.ry * radius;
+        const barWidth = Math.min(W * 0.62, 440);
+        const barHeight = 18;
+        const barX = (W - barWidth) / 2;
+        const barY = H * 0.51;
 
-            ctx.beginPath();
-            ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
-            ctx.fill();
+        ctx.fillStyle = "rgba(255,255,255,0.25)";
+        ctx.fillRect(barX, barY, barWidth, barHeight);
+
+        const progress = clamp(
+            (now - phaseStart) / LOADING_DURATION,
+            0,
+            1
+        );
+
+        ctx.fillStyle = "#ffd166";
+        ctx.fillRect(
+            barX,
+            barY,
+            barWidth * progress,
+            barHeight
+        );
+
+        drawCenteredText(
+            "Preparing your mini-golf adventure",
+            W / 2,
+            H * 0.62,
+            "16px Arial"
+        );
+    }
+
+    // PART 1: Animate the ball and bounce it off the boundaries.
+    function updateDemo() {
+        demo.x += demo.dx;
+        demo.y += demo.dy;
+
+        const minX = 24 + demo.radius;
+        const maxX = W - 24 - demo.radius;
+        const minY = 24 + demo.radius;
+        const maxY = H - 24 - demo.radius;
+
+        if (demo.x <= minX || demo.x >= maxX) {
+            demo.dx *= -1;
+            demo.x = clamp(demo.x, minX, maxX);
         }
 
-        ctx.fillStyle = "#75552b";
-        ctx.font = "bold 14px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText("SAND", sand.x, sand.y + 5);
+        if (demo.y <= minY || demo.y >= maxY) {
+            demo.dy *= -1;
+            demo.y = clamp(demo.y, minY, maxY);
+        }
     }
 
+    function drawDemo() {
+        const gradient = ctx.createLinearGradient(0, 0, W, H);
+        gradient.addColorStop(0, "#39834b");
+        gradient.addColorStop(1, "#174d2b");
 
-    ctx.fillStyle = "#16351f";
-    ctx.beginPath();
-    ctx.arc(hole.x, hole.y, hole.radius, 0, Math.PI * 2);
-    ctx.fill();
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
 
-    ctx.strokeStyle = "#d5e8bd";
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    // Flagpole
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(hole.x, hole.y);
-    ctx.lineTo(hole.x, hole.y - 55);
-    ctx.stroke();
-
-    // Flag
-    ctx.fillStyle = "#ff4545";
-    ctx.beginPath();
-    ctx.moveTo(hole.x, hole.y - 55);
-    ctx.lineTo(hole.x + 30, hole.y - 43);
-    ctx.lineTo(hole.x, hole.y - 32);
-    ctx.closePath();
-    ctx.fill();
-
-    // Draw rocks
-    for (const rock of rocks) {
-        ctx.fillStyle = "#737b80";
-        ctx.beginPath();
-        ctx.arc(rock.x, rock.y, rock.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = "#d6dadd";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    }
-
-    // Draw power-ups
-    const styles = {
-        star: { color: "#ffbf00", symbol: "★" },
-        coin: { color: "#f5a623", symbol: "$" },
-        boost: { color: "#20c9df", symbol: "⚡" }
-    };
-
-    for (const item of powerUps) {
-        if (item.collected) continue;
-
-        const style = styles[item.type];
-
-        ctx.fillStyle = style.color;
-        ctx.beginPath();
-        ctx.arc(item.x, item.y, 16, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = "#83c76c";
+        ctx.fillRect(24, 24, W - 48, H - 48);
 
         ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        ctx.lineWidth = 5;
+        ctx.strokeRect(24, 24, W - 48, H - 48);
 
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 18px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(style.symbol, item.x, item.y);
-    }
-
-    // Level label
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 17px Arial";
-    ctx.fillText("MINI GOLF - LEVEL " + level, 22, 30);
-
-    ctx.fillStyle = "#ffffff";
-ctx.font = "bold 16px Arial";
-ctx.fillText(
-    "Water: " + waterHazards.length +
-    " | Sand: " + sandTraps.length,
-    22,
-    55
-);
-
-    // Course boundary
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(3, 3, W - 6, H - 6);
-}
-
-function drawBall() {
-    // Ball shadow
-    ctx.fillStyle = "rgba(0,0,0,0.25)";
-    ctx.beginPath();
-    ctx.ellipse(
-        ball.x + 4,
-        ball.y + 6,
-        ball.radius + 2,
-        7,
-        0,
-        0,
-        Math.PI * 2
-    );
-    ctx.fill();
-
-    // Shiny ball using the current color
-    const gradient = ctx.createRadialGradient(
-        ball.x - 4,
-        ball.y - 5,
-        1,
-        ball.x,
-        ball.y,
-        ball.radius * 1.5
-    );
-
-    gradient.addColorStop(0, "#ffffff");
-    gradient.addColorStop(0.45, ballColor);
-    gradient.addColorStop(1, "#555555");
-
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.strokeStyle = "#333333";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-}
-
-// Show the aiming line while dragging backward.
-function drawAim() {
-    if (!dragging || demoActive || moving) return;
-
-    const dx = ball.x - pointerX;
-    const dy = ball.y - pointerY;
-    const distance = Math.hypot(dx, dy);
-
-    if (distance < 3) return;
-
-    const length = Math.min(distance, MAX_DRAG);
-
-    ctx.save();
-    ctx.strokeStyle = "#fff176";
-    ctx.lineWidth = 3;
-    ctx.setLineDash([7, 5]);
-
-    ctx.beginPath();
-    ctx.moveTo(ball.x, ball.y);
-    ctx.lineTo(
-        ball.x + dx / distance * length,
-        ball.y + dy / distance * length
-    );
-    ctx.stroke();
-    ctx.restore();
-
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 15px Arial";
-    ctx.textAlign = "left";
-
-    ctx.fillText(
-        "Power: " + Math.round(length / MAX_DRAG * 100) + "%",
-        22,
-        H - 22
-    );
-}
-
-
- // PART 3: POINTER CONTROLS AND BALL COLOR
-
-function getPointerPosition(event) {
-    const rect = canvas.getBoundingClientRect();
-
-    return {
-        x: (event.clientX - rect.left) * W / rect.width,
-        y: (event.clientY - rect.top) * H / rect.height
-    };
-}
-
-canvas.addEventListener("pointerdown", function (event) {
-    if (demoActive || moving || levelComplete || gameComplete) {
-        return;
-    }
-
-    const position = getPointerPosition(event);
-
-    const distance = Math.hypot(
-        position.x - ball.x,
-        position.y - ball.y
-    );
-
-    // Only start aiming if the player clicks the ball.
-    if (distance <= ball.radius + 15) {
-        dragging = true;
-        pointerX = position.x;
-        pointerY = position.y;
-
-        // Assignment requirement: respond to a click by changing color.
-        ballColorIndex =
-            (ballColorIndex + 1) % BALL_COLORS.length;
-
-        ballColor = BALL_COLORS[ballColorIndex];
-
-        canvas.setPointerCapture(event.pointerId);
-
-        statusText.textContent =
-            "Ball color changed! Drag backward and release to shoot.";
-    }
-});
-
-canvas.addEventListener("pointermove", function (event) {
-    if (!dragging) return;
-
-    const position = getPointerPosition(event);
-
-    pointerX = position.x;
-    pointerY = position.y;
-});
-
-canvas.addEventListener("pointerup", function () {
-    if (!dragging) return;
-
-    dragging = false;
-
-    const dx = ball.x - pointerX;
-    const dy = ball.y - pointerY;
-    const distance = Math.hypot(dx, dy);
-
-    if (distance < 8) {
-        statusText.textContent =
-            "Drag farther backward to take your shot.";
-        return;
-    }
-
-    const power = Math.min(distance, MAX_DRAG);
-    const speed = power / MAX_DRAG * MAX_SPEED;
-
-    ball.dx = dx / distance * speed;
-    ball.dy = dy / distance * speed;
-
-    // Apply a collected boost to this shot.
-    if (boostNextShot) {
-        ball.dx *= 1.4;
-        ball.dy *= 1.4;
-
-        boostNextShot = false;
-    }
-
-    shots++;
-    totalShots++;
-    moving = true;
-
-    lastSafePosition = {
-        x: ball.x,
-        y: ball.y
-    };
-
-    updateScoreboard();
-
-    statusText.textContent =
-        "Shot taken! Watch the ball roll.";
-});
-
-canvas.addEventListener("pointercancel", function () {
-    dragging = false;
-});
-
-
- // PART 4: BALL PHYSICS AND POWER-UPS
-
-function updateBall() {
-    if (!moving || demoActive || levelComplete || gameComplete) {
-        return;
-    }
-
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    // Bounce off the course walls.
-    if (ball.x - ball.radius < 10) {
-        ball.x = 10 + ball.radius;
-        ball.dx = Math.abs(ball.dx) * 0.8;
-    }
-
-    if (ball.x + ball.radius > W - 10) {
-        ball.x = W - 10 - ball.radius;
-        ball.dx = -Math.abs(ball.dx) * 0.8;
-    }
-
-    if (ball.y - ball.radius < 10) {
-        ball.y = 10 + ball.radius;
-        ball.dy = Math.abs(ball.dy) * 0.8;
-    }
-
-    if (ball.y + ball.radius > H - 10) {
-        ball.y = H - 10 - ball.radius;
-        ball.dy = -Math.abs(ball.dy) * 0.8;
-    }
-
-    // Bounce off rocks.
-    for (const rock of rocks) {
-        const dx = ball.x - rock.x;
-        const dy = ball.y - rock.y;
-        const distance = Math.hypot(dx, dy);
-        const minimum = ball.radius + rock.radius;
-
-        if (distance < minimum && distance > 0) {
-            const nx = dx / distance;
-            const ny = dy / distance;
-
-            ball.x = rock.x + nx * minimum;
-            ball.y = rock.y + ny * minimum;
-
-            const dot = ball.dx * nx + ball.dy * ny;
-
-            if (dot < 0) {
-                ball.dx = (ball.dx - 2 * dot * nx) * 0.75;
-                ball.dy = (ball.dy - 2 * dot * ny) * 0.75;
-            }
-        }
-    }
-
-    // Collect power-ups.
-    for (const item of powerUps) {
-        if (item.collected) continue;
-
-        const distance = Math.hypot(
-            ball.x - item.x,
-            ball.y - item.y
+        const gradientBall = ctx.createRadialGradient(
+            demo.x - 5,
+            demo.y - 6,
+            2,
+            demo.x,
+            demo.y,
+            demo.radius * 1.5
         );
 
-        if (distance < ball.radius + 16) {
-            item.collected = true;
-            powerUpsCollected++;
+        gradientBall.addColorStop(0, "#ffffff");
+        gradientBall.addColorStop(0.42, demo.color);
+        gradientBall.addColorStop(1, "#424242");
 
-            if (item.type === "star") {
-                // A star makes the next shot stronger.
-                boostNextShot = true;
-                statusText.textContent =
-                    "Super Shot collected! Your next shot is stronger.";
-            }
+        ctx.fillStyle = gradientBall;
+        ctx.beginPath();
+        ctx.arc(
+            demo.x,
+            demo.y,
+            demo.radius,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
 
-            if (item.type === "boost") {
-                ball.dx *= 1.4;
-                ball.dy *= 1.4;
+        drawCenteredText(
+            "PART 1 & 2: BOUNCING OBJECT",
+            W / 2,
+            52,
+            "bold 25px Arial",
+            "#12351c"
+        );
 
-                statusText.textContent = "Speed boost collected!";
-            }
+        drawCenteredText(
+            "Click the moving ball to change its color and direction",
+            W / 2,
+            84,
+            "16px Arial",
+            "#12351c"
+        );
 
-            if (item.type === "coin") {
-                coinsCollected++;
-                statusText.textContent = "Bonus coin collected!";
-            }
-
-            updateScoreboard();
-        }
+        drawCenteredText(
+            "Mini golf starts in a moment...",
+            W / 2,
+            H - 36,
+            "16px Arial",
+            "#12351c"
+        );
     }
 
-    
-for (const water of waterHazards) {
-    const dx = (ball.x - water.x) / (water.rx + ball.radius);
-    const dy = (ball.y - water.y) / (water.ry + ball.radius);
-
-    if (dx * dx + dy * dy <= 1) {
-        ball.x = lastSafePosition.x;
-        ball.y = lastSafePosition.y;
-
-        ball.dx = 0;
-        ball.dy = 0;
+ 
+    // PART 4 — Set up each mini-golf level.
+    function createLevel(number) {
+        level = number;
+        rocks = [];
+        powerUps = [];
+        waterHazards = [];
+        sandTraps = [];
+        particles = [];
         moving = false;
+        dragging = false;
+        completed = false;
+        boostNextShot = false;
 
-        statusText.textContent =
-            "Splash! The ball returned to its last safe spot.";
+        ball = {
+            x: W * 0.12,
+            y: H * 0.82,
+            radius: BALL_RADIUS,
+            dx: 0,
+            dy: 0
+        };
 
-        return;
-    }
-}
-
-
-    lastSafePosition = {
-        x: ball.x,
-        y: ball.y
-    };
-
-    // Friction gradually slows the ball down.
-    
-let onSand = false;
-
-for (const sand of sandTraps) {
-    const dx = (ball.x - sand.x) / sand.rx;
-    const dy = (ball.y - sand.y) / sand.ry;
-
-    if (dx * dx + dy * dy <= 1) {
-        onSand = true;
-        break;
-    }
-}
-
-const friction = onSand ? 0.94 : FRICTION;
-
-ball.dx *= friction;
-ball.dy *= friction;
-
-
-    const speed = Math.hypot(ball.dx, ball.dy);
-    const distanceToHole = Math.hypot(
-        ball.x - hole.x,
-        ball.y - hole.y
-    );
-
-    // Sink the ball when it reaches the hole slowly enough.
-    if (distanceToHole < hole.radius && speed < 4) {
-        ball.x = hole.x;
-        ball.y = hole.y;
-        ball.dx = 0;
-        ball.dy = 0;
-
-        moving = false;
-        levelComplete = true;
-
-        if (level === 3) {
-            gameComplete = true;
-            nextButton.disabled = true;
-
-            statusText.textContent =
-                "You won! All three levels completed!";
-        } else {
-            nextButton.disabled = false;
-
-            statusText.textContent =
-                "Level complete! Click Next Level to continue.";
-        }
-
-        updateScoreboard();
-        return;
-    }
-
-    // Stop the ball when it nearly stops rolling.
-    if (
-        Math.abs(ball.dx) < STOP_SPEED &&
-        Math.abs(ball.dy) < STOP_SPEED
-    ) {
-        ball.dx = 0;
-        ball.dy = 0;
-        moving = false;
-
-        statusText.textContent =
-            "Ball stopped. Aim your next shot!";
-    }
-}
-
-
- // PART 5: RESTART AND LEVEL PROGRESSION
-
-function startNewLevel() {
-    moving = false;
-    dragging = false;
-
-    levelComplete = false;
-    gameComplete = false;
-
-    boostNextShot = false;
-    ballColorIndex = 0;
-    ballColor = BALL_COLORS[ballColorIndex];
-
-    createLevel(level);
-
-    nextButton.disabled = true;
-
-    statusText.textContent =
-        "Level " + level +
-        ": Click the ball, drag backward, and release to shoot.";
-}
-
-function restartGame() {
-    level = 1;
-    shots = 0;
-    totalShots = 0;
-    powerUpsCollected = 0;
-    coinsCollected = 0;
-
-    demoActive = false;
-    openingFrames = 0;
-
-    startNewLevel();
-
-    statusText.textContent =
-        "Game restarted! Aim for the hole.";
-}
-
-function goToNextLevel() {
-    if (!levelComplete || gameComplete) {
-        return;
-    }
-
-    level++;
-    shots = 0;
-
-    startNewLevel();
-}
-
-// Connect the HTML buttons to their functions.
-resetButton.addEventListener("click", restartGame);
-
-nextButton.addEventListener("click", goToNextLevel);
-
-
-
- // PART 6: OPENING ANIMATION AND GAME LOOP
-
-function runOpeningAnimation() {
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    // Bounce off the canvas boundaries.
-    if (
-        ball.x - ball.radius <= 10 ||
-        ball.x + ball.radius >= W - 10
-    ) {
-        ball.dx *= -1;
-    }
-
-    if (
-        ball.y - ball.radius <= 10 ||
-        ball.y + ball.radius >= H - 10
-    ) {
-        ball.dy *= -1;
-    }
-
-    // Change the ball's color periodically during the animation.
-    if (openingFrames % 20 === 0) {
-        ballColorIndex =
-            (ballColorIndex + 1) % BALL_COLORS.length;
-
-        ballColor = BALL_COLORS[ballColorIndex];
-    }
-
-    openingFrames--;
-
-    if (openingFrames <= 0) {
-        demoActive = false;
-        moving = false;
-
-        ball.x = 100;
-        ball.y = 400;
-        ball.dx = 0;
-        ball.dy = 0;
+        hole = {
+            x: W * 0.88,
+            y: H * 0.18,
+            radius: 18
+        };
 
         lastSafePosition = {
             x: ball.x,
             y: ball.y
         };
 
-        statusText.textContent =
-            "Your turn! Click the ball, drag backward, and release.";
+        // Level 1: Water, sand, rocks, and power-ups.
+        if (number === 1) {
+            waterHazards.push({
+                x: W * 0.47,
+                y: H * 0.72,
+                rx: 76,
+                ry: 43
+            });
+
+            sandTraps.push({
+                x: W * 0.68,
+                y: H * 0.43,
+                rx: 80,
+                ry: 46
+            });
+
+            rocks.push(
+                { x: W * 0.33, y: H * 0.49, radius: 22 },
+                { x: W * 0.73, y: H * 0.68, radius: 19 }
+            );
+
+            powerUps.push(
+                { x: W * 0.27, y: H * 0.69, type: "star", collected: false },
+                { x: W * 0.55, y: H * 0.32, type: "coin", collected: false },
+                { x: W * 0.78, y: H * 0.55, type: "boost", collected: false }
+            );
+
+        // Level 2: More obstacles and two water hazards.
+        } else if (number === 2) {
+            waterHazards.push(
+                { x: W * 0.42, y: H * 0.70, rx: 80, ry: 45 },
+                { x: W * 0.70, y: H * 0.31, rx: 54, ry: 35 }
+            );
+
+            sandTraps.push({
+                x: W * 0.62,
+                y: H * 0.46,
+                rx: 82,
+                ry: 47
+            });
+
+            rocks.push(
+                { x: W * 0.30, y: H * 0.54, radius: 23 },
+                { x: W * 0.56, y: H * 0.62, radius: 19 },
+                { x: W * 0.79, y: H * 0.71, radius: 21 }
+            );
+
+            powerUps.push(
+                { x: W * 0.24, y: H * 0.35, type: "coin", collected: false },
+                { x: W * 0.51, y: H * 0.29, type: "star", collected: false },
+                { x: W * 0.80, y: H * 0.48, type: "boost", collected: false }
+            );
+
+        // Level 3: The most challenging course.
+        } else {
+            waterHazards.push(
+                { x: W * 0.41, y: H * 0.39, rx: 74, ry: 43 },
+                { x: W * 0.66, y: H * 0.70, rx: 65, ry: 39 }
+            );
+
+            sandTraps.push(
+                { x: W * 0.65, y: H * 0.43, rx: 82, ry: 47 },
+                { x: W * 0.29, y: H * 0.66, rx: 59, ry: 36 }
+            );
+
+            rocks.push(
+                { x: W * 0.27, y: H * 0.43, radius: 21 },
+                { x: W * 0.52, y: H * 0.57, radius: 23 },
+                { x: W * 0.79, y: H * 0.57, radius: 18 }
+            );
+
+            powerUps.push(
+                { x: W * 0.24, y: H * 0.27, type: "star", collected: false },
+                { x: W * 0.48, y: H * 0.29, type: "coin", collected: false },
+                { x: W * 0.80, y: H * 0.32, type: "boost", collected: false }
+            );
+        }
+
+        setStatus(
+            `Level ${level}: Drag backward from the ball, then release to shoot.`
+        );
     }
-}
 
-function drawOpeningScreen() {
-    ctx.fillStyle = "rgba(10, 35, 20, 0.85)";
-    ctx.fillRect(150, 195, 600, 115);
+    // Draw water hazards and sand traps on the course.
+    function drawWaterAndSand() {
+        // Water hazards.
+        for (const water of waterHazards) {
+            ctx.fillStyle = "#258bd2";
+            ctx.beginPath();
+            ctx.ellipse(
+                water.x,
+                water.y,
+                water.rx,
+                water.ry,
+                0,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
 
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.font = "bold 27px Arial";
+            ctx.strokeStyle = "#a5e7ff";
+            ctx.lineWidth = 3;
+            ctx.stroke();
 
-    ctx.fillText(
-        "ASSIGNMENT 9",
-        W / 2,
-        235
-    );
+            drawCenteredText(
+                "WATER",
+                water.x,
+                water.y,
+                "bold 13px Arial",
+                "#ffffff"
+            );
+        }
 
-    ctx.font = "16px Arial";
+        // Sand traps.
+        for (const sand of sandTraps) {
+            ctx.fillStyle = "#e7c77b";
+            ctx.beginPath();
+            ctx.ellipse(
+                sand.x,
+                sand.y,
+                sand.rx,
+                sand.ry,
+                0,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
 
-    ctx.fillText(
-        "Part 1: Animation | Part 2: Mouse Interaction",
-        W / 2,
-        270
-    );
+            ctx.strokeStyle = "#fff0b3";
+            ctx.lineWidth = 3;
+            ctx.stroke();
 
-    ctx.textAlign = "left";
-}
-
-function drawCompletionScreen() {
-    ctx.fillStyle = "rgba(10, 35, 20, 0.88)";
-    ctx.fillRect(150, 195, 600, 120);
-
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.font = "bold 28px Arial";
-
-    ctx.fillText(
-        gameComplete ? "YOU WON!" : "LEVEL COMPLETE!",
-        W / 2,
-        240
-    );
-
-    ctx.font = "17px Arial";
-
-    ctx.fillText(
-        "Shots this level: " + shots +
-        " | Total shots: " + totalShots,
-        W / 2,
-        275
-    );
-
-    ctx.textAlign = "left";
-}
-
-function gameLoop() {
-    if (demoActive) {
-        runOpeningAnimation();
-    } else {
-        updateBall();
+            drawCenteredText(
+                "SAND",
+                sand.x,
+                sand.y,
+                "bold 13px Arial",
+                "#76521b"
+            );
+        }
     }
 
-    ctx.clearRect(0, 0, W, H);
+ 
+    // Draw the golf course and its obstacles.
+    function drawCourse() {
+        const gradient = ctx.createLinearGradient(0, 0, W, H);
+        gradient.addColorStop(0, "#9bd779");
+        gradient.addColorStop(1, "#4b9b53");
 
-    drawCourse();
-    drawAim();
-    drawBall();
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, W, H);
 
-    if (demoActive) {
-        drawOpeningScreen();
+        // Course border.
+        ctx.strokeStyle = "#f7f4dc";
+        ctx.lineWidth = 8;
+        ctx.strokeRect(8, 8, W - 16, H - 16);
+
+        // Decorative stripes on the grass.
+        ctx.strokeStyle = "rgba(255,255,255,0.12)";
+        ctx.lineWidth = 2;
+
+        for (let x = 35; x < W; x += 65) {
+            ctx.beginPath();
+            ctx.moveTo(x, 20);
+            ctx.lineTo(x, H - 20);
+            ctx.stroke();
+        }
+
+        // Draw water and sand.
+        drawWaterAndSand();
+
+        // Draw rocks.
+        for (const rock of rocks) {
+            ctx.fillStyle = "#737b80";
+            ctx.beginPath();
+            ctx.arc(
+                rock.x,
+                rock.y,
+                rock.radius,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+
+            ctx.strokeStyle = "#42494d";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.fillStyle = "#aeb6b9";
+            ctx.beginPath();
+            ctx.arc(
+                rock.x - rock.radius * 0.3,
+                rock.y - rock.radius * 0.3,
+                rock.radius * 0.25,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+        }
+
+        // Draw the golf hole.
+        ctx.fillStyle = "#202020";
+        ctx.beginPath();
+        ctx.arc(
+            hole.x,
+            hole.y,
+            hole.radius,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Draw the flag pole.
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(hole.x, hole.y);
+        ctx.lineTo(hole.x, hole.y - 43);
+        ctx.stroke();
+
+        // Draw the red flag.
+        ctx.fillStyle = "#ed3b45";
+        ctx.beginPath();
+        ctx.moveTo(hole.x, hole.y - 43);
+        ctx.lineTo(hole.x + 28, hole.y - 34);
+        ctx.lineTo(hole.x, hole.y - 25);
+        ctx.closePath();
+        ctx.fill();
+
+        // Display the level and score.
+        ctx.fillStyle = "rgba(16,35,24,0.85)";
+        ctx.fillRect(18, 18, 245, 70);
+
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 19px Arial";
+        ctx.fillText(`Level ${level}`, 30, 40);
+
+        ctx.font = "15px Arial";
+        ctx.fillText(`Shots: ${shotCount}`, 30, 65);
+        ctx.fillText(`Coins: ${coinsCollected}`, 130, 65);
     }
 
-    if (levelComplete || gameComplete) {
-        drawCompletionScreen();
+    // Draw the golf ball.
+    function drawBall() {
+        if (!ball) {
+            return;
+        }
+
+        // Ball shadow.
+        ctx.fillStyle = "rgba(0,0,0,0.22)";
+        ctx.beginPath();
+        ctx.ellipse(
+            ball.x + 3,
+            ball.y + 5,
+            ball.radius * 1.1,
+            ball.radius * 0.75,
+            0,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+
+        // Ball surface.
+        const gradient = ctx.createRadialGradient(
+            ball.x - 3,
+            ball.y - 4,
+            1,
+            ball.x,
+            ball.y,
+            ball.radius * 1.5
+        );
+
+        gradient.addColorStop(0, "#ffffff");
+        gradient.addColorStop(0.5, ballColor);
+        gradient.addColorStop(1, "#444444");
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(
+            ball.x,
+            ball.y,
+            ball.radius,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
     }
 
-    requestAnimationFrame(gameLoop);
-}
+    // Draw the aiming line while the player is dragging.
+    function drawAim() {
+        if (!dragging || !ball) {
+            return;
+        }
 
-function initializeGame() {
-    createLevel(level);
+        const dx = ball.x - pointerX;
+        const dy = ball.y - pointerY;
+        const distance = Math.hypot(dx, dy);
+        const scale = distance > MAX_DRAG
+            ? MAX_DRAG / distance
+            : 1;
 
-    demoActive = true;
-    moving = true;
-    openingFrames = 180;
+        const aimX = ball.x - dx * scale;
+        const aimY = ball.y - dy * scale;
 
-    ball.x = 100;
-    ball.y = 400;
-    ball.dx = 4;
-    ball.dy = -3;
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 4;
+        ctx.setLineDash([8, 6]);
 
-    lastSafePosition = {
-        x: ball.x,
-        y: ball.y
-    };
+        ctx.beginPath();
+        ctx.moveTo(ball.x, ball.y);
+        ctx.lineTo(aimX, aimY);
+        ctx.stroke();
 
-    nextButton.disabled = true;
+        ctx.setLineDash([]);
 
-    statusText.textContent =
-        "Welcome! Watch the opening animation.";
+        drawCenteredText(
+            "Aim your shot!",
+            ball.x,
+            ball.y - 28,
+            "bold 14px Arial",
+            "#ffffff"
+        );
+    }
 
-    gameLoop();
-}
+    // Check whether a point is inside an oval hazard.
+    function pointInEllipse(x, y, ellipse) {
+        const dx = (x - ellipse.x) / ellipse.rx;
+        const dy = (y - ellipse.y) / ellipse.ry;
 
-// Start the game.
-initializeGame();
+        return dx * dx + dy * dy <= 1;
+    }
 
+ 
+    // Update the ball's movement while it is rolling.
+    function updateBall() {
+        if (!ball || !moving || completed) {
+            return;
+        }
+
+        const previousX = ball.x;
+        const previousY = ball.y;
+
+        // Move the ball.
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        // Bounce off the course boundaries.
+        if (ball.x - ball.radius < 12 ||
+            ball.x + ball.radius > W - 12) {
+            ball.dx *= -0.75;
+            ball.x = clamp(
+                ball.x,
+                12 + ball.radius,
+                W - 12 - ball.radius
+            );
+        }
+
+        if (ball.y - ball.radius < 12 ||
+            ball.y + ball.radius > H - 12) {
+            ball.dy *= -0.75;
+            ball.y = clamp(
+                ball.y,
+                12 + ball.radius,
+                H - 12 - ball.radius
+            );
+        }
+
+        // Check collisions with rocks.
+        for (const rock of rocks) {
+            const dx = ball.x - rock.x;
+            const dy = ball.y - rock.y;
+            const distance = Math.hypot(dx, dy);
+            const minimumDistance = ball.radius + rock.radius;
+
+            if (distance < minimumDistance && distance > 0) {
+                const nx = dx / distance;
+                const ny = dy / distance;
+
+                // Push the ball outside the rock.
+                ball.x = rock.x + nx * minimumDistance;
+                ball.y = rock.y + ny * minimumDistance;
+
+                // Reverse the velocity away from the rock.
+                const dotProduct = ball.dx * nx + ball.dy * ny;
+
+                if (dotProduct < 0) {
+                    ball.dx -= 1.75 * dotProduct * nx;
+                    ball.dy -= 1.75 * dotProduct * ny;
+                }
+            }
+        }
+
+        // Water hazards send the ball back to its last safe spot.
+        for (const water of waterHazards) {
+            if (pointInEllipse(ball.x, ball.y, water)) {
+                ball.x = lastSafePosition.x;
+                ball.y = lastSafePosition.y;
+                ball.dx = 0;
+                ball.dy = 0;
+                moving = false;
+
+                setStatus(
+                    "Splash! Your ball landed in water. Try that shot again."
+                );
+                return;
+            }
+        }
+
+        // Sand slows the ball down.
+        let onSand = false;
+
+        for (const sand of sandTraps) {
+            if (pointInEllipse(ball.x, ball.y, sand)) {
+                onSand = true;
+                break;
+            }
+        }
+
+        const friction = onSand ? 0.94 : GRASS_FRICTION;
+
+        ball.dx *= friction;
+        ball.dy *= friction;
+
+        // Collect power-ups when the ball gets close.
+        for (const item of powerUps) {
+            if (item.collected) {
+                continue;
+            }
+
+            const distance = Math.hypot(
+                ball.x - item.x,
+                ball.y - item.y
+            );
+
+            if (distance < ball.radius + 15) {
+                item.collected = true;
+
+                if (item.type === "coin") {
+                    coinsCollected++;
+                    setStatus("Coin collected! Nice shot!");
+                } else if (item.type === "star") {
+                    powerUpsCollected++;
+                    ballColor = "#ffd166";
+                    setStatus("Star collected! Your ball changed color!");
+                } else if (item.type === "boost") {
+                    boostNextShot = true;
+                    powerUpsCollected++;
+                    setStatus("Speed boost collected! Your next shot is stronger.");
+                }
+            }
+        }
+
+        // Remember the last safe position when the ball is on the grass.
+        let safe = true;
+
+        for (const water of waterHazards) {
+            if (pointInEllipse(ball.x, ball.y, water)) {
+                safe = false;
+                break;
+            }
+        }
+
+        if (safe) {
+            lastSafePosition.x = ball.x;
+            lastSafePosition.y = ball.y;
+        }
+
+        // Check whether the ball reaches the hole.
+        const holeDistance = Math.hypot(
+            ball.x - hole.x,
+            ball.y - hole.y
+        );
+
+        if (holeDistance < hole.radius && Math.hypot(ball.dx, ball.dy) < 2.5) {
+            ball.x = hole.x;
+            ball.y = hole.y;
+            ball.dx = 0;
+            ball.dy = 0;
+            moving = false;
+            completed = true;
+
+            setStatus(
+                `Level ${level} complete! Shots taken: ${shotCount}.`
+            );
+            return;
+        }
+
+        // Stop the ball when it has nearly stopped rolling.
+        if (Math.abs(ball.dx) < 0.08 &&
+            Math.abs(ball.dy) < 0.08) {
+            ball.dx = 0;
+            ball.dy = 0;
+            moving = false;
+
+            setStatus(
+                `Level ${level}: ${shotCount} shots. Drag backward from the ball to shoot again.`
+            );
+        }
+    }
+
+ 
+    // Convert mouse or touch coordinates to canvas coordinates.
+    function getPointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+
+        return {
+            x: (event.clientX - rect.left) * W / rect.width,
+            y: (event.clientY - rect.top) * H / rect.height
+        };
+    }
+
+    // PART 2: Clicking the moving demo ball changes its color and direction.
+    canvas.addEventListener("click", function (event) {
+        if (phase !== "demo") {
+            return;
+        }
+
+        const pointer = getPointerPosition(event);
+
+        const distance = Math.hypot(
+            pointer.x - demo.x,
+            pointer.y - demo.y
+        );
+
+        if (distance <= demo.radius + 10) {
+            demo.clicks++;
+
+            const colorIndex = demo.clicks % COLORS.length;
+            demo.color = COLORS[colorIndex];
+
+            // Change the direction after a successful click.
+            demo.dx *= -1;
+            demo.dy *= -1;
+
+            setStatus("Nice click! The ball changed color and direction.");
+        }
+    });
+
+    // Start aiming when the player presses down near the golf ball.
+    canvas.addEventListener("pointerdown", function (event) {
+        if (phase !== "game" || moving || completed || !ball) {
+            return;
+        }
+
+        const pointer = getPointerPosition(event);
+
+        const distance = Math.hypot(
+            pointer.x - ball.x,
+            pointer.y - ball.y
+        );
+
+       
+if (distance <= ball.radius + 18) {
+    changeBallColor();
+
+    dragging = true;
+    pointerX = pointer.x;
+    pointerY = pointer.y;
+
+
+            canvas.setPointerCapture(event.pointerId);
+            event.preventDefault();
+        }
+    });
+
+    // Update the aiming line as the player drags.
+    canvas.addEventListener("pointermove", function (event) {
+        if (!dragging) {
+            return;
+        }
+
+        const pointer = getPointerPosition(event);
+
+        pointerX = pointer.x;
+        pointerY = pointer.y;
+    });
+
+    // Release the pointer to shoot the ball.
+    canvas.addEventListener("pointerup", function (event) {
+        if (!dragging || !ball) {
+            return;
+        }
+
+        const pointer = getPointerPosition(event);
+
+        pointerX = pointer.x;
+        pointerY = pointer.y;
+
+        let dx = ball.x - pointerX;
+        let dy = ball.y - pointerY;
+
+        const distance = Math.hypot(dx, dy);
+        const limitedDistance = Math.min(distance, MAX_DRAG);
+
+        dragging = false;
+
+        if (distance < 8) {
+            return;
+        }
+
+        const scale = limitedDistance / distance;
+
+        dx *= scale;
+        dy *= scale;
+
+        const power = boostNextShot ? 0.18 : 0.12;
+
+        ball.dx = dx * power;
+        ball.dy = dy * power;
+
+        boostNextShot = false;
+        moving = true;
+        shotCount++;
+
+        setStatus(`Shot ${shotCount}! Watch the ball roll.`);
+    });
+
+    // Prevent dragging from remaining active if the pointer is cancelled.
+    canvas.addEventListener("pointercancel", function () {
+        dragging = false;
+    });
+
+    // Restart the current level.
+    if (restartButton) {
+        restartButton.addEventListener("click", function () {
+            createLevel(level);
+        });
+    }
+
+    // Move to the next level after completing the current one.
+    if (nextButton) {
+        nextButton.addEventListener("click", function () {
+            if (completed) {
+                createLevel(level < 3 ? level + 1 : 1);
+            } else {
+                setStatus("Finish the level by getting the ball into the hole first.");
+            }
+        });
+    }
+
+
+ 
+    // Draw the collected power-ups on the course.
+    function drawPowerUps() {
+        for (const item of powerUps) {
+            if (item.collected) {
+                continue;
+            }
+
+            let color = "#ffd166";
+            let symbol = "★";
+
+            if (item.type === "coin") {
+                color = "#ffcf33";
+                symbol = "$";
+            } else if (item.type === "boost") {
+                color = "#66e3ff";
+                symbol = "⚡";
+            }
+
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(item.x, item.y, 13, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            drawCenteredText(
+                symbol,
+                item.x,
+                item.y,
+                "bold 17px Arial",
+                "#17331f"
+            );
+        }
+    }
+
+    // Draw a message when a level is completed.
+    function drawCompletionMessage() {
+        if (!completed) {
+            return;
+        }
+
+        ctx.fillStyle = "rgba(0,0,0,0.68)";
+        ctx.fillRect(W * 0.18, H * 0.36, W * 0.64, H * 0.25);
+
+        drawCenteredText(
+            `LEVEL ${level} COMPLETE!`,
+            W / 2,
+            H * 0.43,
+            "bold 30px Arial",
+            "#ffd166"
+        );
+
+        drawCenteredText(
+            "Click Next Level to continue",
+            W / 2,
+            H * 0.52,
+            "18px Arial",
+            "#ffffff"
+        );
+    }
+
+    // Draw all the elements in the mini-golf game.
+    function drawGame() {
+        drawCourse();
+        drawPowerUps();
+        drawBall();
+        drawAim();
+        drawCompletionMessage();
+    }
+
+    // Start the mini-golf game after the loading screen and demo.
+    function startGame() {
+        phase = "game";
+        createLevel(1);
+        shotCount = 0;
+        coinsCollected = 0;
+        powerUpsCollected = 0;
+        ballColor = COLORS[0];
+
+        setStatus(
+            "Welcome! Drag backward from the ball and release to shoot."
+        );
+    }
+
+    // Main animation loop.
+    function animate(now) {
+        if (phase === "loading") {
+            drawLoadingScreen(now);
+
+            if (now - phaseStart >= LOADING_DURATION) {
+                phase = "demo";
+                phaseStart = now;
+            }
+        } else if (phase === "demo") {
+            updateDemo();
+            drawDemo();
+
+            if (now - phaseStart >= DEMO_DURATION) {
+                startGame();
+            }
+        } else if (phase === "game") {
+            updateBall();
+            drawGame();
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    // Prepare the buttons and begin the animation.
+    if (restartButton) {
+        restartButton.textContent = "Restart level";
+    }
+
+    if (nextButton) {
+        nextButton.textContent = "Next level";
+    }
+
+    setStatus("Loading Mini Golf Adventure...");
+
+    requestAnimationFrame(animate);
+
+})();

@@ -38,41 +38,44 @@
         </p>
 
         <div class="golf-legend">
-            <span>⭐ Super Shot</span>
+            <span>⭐ Star</span>
             <span>⚡ Speed Boost</span>
-            <span>🧲 Hole Magnet</span>
-            <span>🛡️ Water Shield</span>
             <span>🪙 Bonus Coin</span>
+            <span>💧 Water Hazard</span>
+            <span>🏖️ Sand Trap</span>
         </div>
 
-       
         <div class="golf-controls">
-        <button type="button" id="resetGolf" class="golf-reset">
-            Restart Game
-                        </button>
-        <button type="button" id="nextLevel" class="golf-reset">
-        Next Level
-                         </button>
-        </div>
+            <button type="button" id="resetGolf" class="golf-reset">
+                Restart Game
+            </button>
 
+            <button type="button" id="nextLevel" class="golf-reset" disabled>
+                Next Level
+            </button>
+        </div>
 
         <div class="golf-dashboard">
             <div>
                 <p class="golf-label">CURRENT LEVEL</p>
                 <p class="golf-score" id="levelDisplay">Level 1 of 3</p>
             </div>
+
             <div>
                 <p class="golf-label">SHOTS THIS LEVEL</p>
                 <p class="golf-score" id="shotCount">0</p>
             </div>
+
             <div>
                 <p class="golf-label">TOTAL SHOTS</p>
                 <p class="golf-score" id="totalShots">0</p>
             </div>
+
             <div>
                 <p class="golf-label">POWER-UPS</p>
                 <p class="golf-score" id="powerUpCount">0</p>
             </div>
+
             <div>
                 <p class="golf-label">COINS</p>
                 <p class="golf-score" id="coinCount">0</p>
@@ -80,7 +83,7 @@
         </div>
 
         <p id="golfStatus" role="status" aria-live="polite">
-            Starting mini golf...
+            Preparing the golf course...
         </p>
 
         <div class="golf-canvas-wrap">
@@ -96,25 +99,27 @@
 
         <div class="golf-instructions">
             <h3>How to Play</h3>
+
             <ol>
-                <li>Wait for the opening animation to finish.</li>
-                <li>Click or touch the golf ball.</li>
-                <li>Drag backward in the opposite direction you want to shoot.</li>
-                <li>Release to shoot the ball.</li>
-                <li>Avoid rocks and water, and collect power-ups.</li>
-                <li>Get the ball into the hole to complete each level.</li>
-                <li>Click Next Level when you finish a level.</li>
+                <li>Watch the opening loading screen and bouncing-ball demo.</li>
+                <li>Click the moving demo ball to change its color and direction.</li>
+                <li>After the mini-golf course appears, press and drag backward from the golf ball.</li>
+                <li>Release to shoot toward the hole.</li>
+                <li>Avoid rocks and water, and collect power-ups and coins.</li>
+                <li>Get the ball into the hole to complete the level.</li>
+                <li>Click Next Level to continue after completing a level.</li>
             </ol>
         </div>
     </section>
 
     <section class="golf-section">
         <h2>About This Assignment</h2>
+
         <p>
             This project demonstrates JavaScript animation using the HTML5
-            canvas. It includes an animated golf ball, mouse and touch
-            controls, collision detection, obstacles, sand friction,
-            water hazards, power-ups, scoring, and three playable levels.
+            canvas. It includes a bouncing object, mouse interaction,
+            ball movement, collision detection, obstacles, power-ups,
+            scoring, and three mini-golf levels.
         </p>
     </section>
 </main>

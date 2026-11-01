@@ -58,13 +58,27 @@
 
         <section>
             <h2>Performance Analysis</h2>
-            <p>
-                The Performance score was 74/100. I will review the
-                Lighthouse diagnostics and recommendations to identify
-                possible improvements.
+<p>
+    The Performance score was 74/100. First Contentful Paint
+    was 0.9 seconds, while Largest Contentful Paint was
+    10.4 seconds. Total Blocking Time was 130 milliseconds,
+    Cumulative Layout Shift was 0, and Speed Index was
+    1.0 seconds.
+</p>
+
+<p>
+    Lighthouse identified opportunities to improve image
+    delivery and browser cache lifetimes. It also reported
+    four long main-thread tasks. These findings show areas
+    where the mobile loading experience could be improved.
+</p>
             </p>
-            <h3>Performance Screenshot</h3>
-            <!-- Add your Performance screenshot here -->
+        <h3>Performance Screenshot</h3>
+        <img
+        src="lighthouse-performance.png.png"
+        alt="Google Lighthouse mobile Performance results showing a score of 74 and performance metrics"
+        class="audit-screenshot"
+        >
         </section>
 
         <section>

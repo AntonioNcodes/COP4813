@@ -1821,3 +1821,60 @@ button:focus-visible {
     outline: 3px solid #ffd54a;
     outline-offset: 3px;
 }
+
+
+/* =========================================
+   COP4813 Responsive Mobile Navigation
+========================================= */
+
+/* Hide the menu button on desktop */
+.menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    /* Display the mobile menu button */
+    .menu-toggle {
+        display: block;
+        width: 100%;
+        min-height: 48px;
+        padding: 12px;
+        background-color: #071a3d;
+        color: white;
+        border: none;
+        border-bottom: 3px solid #e21b2d;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Hide navigation until the button is selected */
+    #site-navigation {
+        display: none;
+    }
+
+    /* Display navigation when opened */
+    #site-navigation.is-open {
+        display: block;
+    }
+
+    /* Stack navigation links vertically */
+    #site-navigation ul {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    #site-navigation li {
+        width: 100%;
+    }
+
+    #site-navigation a {
+        width: 100%;
+        min-height: 44px;
+        padding: 12px;
+        text-align: center;
+    }
+}

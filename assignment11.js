@@ -1,188 +1,200 @@
+
 // Assignment 11 - Dynamic Objects
 // Daytona State College - BSIT Class Advisor
 
-// 1. COURSE DATA
+// 1. COURSE DATA (JSON)
 
-const advisorData = {
-    program: "Bachelor of Science in Information Technology (BSIT)",
-
-    courses: [
+const advisorData = JSON.parse(`{
+    "program": "Bachelor of Science in Information Technology (BSIT)",
+    "courses": [
         {
-            id: "COP1000",
-            name: "Principles of Computer Programming",
-            credits: 3,
-            prerequisites: [],
-            terms: ["Fall", "Spring", "Summer"],
-            note: "Foundational programming requirement.",
-            description: "Introduces the basic concepts of computer programming and problem-solving.",
-            topics: ["Programming fundamentals", "Variables and data types", "Decision structures", "Loops and problem-solving"]
+            "id": "COP1000",
+            "name": "Principles of Computer Programming",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall", "Spring", "Summer"],
+            "choiceGroup": null,
+            "note": "Foundational programming requirement.",
+            "description": "Introduces the basic concepts of computer programming and problem-solving.",
+            "topics": ["Programming fundamentals", "Variables and data types", "Decision structures", "Loops and problem-solving"]
         },
         {
-            id: "COP2800",
-            name: "Computer Programming Java",
-            credits: 3,
-            prerequisites: [],
-            choiceGroup: "programming",
-            terms: ["Fall", "Spring"],
-            note: "Choose one programming course from the approved options.",
-            description: "Introduces programming using Java and object-oriented programming concepts.",
-            topics: ["Java syntax", "Classes and objects", "Methods", "Arrays and control structures"]
+            "id": "COP2800",
+            "name": "Computer Programming Java",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall", "Spring"],
+            "choiceGroup": "programming",
+            "note": "Choose one programming course from the approved options.",
+            "description": "Introduces programming using Java and object-oriented programming concepts.",
+            "topics": ["Java syntax", "Classes and objects", "Methods", "Arrays and control structures"]
         },
         {
-            id: "COP2360",
-            name: "C# Programming",
-            credits: 3,
-            prerequisites: [],
-            choiceGroup: "programming",
-            terms: ["Fall", "Spring", "Summer"],
-            note: "Alternative programming course. Select only one option.",
-            description: "Introduces programming concepts using the C# programming language.",
-            topics: ["C# syntax", "Variables and data types", "Methods", "Object-oriented programming"]
+            "id": "COP2360",
+            "name": "C# Programming",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall", "Spring", "Summer"],
+            "choiceGroup": "programming",
+            "note": "Alternative programming course. Select only one option.",
+            "description": "Introduces programming concepts using the C# programming language.",
+            "topics": ["C# syntax", "Variables and data types", "Methods", "Object-oriented programming"]
         },
         {
-            id: "COP2220",
-            name: "Computer Programming C",
-            credits: 3,
-            prerequisites: [],
-            choiceGroup: "programming",
-            terms: ["Fall", "Spring", "Summer"],
-            note: "Alternative programming course. Select only one option.",
-            description: "Introduces computer programming using the C language.",
-            topics: ["C programming", "Variables and operators", "Functions", "Arrays and pointers"]
+            "id": "COP2220",
+            "name": "Computer Programming C",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall", "Spring", "Summer"],
+            "choiceGroup": "programming",
+            "note": "Alternative programming course. Select only one option.",
+            "description": "Introduces computer programming using the C language.",
+            "topics": ["C programming", "Variables and operators", "Functions", "Arrays and pointers"]
         },
         {
-            id: "COT3100",
-            name: "Discrete Analysis",
-            credits: 3,
-            prerequisites: [],
-            terms: ["Fall", "Spring"],
-            note: "Discrete mathematics requirement.",
-            description: "Explores mathematical concepts used in computer science and information technology.",
-            topics: ["Logic", "Sets", "Relations", "Counting and problem-solving"]
+            "id": "COT3100",
+            "name": "Discrete Analysis",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall", "Spring"],
+            "choiceGroup": "discrete",
+            "note": "Discrete mathematics requirement.",
+            "description": "Explores mathematical concepts used in computer science and information technology.",
+            "topics": ["Logic", "Sets", "Relations", "Counting and problem-solving"]
         },
         {
-            id: "MAD2104",
-            name: "Discrete Mathematics",
-            credits: 3,
-            prerequisites: [],
-            terms: ["Fall"],
-            note: "Alternative to COT3100 for the discrete requirement.",
-            description: "Covers mathematical reasoning and concepts that support computing and technology.",
-            topics: ["Mathematical logic", "Sets", "Functions", "Combinatorics"]
+            "id": "MAD2104",
+            "name": "Discrete Mathematics",
+            "credits": 3,
+            "prerequisites": [],
+            "terms": ["Fall"],
+            "choiceGroup": "discrete",
+            "note": "Alternative to COT3100 for the discrete requirement.",
+            "description": "Covers mathematical reasoning and concepts that support computing and technology.",
+            "topics": ["Mathematical logic", "Sets", "Functions", "Combinatorics"]
         },
         {
-            id: "CTS3348",
-            name: "Linux Administration",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["MAC1105", "MAC1114", "MAC1140"] }
+            "id": "CTS3348",
+            "name": "Linux Administration",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["MAC1105", "MAC1114", "MAC1140"]}
             ],
-            terms: ["Fall"],
-            note: "Requires MAC1105 or a higher mathematics course.",
-            description: "Introduces Linux operating system administration and command-line management.",
-            topics: ["Linux commands", "File permissions", "User management", "System administration"]
+            "terms": ["Fall"],
+            "choiceGroup": null,
+            "note": "Requires MAC1105 or a higher mathematics course.",
+            "description": "Introduces Linux operating system administration and command-line management.",
+            "topics": ["Linux commands", "File permissions", "User management", "System administration"]
         },
         {
-            id: "COP3530",
-            name: "Data Structures",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["COP2800", "COP2220", "COP2360"] },
-                { anyOf: ["COT3100", "MAD2104"] }
+            "id": "COP3530",
+            "name": "Data Structures",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["COP2800", "COP2220", "COP2360"]},
+                {"anyOf": ["COT3100", "MAD2104"]}
             ],
-            terms: ["Fall", "Spring"],
-            note: "Requires one programming course AND one discrete mathematics course.",
-            description: "Studies how data is organized, stored, and accessed in computer programs.",
-            topics: ["Arrays", "Linked lists", "Stacks and queues", "Trees and sorting"]
+            "terms": ["Fall", "Spring"],
+            "choiceGroup": null,
+            "note": "Requires one programming course AND one discrete mathematics course.",
+            "description": "Studies how data is organized, stored, and accessed in computer programs.",
+            "topics": ["Arrays", "Linked lists", "Stacks and queues", "Trees and sorting"]
         },
         {
-            id: "COP4708",
-            name: "Applied Database I",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["COP2800", "COP2220", "COP2360"] }
+            "id": "COP4708",
+            "name": "Applied Database I",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["COP2800", "COP2220", "COP2360"]}
             ],
-            terms: ["Fall", "Spring"],
-            note: "Requires one approved programming course.",
-            description: "Introduces database concepts, design, and working with database systems.",
-            topics: ["Database design", "SQL", "Tables and relationships", "Queries"]
+            "terms": ["Fall", "Spring"],
+            "choiceGroup": null,
+            "note": "Requires one approved programming course.",
+            "description": "Introduces database concepts, design, and working with database systems.",
+            "topics": ["Database design", "SQL", "Tables and relationships", "Queries"]
         },
         {
-            id: "COP4610",
-            name: "Operating Systems",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["CTS3348"] }
+            "id": "COP4610",
+            "name": "Operating Systems",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["CTS3348"]}
             ],
-            terms: ["Fall", "Spring"],
-            note: "Requires Linux Administration.",
-            description: "Explores how operating systems manage computer hardware and software resources.",
-            topics: ["Processes and threads", "Memory management", "File systems", "Operating system concepts"]
+            "terms": ["Fall", "Spring"],
+            "choiceGroup": null,
+            "note": "Requires Linux Administration.",
+            "description": "Explores how operating systems manage computer hardware and software resources.",
+            "topics": ["Processes and threads", "Memory management", "File systems", "Operating system concepts"]
         },
         {
-            id: "CIS4360",
-            name: "Applied Cybersecurity",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["CTS3348"] },
-                { anyOf: ["CET1600", "CNT3104"] }
+            "id": "CIS4360",
+            "name": "Applied Cybersecurity",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["CTS3348"]},
+                {"anyOf": ["CET1600", "CNT3104"]}
             ],
-            terms: ["Fall", "Spring", "Summer"],
-            note: "Requires CTS3348 AND either CET1600 or CNT3104.",
-            description: "Introduces practical cybersecurity concepts and techniques used to protect computer systems and networks.",
-            topics: ["Network security", "Security tools", "System protection", "Cybersecurity practices"]
+            "terms": ["Fall", "Spring", "Summer"],
+            "choiceGroup": null,
+            "note": "Requires CTS3348 AND either CET1600 or CNT3104.",
+            "description": "Introduces practical cybersecurity concepts and techniques used to protect computer systems and networks.",
+            "topics": ["Network security", "Security tools", "System protection", "Cybersecurity practices"]
         },
         {
-            id: "CEN4010",
-            name: "Software Engineering",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["COP3530"] }
+            "id": "CEN4010",
+            "name": "Software Engineering",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["COP3530"]}
             ],
-            terms: ["Spring"],
-            note: "Requires Data Structures.",
-            description: "Explores the processes used to plan, design, develop, and maintain software.",
-            topics: ["Software development life cycle", "Requirements", "Software design", "Testing and maintenance"]
+            "terms": ["Spring"],
+            "choiceGroup": null,
+            "note": "Requires Data Structures.",
+            "description": "Explores the processes used to plan, design, develop, and maintain software.",
+            "topics": ["Software development life cycle", "Requirements", "Software design", "Testing and maintenance"]
         },
         {
-            id: "COP4813",
-            name: "Web Systems I",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["COP3530"] }
+            "id": "COP4813",
+            "name": "Web Systems I",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["COP3530"]}
             ],
-            terms: ["Fall"],
-            note: "Requires Data Structures.",
-            description: "Introduces web development and the technologies used to build interactive websites.",
-            topics: ["HTML", "CSS", "JavaScript", "Web application development"]
+            "terms": ["Fall"],
+            "choiceGroup": null,
+            "note": "Requires Data Structures.",
+            "description": "Introduces web development and the technologies used to build interactive websites.",
+            "topics": ["HTML", "CSS", "JavaScript", "Web application development"]
         },
         {
-            id: "CEN4801",
-            name: "Systems Integration",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["COP4708"] },
-                { anyOf: ["COP3530"] }
+            "id": "CEN4801",
+            "name": "Systems Integration",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["COP4708"]},
+                {"anyOf": ["COP3530"]}
             ],
-            terms: ["Fall"],
-            note: "Requires Applied Database I AND Data Structures.",
-            description: "Studies how different hardware and software systems are connected to work together.",
-            topics: ["System integration", "Business requirements", "Technology components", "Testing and implementation"]
+            "terms": ["Fall"],
+            "choiceGroup": null,
+            "note": "Requires Applied Database I AND Data Structures.",
+            "description": "Studies how different hardware and software systems are connected to work together.",
+            "topics": ["System integration", "Business requirements", "Technology components", "Testing and implementation"]
         },
         {
-            id: "CIS4510",
-            name: "IT Project Management",
-            credits: 3,
-            prerequisites: [
-                { anyOf: ["CEN4801"] }
+            "id": "CIS4510",
+            "name": "IT Project Management",
+            "credits": 3,
+            "prerequisites": [
+                {"anyOf": ["CEN4801"]}
             ],
-            terms: ["Spring"],
-            note: "Requires Systems Integration.",
-            description: "Introduces project management methods used to plan and manage information technology projects.",
-            topics: ["Project planning", "Scheduling", "Risk management", "Project communication"]
+            "terms": ["Spring"],
+            "choiceGroup": null,
+            "note": "Requires Systems Integration.",
+            "description": "Introduces project management methods used to plan and manage information technology projects.",
+            "topics": ["Project planning", "Scheduling", "Risk management", "Project communication"]
         }
     ]
-};
+}`);
 
 
 // 2. STUDENT DATA
@@ -191,15 +203,44 @@ let completedCourses = [];
 let coursePlan = [];
 
 
-// 3. COURSE DETAILS
+// 3. CHECK PREREQUISITES
+
+function prerequisitesMet(course) {
+
+    return course.prerequisites.every(requirement =>
+        requirement.anyOf.some(courseID =>
+            completedCourses.includes(courseID)
+        )
+    );
+}
+
+
+// 4. CHECK ALTERNATIVE COURSE SELECTIONS
+
+function getSelectedCourseInGroup(groupName) {
+
+    return advisorData.courses.find(course =>
+        course.choiceGroup === groupName &&
+        completedCourses.includes(course.id)
+    );
+}
+
+
+// 5. DISPLAY PREREQUISITES AND COURSE DETAILS
 
 function courseDetailsHTML(course) {
 
     const prerequisiteText = course.prerequisites.length === 0
         ? "None listed in this advisor."
-        : course.prerequisites.map(requirement =>
-            requirement.anyOf.join(" OR ")
-        ).join(" AND ");
+        : course.prerequisites.map(requirement => {
+
+            const options = requirement.anyOf.join(" OR ");
+
+            return requirement.anyOf.length > 1
+                ? `(${options})`
+                : options;
+
+        }).join(" AND ");
 
     return `
         <details class="course-details">
@@ -219,29 +260,6 @@ function courseDetailsHTML(course) {
 }
 
 
-// 4. CHECK PREREQUISITES
-
-function prerequisitesMet(course) {
-
-    return course.prerequisites.every(requirement =>
-        requirement.anyOf.some(courseID =>
-            completedCourses.includes(courseID)
-        )
-    );
-}
-
-
-// 5. CHECK PROGRAMMING COURSE CHOICES
-
-function getSelectedProgrammingCourse() {
-
-    return advisorData.courses.find(course =>
-        course.choiceGroup === "programming" &&
-        completedCourses.includes(course.id)
-    );
-}
-
-
 // 6. DISPLAY COMPLETED COURSES
 
 function renderCompletedCourses() {
@@ -252,12 +270,12 @@ function renderCompletedCourses() {
 
     advisorData.courses.forEach(course => {
 
-        const selectedCourse = getSelectedProgrammingCourse();
+        const selectedCourse = course.choiceGroup
+            ? getSelectedCourseInGroup(course.choiceGroup)
+            : null;
 
         const isDisabled =
-            course.choiceGroup === "programming" &&
-            selectedCourse &&
-            selectedCourse.id !== course.id;
+            selectedCourse && selectedCourse.id !== course.id;
 
         const courseElement = document.createElement("div");
 
@@ -404,9 +422,25 @@ document.getElementById("completed-courses").addEventListener("change", event =>
 
         const courseID = event.target.value;
 
+        const course = advisorData.courses.find(item =>
+            item.id === courseID
+        );
+
         if (event.target.checked) {
 
-            completedCourses.push(courseID);
+            if (course.choiceGroup) {
+
+                const selectedCourse = getSelectedCourseInGroup(course.choiceGroup);
+
+                if (selectedCourse && selectedCourse.id !== courseID) {
+                    event.target.checked = false;
+                    return;
+                }
+            }
+
+            if (!completedCourses.includes(courseID)) {
+                completedCourses.push(courseID);
+            }
 
         } else {
 
@@ -416,11 +450,15 @@ document.getElementById("completed-courses").addEventListener("change", event =>
 
         }
 
-        coursePlan = coursePlan.filter(id =>
-            prerequisitesMet(
-                advisorData.courses.find(course => course.id === id)
-            )
-        );
+        coursePlan = coursePlan.filter(id => {
+
+            const plannedCourse = advisorData.courses.find(course =>
+                course.id === id
+            );
+
+            return plannedCourse && prerequisitesMet(plannedCourse);
+
+        });
 
         renderAll();
 

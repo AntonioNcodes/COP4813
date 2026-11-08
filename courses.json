@@ -1,0 +1,133 @@
+
+{
+  "program": {
+    "name": "Bachelor of Science in Information Technology",
+    "shortName": "BSIT",
+    "school": "Daytona State College",
+    "totalCredits": 128
+  },
+  "creditRequirements": {
+    "generalEducation": 36,
+    "lowerLevelTechnical": 44,
+    "upperLevelProgramSpecific": 48
+  },
+  "courses": [
+    {
+      "id": "COP2800",
+      "name": "Java Computer Programming",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces programming concepts using the Java programming language.",
+      "topics": [
+        "Variables and data types",
+        "Conditional statements",
+        "Loops",
+        "Methods",
+        "Object-oriented programming"
+      ],
+      "prerequisites": []
+    },
+    {
+      "id": "COT3100",
+      "name": "Discrete Analysis",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces mathematical concepts used in computer science.",
+      "topics": [
+        "Logic",
+        "Sets",
+        "Functions",
+        "Relations",
+        "Graph theory"
+      ],
+      "prerequisites": []
+    },
+    {
+      "id": "CTS3348",
+      "name": "Linux Administration",
+      "credits": 3,
+      "category": "Program",
+      "description": "Covers Linux operating system administration and system management.",
+      "topics": [
+        "Linux commands",
+        "User management",
+        "File permissions",
+        "System administration",
+        "Networking"
+      ],
+      "prerequisites": [
+        ["MAC1105", "MAC1114", "MAC1140", "MAC2311C"]
+      ]
+    },
+    {
+      "id": "COP3530",
+      "name": "Data Structures",
+      "credits": 3,
+      "category": "Program",
+      "description": "Studies common data structures and algorithms used in software development.",
+      "topics": [
+        "Arrays",
+        "Linked lists",
+        "Stacks and queues",
+        "Trees",
+        "Searching and sorting"
+      ],
+      "prerequisites": [
+        ["COP2800", "COP2360", "COP2220"],
+        ["COT3100", "MAD2104"]
+      ]
+    },
+    {
+      "id": "COP4708",
+      "name": "Applied Databases I",
+      "credits": 3,
+      "category": "Program",
+      "description": "Introduces database design, SQL, and database management.",
+      "topics": [
+        "Relational databases",
+        "SQL",
+        "Database design",
+        "Queries",
+        "Normalization"
+      ],
+      "prerequisites": [
+        ["COP2800", "COP2360", "COP2220"]
+      ]
+    },
+    {
+      "id": "COP4610",
+      "name": "Operating Systems",
+      "credits": 3,
+      "category": "Program",
+      "description": "Explores operating system concepts and how computers manage resources.",
+      "topics": [
+        "Processes",
+        "Memory management",
+        "File systems",
+        "Scheduling",
+        "Operating system security"
+      ],
+      "prerequisites": [
+        ["CTS3348"]
+      ]
+    },
+    {
+      "id": "CIS4360",
+      "name": "Applied Cybersecurity",
+      "credits": 3,
+      "category": "Program",
+      "description": "Introduces practical cybersecurity concepts and security techniques.",
+      "topics": [
+        "Network security",
+        "System security",
+        "Threats and vulnerabilities",
+        "Security tools",
+        "Risk management"
+      ],
+      "prerequisites": [
+        ["CTS3348"],
+        ["CET1600", "CNT3104"]
+      ]
+    }
+  ]
+}

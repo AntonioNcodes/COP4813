@@ -1,282 +1,427 @@
-let courses = [];
-let completedCourses = new Set();
-let plannedCourses = [];
+"use strict";
 
-const advisor = document.getElementById("advisor-app");
+const state = {
+    courses: [],
+    program: {},
+    completed: new Set(),
+    planned: [],
+    search: "",
+    completedCategory: "all",
+    availableCategory: "all"
+};
+
+const elements = {
+    progress: document.getElementById("progress-summary"),
+    completed: document.getElementById("completed-courses"),
+    available: document.getElementById("available-courses"),
+    plan: document.getElementById("course-plan"),
+    planSummary: document.getElementById("plan-summary"),
+    search: document.getElementById("course-search"),
+    completedCategory: document.getElementById("completed-category"),
+    availableCategory: document.getElementById("available-category"),
+    semester: document.getElementById("semester-name")
+};
 
 function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[character]);
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[character]);
 }
 
-async function loadCourses() {
-  try {
-    const response = await fetch("courses.json");
+function findCourse(id) {
+    return state.courses.find(course => course.id === id);
+}
 
-    if (!response.ok) {
-      throw new Error("Could not find courses.json.");
+function formatPrerequisites(course) {
+    if (!course.prerequisites?.length) {
+        return "No prerequisites listed.";
     }
 
-    const data = await response.json();
+    return course.prerequisites.map(group => {
+        const alternatives = group.map(id => {
+            const prerequisite = findCourse(id);
+            return prerequisite
+                ? `${prerequisite.id} – ${prerequisite.name}`
+                : id;
+        });
 
-    courses = data.courses;
+        return alternatives.join(" OR ");
+    }).join(" AND ");
+}
 
-    if (!Array.isArray(courses)) {
-      throw new Error("The JSON file does not contain a courses array.");
-    }
+function prerequisitesSatisfied(course) {
+    if (!course.prerequisites?.length) return true;
 
-    renderAll();
+    return course.prerequisites.every(group =>
+        group.some(id => state.completed.has(id))
+    );
+}
 
-  } catch (error) {
-    console.error("Advisor loading error:", error);
+function courseDetails(course) {
+    const topics = Array.isArray(course.topics)
+        ? course.topics
+        : [];
 
-    advisor.innerHTML = `
-      <h2>Unable to load the BSIT Class Advisor</h2>
-      <p>${escapeHTML(error.message)}</p>
-      <p>Make sure assignment11.html, assignment11.js, and courses.json
-      are in the same folder.</p>
+    return `
+        <details class="course-details">
+            <summary>View course information</summary>
+            <div class="details-content">
+                <p>${escapeHTML(course.description)}</p>
+                <h4>Topics covered</h4>
+                ${
+                    topics.length
+                        ? `<ul>${topics.map(topic =>
+                            `<li>${escapeHTML(topic)}</li>`
+                          ).join("")}</ul>`
+                        : "<p>Topics have not been added.</p>"
+                }
+                <h4>Prerequisites</h4>
+                <p>${escapeHTML(formatPrerequisites(course))}</p>
+            </div>
+        </details>
     `;
-  }
 }
 
-function getCourse(courseId) {
-  return courses.find(course => course.id === courseId);
+function courseCard(course, type) {
+    const action = type === "available"
+        ? `<button class="primary-button" data-add="${escapeHTML(course.id)}">
+               Add to semester
+           </button>`
+        : `<button class="remove-button" data-remove="${escapeHTML(course.id)}">
+               Remove
+           </button>`;
+
+    return `
+        <article class="course-card">
+            <div class="course-card-top">
+                <span class="course-code">${escapeHTML(course.id)}</span>
+                <span class="credit-badge">
+                    ${Number(course.credits)} credits
+                </span>
+            </div>
+            <h3>${escapeHTML(course.name)}</h3>
+            <p class="course-category">${escapeHTML(course.category)}</p>
+            ${courseDetails(course)}
+            <div class="card-action">${action}</div>
+        </article>
+    `;
 }
 
-function getPrerequisiteText(course) {
-  if (!course.prerequisites || course.prerequisites.length === 0) {
-    return "No prerequisites listed.";
-  }
+function renderProgress() {
+    const completedCourses = state.courses.filter(course =>
+        state.completed.has(course.id)
+    );
 
-  return course.prerequisites.map(group => {
-    const names = group.map(id => {
-      const prerequisite = getCourse(id);
-      return prerequisite
-        ? `${prerequisite.id} - ${prerequisite.name}`
-        : id;
-    });
+    const completedCredits = completedCourses.reduce(
+        (total, course) => total + Number(course.credits || 0), 0
+    );
 
-    return names.join(" OR ");
-  }).join(" AND ");
-}
+    const plannedCredits = state.planned.reduce((total, id) => {
+        const course = findCourse(id);
+        return total + (course ? Number(course.credits || 0) : 0);
+    }, 0);
 
-function prerequisitesMet(course) {
-  if (!course.prerequisites || course.prerequisites.length === 0) {
-    return true;
-  }
-
-  return course.prerequisites.every(group =>
-    group.some(prerequisiteId =>
-      completedCourses.has(prerequisiteId)
-    )
-  );
-}
-
-function getCourseInformation(course) {
-  const topics = course.topics && course.topics.length
-    ? `<ul>${course.topics.map(topic =>
-        `<li>${escapeHTML(topic)}</li>`
-      ).join("")}</ul>`
-    : "<p>No topics listed yet.</p>";
-
-  return `
-    <div class="course-information">
-      <p>${escapeHTML(course.description || "Course description coming soon.")}</p>
-      <strong>Topics covered:</strong>
-      ${topics}
-      <p><strong>Prerequisites:</strong>
-      ${escapeHTML(getPrerequisiteText(course))}</p>
-    </div>
-  `;
+    elements.progress.innerHTML = `
+        <article class="progress-card">
+            <span>Courses completed</span>
+            <strong>${completedCourses.length}</strong>
+        </article>
+        <article class="progress-card">
+            <span>Selected completed credits</span>
+            <strong>${completedCredits}</strong>
+        </article>
+        <article class="progress-card">
+            <span>Courses planned</span>
+            <strong>${state.planned.length}</strong>
+        </article>
+        <article class="progress-card">
+            <span>Planned credits</span>
+            <strong>${plannedCredits}</strong>
+        </article>
+    `;
 }
 
 function renderCompletedCourses() {
-  const container = document.getElementById("completed-courses");
+    const search = state.search.toLowerCase();
 
-  if (!container) return;
+    const filtered = state.courses.filter(course => {
+        const matchesSearch =
+            course.id.toLowerCase().includes(search) ||
+            course.name.toLowerCase().includes(search);
 
-  // Include prerequisite codes even when their full course records
-  // have not yet been added to the JSON file.
-  const prerequisiteIds = courses.flatMap(course =>
-    (course.prerequisites || []).flat()
-  );
+        const matchesCategory =
+            state.completedCategory === "all" ||
+            course.category === state.completedCategory;
 
-  const allIds = [...new Set([
-    ...courses.map(course => course.id),
-    ...prerequisiteIds
-  ])];
+        return matchesSearch && matchesCategory;
+    });
 
-  container.innerHTML = allIds.map(id => {
-    const course = getCourse(id);
-    const name = course
-      ? `${course.id} - ${course.name}`
-      : `${id} - Supporting prerequisite (course details not added yet)`;
+    if (!filtered.length) {
+        elements.completed.innerHTML =
+            `<p class="empty-state">No courses match your search.</p>`;
+        return;
+    }
 
-    return `
-      <label class="completed-course-option">
-        <input
-          type="checkbox"
-          data-completed-course="${escapeHTML(id)}"
-          ${completedCourses.has(id) ? "checked" : ""}
-        >
-        ${escapeHTML(name)}
-      </label>
-    `;
-  }).join("");
+    const groups = [
+        { title: "Prerequisite and Supporting Courses", category: "Prerequisite" },
+        { title: "Required BSIT Courses", category: "Program" },
+        { title: "Program Electives", category: "Elective" }
+    ];
+
+    elements.completed.innerHTML = groups.map(group => {
+        const groupCourses = filtered.filter(course =>
+            course.category === group.category
+        );
+
+        if (!groupCourses.length) return "";
+
+        return `
+            <section class="course-group">
+                <div class="group-heading">
+                    <h3>${group.title}</h3>
+                    <span>${groupCourses.length} courses</span>
+                </div>
+                <div class="course-grid">
+                    ${groupCourses.map(course => `
+                        <label class="completed-card">
+                            <input
+                                type="checkbox"
+                                data-completed="${escapeHTML(course.id)}"
+                                ${state.completed.has(course.id) ? "checked" : ""}
+                            >
+                            <span class="completed-card-text">
+                                <strong>${escapeHTML(course.id)}</strong>
+                                <span>${escapeHTML(course.name)}</span>
+                                <small>${Number(course.credits)} credits</small>
+                            </span>
+                        </label>
+                    `).join("")}
+                </div>
+            </section>
+        `;
+    }).join("");
 }
 
 function renderAvailableCourses() {
-  const container = document.getElementById("available-courses");
+    const filtered = state.courses.filter(course => {
+        const isProgramCourse =
+            course.category === "Program" ||
+            course.category === "Elective";
 
-  if (!container) return;
+        const categoryMatches =
+            state.availableCategory === "all" ||
+            course.category === state.availableCategory;
 
-  const available = courses.filter(course =>
-    (course.category === "Program" ||
-     course.category === "Program Elective") &&
-    !completedCourses.has(course.id) &&
-    !plannedCourses.includes(course.id) &&
-    prerequisitesMet(course)
-  );
+        return isProgramCourse &&
+            categoryMatches &&
+            !state.completed.has(course.id) &&
+            !state.planned.includes(course.id) &&
+            prerequisitesSatisfied(course);
+    });
 
-  if (available.length === 0) {
-    container.innerHTML = `
-      <p>No eligible courses are available yet.
-      Select completed prerequisite courses to see your options.</p>
+    if (!filtered.length) {
+        elements.available.innerHTML = `
+            <div class="empty-state">
+                <h3>No eligible courses found</h3>
+                <p>
+                    Select completed prerequisite courses above.
+                    Eligible courses will appear here when their
+                    listed requirements are satisfied.
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    const required = filtered.filter(course =>
+        course.category === "Program"
+    );
+
+    const electives = filtered.filter(course =>
+        course.category === "Elective"
+    );
+
+    let html = "";
+
+    if (required.length) {
+        html += `
+            <section class="course-group">
+                <div class="group-heading">
+                    <h3>Required BSIT Courses</h3>
+                    <span>${required.length} available</span>
+                </div>
+                <div class="course-grid">
+                    ${required.map(course =>
+                        courseCard(course, "available")
+                    ).join("")}
+                </div>
+            </section>
+        `;
+    }
+
+    if (electives.length) {
+        html += `
+            <section class="course-group">
+                <div class="group-heading">
+                    <h3>Program Electives</h3>
+                    <span>${electives.length} available</span>
+                </div>
+                <div class="course-grid">
+                    ${electives.map(course =>
+                        courseCard(course, "available")
+                    ).join("")}
+                </div>
+            </section>
+        `;
+    }
+
+    elements.available.innerHTML = html;
+}
+
+function renderPlan() {
+    const semester = elements.semester.value.trim() || "Upcoming Semester";
+
+    if (!state.planned.length) {
+        elements.plan.innerHTML = `
+            <div class="empty-state">
+                <h3>Your plan is empty</h3>
+                <p>Add eligible courses to start building your semester.</p>
+            </div>
+        `;
+    } else {
+        elements.plan.innerHTML = state.planned.map(id => {
+            const course = findCourse(id);
+            return course ? courseCard(course, "planned") : "";
+        }).join("");
+    }
+
+    const totalCredits = state.planned.reduce((total, id) => {
+        const course = findCourse(id);
+        return total + (course ? Number(course.credits || 0) : 0);
+    }, 0);
+
+    elements.planSummary.innerHTML = `
+        <div>
+            <span>Semester</span>
+            <strong>${escapeHTML(semester)}</strong>
+        </div>
+        <div>
+            <span>Courses selected</span>
+            <strong>${state.planned.length}</strong>
+        </div>
+        <div>
+            <span>Total planned credits</span>
+            <strong>${totalCredits}</strong>
+        </div>
     `;
-    return;
-  }
-
-  container.innerHTML = available.map(course => `
-    <article class="course-card">
-      <h3>${escapeHTML(course.id)} - ${escapeHTML(course.name)}</h3>
-      <p><strong>Credits:</strong> ${course.credits}</p>
-      ${getCourseInformation(course)}
-      <button type="button" data-add-course="${escapeHTML(course.id)}">
-        Add to Course Plan
-      </button>
-    </article>
-  `).join("");
-}
-
-function renderCoursePlan() {
-  const container = document.getElementById("course-plan");
-
-  if (!container) return;
-
-  if (plannedCourses.length === 0) {
-    container.innerHTML = "<p>Your course plan is currently empty.</p>";
-    return;
-  }
-
-  container.innerHTML = plannedCourses.map(id => {
-    const course = getCourse(id);
-
-    if (!course) return "";
-
-    return `
-      <article class="course-card">
-        <h3>${escapeHTML(course.id)} - ${escapeHTML(course.name)}</h3>
-        <p><strong>Credits:</strong> ${course.credits}</p>
-        <button type="button" data-remove-course="${escapeHTML(course.id)}">
-          Remove from Plan
-        </button>
-      </article>
-    `;
-  }).join("");
-}
-
-function updateProgress() {
-  const container = document.getElementById("progress-summary");
-
-  if (!container) return;
-
-  const completedCredits = courses
-    .filter(course => completedCourses.has(course.id))
-    .reduce((total, course) => total + Number(course.credits || 0), 0);
-
-  const plannedCredits = plannedCourses
-    .map(id => getCourse(id))
-    .filter(Boolean)
-    .reduce((total, course) => total + Number(course.credits || 0), 0);
-
-  container.innerHTML = `
-    <p><strong>Completed courses selected:</strong>
-    ${completedCourses.size}</p>
-
-    <p><strong>Credits represented by completed courses:</strong>
-    ${completedCredits}</p>
-
-    <p><strong>Courses in your plan:</strong>
-    ${plannedCourses.length}</p>
-
-    <p><strong>Planned credits:</strong>
-    ${plannedCredits}</p>
-
-    <p><strong>Program credit requirement:</strong> 128 credits</p>
-    <p><em>This is a planning estimate, not an official degree audit.</em></p>
-  `;
-}
-
-function addCourseToPlan(courseId) {
-  const course = getCourse(courseId);
-
-  if (!course || !prerequisitesMet(course)) return;
-
-  if (!plannedCourses.includes(courseId)) {
-    plannedCourses.push(courseId);
-  }
-
-  renderAll();
-}
-
-function removeCourseFromPlan(courseId) {
-  plannedCourses = plannedCourses.filter(id => id !== courseId);
-  renderAll();
 }
 
 function renderAll() {
-  renderCompletedCourses();
-  renderAvailableCourses();
-  renderCoursePlan();
-  updateProgress();
+    renderProgress();
+    renderCompletedCourses();
+    renderAvailableCourses();
+    renderPlan();
 }
 
-// Handle completed-course checkboxes.
-document.addEventListener("change", event => {
-  const checkbox = event.target.closest("[data-completed-course]");
+function addCourse(id) {
+    const course = findCourse(id);
 
-  if (!checkbox) return;
+    if (!course || state.completed.has(id)) return;
+    if (!prerequisitesSatisfied(course)) return;
+    if (state.planned.includes(id)) return;
 
-  const courseId = checkbox.dataset.completedCourse;
+    state.planned.push(id);
+    renderAll();
+}
 
-  if (checkbox.checked) {
-    completedCourses.add(courseId);
-    plannedCourses = plannedCourses.filter(id => id !== courseId);
-  } else {
-    completedCourses.delete(courseId);
-  }
+function removeCourse(id) {
+    state.planned = state.planned.filter(courseId => courseId !== id);
+    renderAll();
+}
 
-  renderAll();
+function handleCompletedChange(event) {
+    const checkbox = event.target.closest("[data-completed]");
+    if (!checkbox) return;
+
+    const id = checkbox.dataset.completed;
+
+    if (checkbox.checked) {
+        state.completed.add(id);
+        state.planned = state.planned.filter(courseId => courseId !== id);
+    } else {
+        state.completed.delete(id);
+    }
+
+    renderAll();
+}
+
+function handleCourseClick(event) {
+    const addButton = event.target.closest("[data-add]");
+    const removeButton = event.target.closest("[data-remove]");
+
+    if (addButton) addCourse(addButton.dataset.add);
+    if (removeButton) removeCourse(removeButton.dataset.remove);
+}
+
+async function initializeAdvisor() {
+    try {
+        const response = await fetch("courses.json");
+
+        if (!response.ok) {
+            throw new Error("Could not load courses.json. Check the file name and folder.");
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data.courses)) {
+            throw new Error("The JSON file needs a courses array.");
+        }
+
+        state.courses = data.courses;
+        state.program = data.program || {};
+
+        renderAll();
+
+    } catch (error) {
+        console.error("BSIT Advisor error:", error);
+
+        document.getElementById("advisor-app").innerHTML = `
+            <section class="panel error-panel">
+                <h2>Unable to load the Class Advisor</h2>
+                <p>${escapeHTML(error.message)}</p>
+                <p>
+                    Make sure all four Assignment 11 files are in the
+                    same folder and open the page using your website
+                    or a local web server.
+                </p>
+            </section>
+        `;
+    }
+}
+
+elements.completed.addEventListener("change", handleCompletedChange);
+elements.available.addEventListener("click", handleCourseClick);
+elements.plan.addEventListener("click", handleCourseClick);
+
+elements.search.addEventListener("input", event => {
+    state.search = event.target.value;
+    renderCompletedCourses();
 });
 
-// Handle dynamically created Add and Remove buttons.
-document.addEventListener("click", event => {
-  const addButton = event.target.closest("[data-add-course]");
-  const removeButton = event.target.closest("[data-remove-course]");
-
-  if (addButton) {
-    addCourseToPlan(addButton.dataset.addCourse);
-  }
-
-  if (removeButton) {
-    removeCourseFromPlan(removeButton.dataset.removeCourse);
-  }
+elements.completedCategory.addEventListener("change", event => {
+    state.completedCategory = event.target.value;
+    renderCompletedCourses();
 });
 
-// Load the JSON data when the page is ready.
-loadCourses();
+elements.availableCategory.addEventListener("change", event => {
+    state.availableCategory = event.target.value;
+    renderAvailableCourses();
+});
+
+elements.semester.addEventListener("input", renderPlan);
+
+initializeAdvisor();

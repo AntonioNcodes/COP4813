@@ -1,14 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Dynamic Class Advisor for college students.">
-
-    <meta name="theme-color" content="#0b3d91">
-
-    <title>Assignment 11 - Dynamic Class Advisor</title>
+    <title>Assignment 11 | BSIT Class Advisor</title>
 
     <link rel="stylesheet" href="style.css">
     <script src="assignment11.js" defer></script>
@@ -17,73 +14,65 @@
 <body>
 
     <header class="site-header">
-        <h1>Dynamic Class Advisor</h1>
-        <p>Plan your college courses with confidence.</p>
+        <div class="header-content">
+            <a class="site-title" href="index.html">My COP4813</a>
+
+            <nav aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About Me</a>
+                <a href="assignment11.html" aria-current="page">
+                    Assignment 11
+                </a>
+            </nav>
+        </div>
     </header>
 
-    <button
-        class="menu-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-navigation"
-    >
-        <span aria-hidden="true">&#9776;</span>
-        <span class="menu-button-text">Menu</span>
-    </button>
+    <main class="page-container">
 
-    <nav class="main-navigation" id="site-navigation">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Me</a></li>
-        </ul>
-    </nav>
+        <section class="page-intro">
+            <p class="eyebrow">COP4813 · Assignment 11</p>
 
-    <main>
-
-        <section class="home-section">
-            <h2>Welcome to the Class Advisor</h2>
+            <h1>BSIT Class Advisor</h1>
 
             <p>
-                This tool helps students identify courses they have completed,
-                discover courses they are eligible to take, and create a
-                personalized course plan.
+                This interactive advisor helps students explore the
+                Bachelor of Science in Information Technology program
+                at Daytona State College.
+            </p>
+
+            <p>
+                Select completed courses, review prerequisites, explore
+                course information, and organize a semester plan.
             </p>
         </section>
 
-        <section class="home-section">
-            <h2>1. Select Completed Courses</h2>
+        <div id="advisor-app">
+            <p>Loading the BSIT Class Advisor...</p>
+        </div>
 
+        <section class="catalog-note">
+            <h2>Important Information</h2>
             <p>
-                Select the courses you have already completed.
+                This tool is an educational planning aid. Students should
+                confirm their degree requirements, transfer credits,
+                course prerequisites, and graduation eligibility with
+                a Daytona State College academic advisor.
             </p>
 
-            <div id="completed-courses"></div>
-        </section>
-
-        <section class="home-section">
-            <h2>2. Available Courses</h2>
-
             <p>
-                Courses will appear here based on your completed prerequisites.
+                <a
+                    href="https://daytonastate.smartcatalogiq.com/en/2026-2027/college-catalog/program-guides/bs-degree/information-technology-bsit-b-s-degree"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    View the official 2026–2027 BSIT catalog
+                </a>
             </p>
-
-            <div id="available-courses"></div>
-        </section>
-
-        <section class="home-section">
-            <h2>3. Your Course Plan</h2>
-
-            <p>
-                Add eligible courses to your personal course plan.
-            </p>
-
-            <div id="course-plan"></div>
         </section>
 
     </main>
 
     <footer class="site-footer">
-        <p>COP4813 Web Systems - Assignment 11</p>
+        <p>My COP4813 | BSIT Class Advisor</p>
     </footer>
 
 </body>

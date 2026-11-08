@@ -1,839 +1,421 @@
-/* =========================================
-   Assignment 11 - DSC Smart Class Advisor
-   COP4813 - Dynamic Objects
-========================================= */
+// Assignment 11 - Dynamic Objects
+// Daytona State College - BSIT Class Advisor
 
-// Store course information.
-let courses = [];
+// 1. COURSE DATA (JSON)
 
-// Store completed courses.
-let completedCourses = new Set();
+const advisorData = {
+    program: "Bachelor of Science in Information Technology (BSIT)",
 
-// Store semester plans.
-let semesterPlans = {
-    Fall: [],
-    Spring: [],
-    Summer: []
+    courses: [
+        {
+            id: "COP1000",
+            name: "Principles of Computer Programming",
+            credits: 3,
+            prerequisites: [],
+            terms: ["Fall", "Spring", "Summer"],
+            note: "Foundational programming requirement."
+        },
+        {
+            id: "COP2800",
+            name: "Computer Programming Java",
+            credits: 3,
+            prerequisites: [],
+            choiceGroup: "programming",
+            terms: ["Fall", "Spring"],
+            note: "Choose one programming course from the approved options."
+        },
+        {
+            id: "COP2360",
+            name: "C# Programming",
+            credits: 3,
+            prerequisites: [],
+            choiceGroup: "programming",
+            terms: ["Fall", "Spring", "Summer"],
+            note: "Alternative programming course. Select only one option."
+        },
+        {
+            id: "COP2220",
+            name: "Computer Programming C",
+            credits: 3,
+            prerequisites: [],
+            choiceGroup: "programming",
+            terms: ["Fall", "Spring", "Summer"],
+            note: "Alternative programming course. Select only one option."
+        },
+        {
+            id: "COT3100",
+            name: "Discrete Analysis",
+            credits: 3,
+            prerequisites: [],
+            terms: ["Fall", "Spring"],
+            note: "Discrete mathematics requirement."
+        },
+        {
+            id: "MAD2104",
+            name: "Discrete Mathematics",
+            credits: 3,
+            prerequisites: [],
+            terms: ["Fall"],
+            note: "Alternative to COT3100 for the discrete requirement."
+        },
+        {
+            id: "CTS3348",
+            name: "Linux Administration",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["MAC1105", "MAC1114", "MAC1140"] }
+            ],
+            terms: ["Fall"],
+            note: "Requires MAC1105 or a higher mathematics course."
+        },
+        {
+            id: "COP3530",
+            name: "Data Structures",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["COP2800", "COP2220", "COP2360"] },
+                { anyOf: ["COT3100", "MAD2104"] }
+            ],
+            terms: ["Fall", "Spring"],
+            note: "Requires one programming course AND one discrete mathematics course."
+        },
+        {
+            id: "COP4708",
+            name: "Applied Database I",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["COP2800", "COP2220", "COP2360"] }
+            ],
+            terms: ["Fall", "Spring"],
+            note: "Requires one approved programming course."
+        },
+        {
+            id: "COP4610",
+            name: "Operating Systems",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["CTS3348"] }
+            ],
+            terms: ["Fall", "Spring"],
+            note: "Requires Linux Administration."
+        },
+        {
+            id: "CIS4360",
+            name: "Applied Cybersecurity",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["CTS3348"] },
+                { anyOf: ["CET1600", "CNT3104"] }
+            ],
+            terms: ["Fall", "Spring", "Summer"],
+            note: "Requires CTS3348 AND either CET1600 or CNT3104."
+        },
+        {
+            id: "CEN4010",
+            name: "Software Engineering",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["COP3530"] }
+            ],
+            terms: ["Spring"],
+            note: "Requires Data Structures."
+        },
+        {
+            id: "COP4813",
+            name: "Web Systems I",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["COP3530"] }
+            ],
+            terms: ["Fall"],
+            note: "Requires Data Structures."
+        },
+        {
+            id: "CEN4801",
+            name: "Systems Integration",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["COP4708"] },
+                { anyOf: ["COP3530"] }
+            ],
+            terms: ["Fall"],
+            note: "Requires Applied Database I AND Data Structures."
+        },
+        {
+            id: "CIS4510",
+            name: "IT Project Management",
+            credits: 3,
+            prerequisites: [
+                { anyOf: ["CEN4801"] }
+            ],
+            terms: ["Spring"],
+            note: "Requires Systems Integration."
+        }
+    ]
 };
 
-// Total credits required for the degree.
-let degreeCredits = 60;
 
-// =========================================
-// Load Course Data From JSON
-// =========================================
+// 2. STUDENT DATA
 
-async function loadCourses() {
+let completedCourses = [];
+let coursePlan = [];
 
-    try {
 
-        const response = await fetch("courses.json");
+// 3. CHECK PREREQUISITES
 
-        if (!response.ok) {
-            throw new Error("Unable to load course data.");
-        }
+function prerequisitesMet(course) {
 
-        const data = await response.json();
-
-        courses = Array.isArray(data) ? data : data.courses;
-
-        degreeCredits = Array.isArray(data)
-            ? 60
-            : data.degreeCredits || 60;
-
-        window.courseChoiceGroups = Array.isArray(data)
-            ? []
-            : data.choiceGroups || [];
-
-        console.log("Courses successfully loaded:", courses);
-
-    } catch (error) {
-
-        console.error("Error loading courses:", error);
-
-        document.getElementById("course-list").textContent =
-            "Unable to load course information.";
-
-    }
-
+    return course.prerequisites.every(requirement =>
+        requirement.anyOf.some(courseID =>
+            completedCourses.includes(courseID)
+        )
+    );
 }
 
-// =========================================
-// Find a Course
-// =========================================
 
-function findCourse(courseId) {
+// 4. CHECK PROGRAMMING COURSE CHOICES
 
-    return courses.find(course => course.id === courseId);
+function getSelectedProgrammingCourse() {
 
+    return advisorData.courses.find(course =>
+        course.choiceGroup === "programming" &&
+        completedCourses.includes(course.id)
+    );
 }
 
-// =========================================
-// Check Alternative Course Choices
-// =========================================
 
-function getChoiceBlock(courseId) {
+// 5. CREATE COMPLETED COURSE ELEMENTS DYNAMICALLY
 
-    const groups = window.courseChoiceGroups || [];
+function renderCompletedCourses() {
 
-    for (const group of groups) {
+    const container = document.getElementById("completed-courses");
 
-        const completedChoice = group.courses.find(id =>
-            completedCourses.has(id)
-        );
+    container.innerHTML = "";
 
-        if (
-            group.courses.includes(courseId) &&
-            completedChoice &&
-            completedChoice !== courseId
-        ) {
+    advisorData.courses.forEach(course => {
 
-            return {
-                group,
-                completedChoice
-            };
+        const selectedCourse = getSelectedProgrammingCourse();
 
-        }
+        const isDisabled =
+            course.choiceGroup === "programming" &&
+            selectedCourse &&
+            selectedCourse.id !== course.id;
 
-    }
+        const courseElement = document.createElement("div");
 
-    return null;
+        courseElement.className = "course-card";
 
+        courseElement.innerHTML = `
+            <label>
+                <input
+                    type="checkbox"
+                    class="completed-checkbox"
+                    value="${course.id}"
+                    ${completedCourses.includes(course.id) ? "checked" : ""}
+                    ${isDisabled ? "disabled" : ""}
+                >
+                <strong>${course.id}</strong> - ${course.name}
+            </label>
+            <p>${course.credits} credits</p>
+        `;
+
+        container.appendChild(courseElement);
+
+    });
 }
 
-// =========================================
-// Check Course Prerequisites
-// =========================================
 
-function checkPrerequisites(course) {
+// 6. DISPLAY AVAILABLE COURSES
 
-    const prerequisites = course.prerequisites || {};
+function renderAvailableCourses() {
 
-    // AND: All courses must be completed.
-    const andRequirements = prerequisites.and || [];
+    const container = document.getElementById("available-courses");
 
-    const missingAnd = andRequirements.filter(id =>
-        !completedCourses.has(id)
+    container.innerHTML = "";
+
+    const availableCourses = advisorData.courses.filter(course =>
+        !completedCourses.includes(course.id) &&
+        prerequisitesMet(course)
     );
 
-    // OR: At least one course must be completed.
-    const orRequirements = prerequisites.or || [];
+    if (availableCourses.length === 0) {
 
-    const missingOr =
-        orRequirements.length > 0 &&
-        !orRequirements.some(id =>
-            completedCourses.has(id)
+        container.innerHTML = "<p>No courses are currently available based on your selections.</p>";
+
+        return;
+    }
+
+    availableCourses.forEach(course => {
+
+        const courseElement = document.createElement("div");
+
+        courseElement.className = "course-card";
+
+        courseElement.innerHTML = `
+            <h3>${course.id} - ${course.name}</h3>
+            <p>Credits: ${course.credits}</p>
+            <p>Offered: ${course.terms.join(", ")}</p>
+            <p><strong>Note:</strong> ${course.note}</p>
+            <button class="add-course-button" data-course="${course.id}">
+                Add to Course Plan
+            </button>
+        `;
+
+        container.appendChild(courseElement);
+
+    });
+}
+
+
+// 7. CREATE THE COURSE PLAN
+
+function renderCoursePlan() {
+
+    const container = document.getElementById("course-plan");
+
+    container.innerHTML = "";
+
+    if (coursePlan.length === 0) {
+
+        container.innerHTML = "<p>Your course plan is currently empty.</p>";
+
+        return;
+    }
+
+    coursePlan.forEach(courseID => {
+
+        const course = advisorData.courses.find(item =>
+            item.id === courseID
         );
 
-    // Additional prerequisite groups.
-    const groups = prerequisites.groups || [];
+        const courseElement = document.createElement("div");
 
-    const missingGroups = groups.filter(group => {
+        courseElement.className = "course-card";
 
-        const required = group.courses || [];
+        courseElement.innerHTML = `
+            <h3>${course.id} - ${course.name}</h3>
+            <p>${course.credits} credits</p>
+            <button class="remove-course-button" data-course="${course.id}">
+                Remove Course
+            </button>
+        `;
 
-        if (group.type === "OR" || group.type === "ANY") {
+        container.appendChild(courseElement);
 
-            return !required.some(id =>
-                completedCourses.has(id)
+    });
+
+    const totalCredits = coursePlan.reduce((total, courseID) => {
+
+        const course = advisorData.courses.find(item =>
+            item.id === courseID
+        );
+
+        return total + course.credits;
+
+    }, 0);
+
+    const total = document.createElement("p");
+
+    total.innerHTML = `<strong>Total Credits: ${totalCredits}</strong>`;
+
+    container.appendChild(total);
+}
+
+
+// 8. HANDLE COMPLETED COURSE EVENTS
+
+document.getElementById("completed-courses").addEventListener("change", event => {
+
+    if (event.target.classList.contains("completed-checkbox")) {
+
+        const courseID = event.target.value;
+
+        if (event.target.checked) {
+
+            completedCourses.push(courseID);
+
+        } else {
+
+            completedCourses = completedCourses.filter(id =>
+                id !== courseID
             );
 
         }
 
-        return !required.every(id =>
-            completedCourses.has(id)
-        );
-
-    });
-
-    return {
-
-        eligible:
-            missingAnd.length === 0 &&
-            !missingOr &&
-            missingGroups.length === 0,
-
-        missingAnd,
-        missingOr,
-        orRequirements,
-        missingGroups
-
-    };
-
-}
-
-// =========================================
-// Determine Course Availability
-// =========================================
-
-function getCourseStatus(course) {
-
-    // Check if the student completed the course.
-    if (completedCourses.has(course.id)) {
-        return "completed";
-    }
-
-    // Check if another course satisfies its OR requirement.
-    if (getChoiceBlock(course.id)) {
-        return "locked";
-    }
-
-    // Check prerequisites.
-    return checkPrerequisites(course).eligible
-        ? "available"
-        : "locked";
-
-}
-
-// =========================================
-// Create Dynamic Course Cards
-// =========================================
-
-function createCourseCard(course) {
-
-    const card = document.createElement("div");
-    card.className = "course-card";
-    card.dataset.courseId = course.id;
-
-    const status = getCourseStatus(course);
-
-    const title = document.createElement("h3");
-    title.textContent = `${course.id} - ${course.name}`;
-
-    const credits = document.createElement("p");
-    credits.textContent = `Credits: ${course.credits}`;
-
-    const statusText = document.createElement("p");
-    statusText.textContent = `Status: ${status}`;
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = "View Details";
-
-    button.addEventListener("click", function () {
-        showCourseDetails(course.id);
-    });
-
-    card.appendChild(title);
-    card.appendChild(credits);
-    card.appendChild(statusText);
-    card.appendChild(button);
-
-    return card;
-}
-
-// =========================================
-// Display All Courses
-// =========================================
-
-function displayCourses() {
-
-    const courseList = document.getElementById("course-list");
-
-    courseList.innerHTML = "";
-
-    courses.forEach(course => {
-
-        const card = createCourseCard(course);
-
-        courseList.appendChild(card);
-
-    });
-
-}
-
-// =========================================
-// Display Available Courses
-// =========================================
-
-function displayAvailableCourses() {
-
-    const availableContainer =
-        document.getElementById("available-courses");
-
-    const lockedContainer =
-        document.getElementById("locked-courses");
-
-    availableContainer.innerHTML = "";
-    lockedContainer.innerHTML = "";
-
-    courses.forEach(course => {
-
-        const status = getCourseStatus(course);
-
-        if (status === "available") {
-
-            availableContainer.appendChild(
-                createCourseCard(course)
-            );
-
-        } else if (status === "locked") {
-
-            lockedContainer.appendChild(
-                createCourseCard(course)
-            );
-
-        }
-
-    });
-
-}
-
-// =========================================
-// Mark Courses as Completed
-// =========================================
-
-function markCourseCompleted(courseId, isCompleted) {
-
-    if (isCompleted) {
-
-        completedCourses.add(courseId);
-
-    } else {
-
-        completedCourses.delete(courseId);
-
-    }
-
-    refreshAdvisor();
-
-}
-
-// =========================================
-// Display Completed Course Checkboxes
-// =========================================
-
-function displayCompletedCourses() {
-
-    const courseList = document.getElementById("course-list");
-
-    courseList.innerHTML = "";
-
-    courses.forEach(course => {
-
-        const card = document.createElement("div");
-        card.className = "course-card";
-
-        const label = document.createElement("label");
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = completedCourses.has(course.id);
-
-        checkbox.addEventListener("change", function () {
-
-            markCourseCompleted(course.id, checkbox.checked);
-
-        });
-
-        label.appendChild(checkbox);
-
-        label.appendChild(
-            document.createTextNode(
-                ` ${course.id} - ${course.name}`
+        coursePlan = coursePlan.filter(id =>
+            prerequisitesMet(
+                advisorData.courses.find(course => course.id === id)
             )
         );
 
-        const credits = document.createElement("p");
-        credits.textContent = `Credits: ${course.credits}`;
+        renderAll();
 
-        card.appendChild(label);
-        card.appendChild(credits);
+    }
 
-        courseList.appendChild(card);
+});
 
-    });
 
-}
+// 9. HANDLE DYNAMIC BUTTON EVENTS
 
-// =========================================
-// Search Courses
-// =========================================
+document.getElementById("available-courses").addEventListener("click", event => {
 
-function searchCourses() {
+    if (event.target.classList.contains("add-course-button")) {
 
-    const searchInput =
-        document.getElementById("course-search");
+        const courseID = event.target.dataset.course;
 
-    const searchTerm = searchInput.value.toLowerCase();
-
-    const courseList =
-        document.getElementById("course-list");
-
-    courseList.innerHTML = "";
-
-    const filteredCourses = courses.filter(course => {
-
-        return (
-            course.id.toLowerCase().includes(searchTerm) ||
-            course.name.toLowerCase().includes(searchTerm)
+        const course = advisorData.courses.find(item =>
+            item.id === courseID
         );
 
-    });
+        if (
+            course &&
+            prerequisitesMet(course) &&
+            !coursePlan.includes(courseID)
+        ) {
 
-    filteredCourses.forEach(course => {
+            coursePlan.push(courseID);
 
-        courseList.appendChild(
-            createCourseCard(course)
-        );
-
-    });
-
-}
-
-// =========================================
-// Filter Courses
-// =========================================
-
-function filterCourses() {
-
-    const filter =
-        document.getElementById("course-filter").value;
-
-    const courseList =
-        document.getElementById("course-list");
-
-    courseList.innerHTML = "";
-
-    courses.forEach(course => {
-
-        const status = getCourseStatus(course);
-
-        if (filter === "all" || filter === status) {
-
-            courseList.appendChild(
-                createCourseCard(course)
-            );
+            renderCoursePlan();
 
         }
 
-    });
-
-}
-
-// =========================================
-// Display Course Details
-// =========================================
-
-function showCourseDetails(courseId) {
-
-    const course = findCourse(courseId);
-
-    if (!course) {
-        return;
     }
 
-    const details =
-        document.getElementById("course-details");
+});
 
-    details.innerHTML = "";
 
-    const title = document.createElement("h3");
-    title.textContent = `${course.id} - ${course.name}`;
+// 10. REMOVE COURSES FROM THE PLAN
 
-    const credits = document.createElement("p");
-    credits.textContent = `Credits: ${course.credits}`;
+document.getElementById("course-plan").addEventListener("click", event => {
 
-    const description = document.createElement("p");
-    description.textContent =
-        course.description || "No description available.";
+    if (event.target.classList.contains("remove-course-button")) {
 
-    const prerequisites = document.createElement("p");
+        const courseID = event.target.dataset.course;
 
-    prerequisites.textContent =
-        "Prerequisites: " +
-        JSON.stringify(course.prerequisites || {});
-
-    details.appendChild(title);
-    details.appendChild(credits);
-    details.appendChild(description);
-    details.appendChild(prerequisites);
-
-}
-
-// =========================================
-// Display Course Selection Notes
-// =========================================
-
-function displayCourseNotes() {
-
-    const notesContainer =
-        document.getElementById("course-notes");
-
-    notesContainer.innerHTML = "";
-
-    const groups = window.courseChoiceGroups || [];
-
-    if (groups.length === 0) {
-
-        notesContainer.textContent =
-            "There are no alternative course requirements.";
-
-        return;
-    }
-
-    groups.forEach(group => {
-
-        const note = document.createElement("div");
-        note.className = "course-note";
-
-        const heading = document.createElement("h3");
-        heading.textContent = group.title || "Course Selection";
-
-        const description = document.createElement("p");
-
-        description.textContent =
-            group.note ||
-            `Students must complete only one of these courses: ${group.courses.join(" OR ")}.`;
-
-        note.appendChild(heading);
-        note.appendChild(description);
-
-        notesContainer.appendChild(note);
-
-    });
-
-}
-
-// =========================================
-// Calculate Completed Credits
-// =========================================
-
-function calculateCompletedCredits() {
-
-    let total = 0;
-
-    completedCourses.forEach(courseId => {
-
-        const course = findCourse(courseId);
-
-        if (course) {
-            total += Number(course.credits) || 0;
-        }
-
-    });
-
-    return total;
-
-}
-
-// =========================================
-// Update Academic Progress
-// =========================================
-
-function updateProgress() {
-
-    const completed = calculateCompletedCredits();
-
-    const total = degreeCredits || 60;
-
-    const remaining = Math.max(0, total - completed);
-
-    const percentage = Math.min(
-        100,
-        Math.round((completed / total) * 100)
-    );
-
-    document.getElementById("completed-credits")
-        .textContent = completed;
-
-    document.getElementById("remaining-credits")
-        .textContent = remaining;
-
-    document.getElementById("total-credits")
-        .textContent = total;
-
-    document.getElementById("progress-fill")
-        .style.width = percentage + "%";
-
-    const progressBar =
-        document.getElementById("progress-bar");
-
-    progressBar.setAttribute("aria-valuenow", percentage);
-
-    document.getElementById("progress-message")
-        .textContent =
-            `${percentage}% of your degree credits completed.`;
-
-}
-
-// =========================================
-// Refresh Entire Advisor
-// =========================================
-
-function refreshAdvisor() {
-
-    displayCompletedCourses();
-
-    displayAvailableCourses();
-
-    displayCourseNotes();
-
-    updateProgress();
-
-    updateSemesterCredits();
-
-}
-
-// =========================================
-// Drag and Drop Course Planner
-// =========================================
-
-function setupDragAndDrop() {
-
-    const availableContainer =
-        document.getElementById("available-courses");
-
-    const dropZones =
-        document.querySelectorAll(".drop-zone");
-
-    // Allow dynamically generated course cards to be dragged.
-    availableContainer.addEventListener("dragstart", function(event) {
-
-        const card = event.target.closest(".course-card");
-
-        if (!card) {
-            return;
-        }
-
-        event.dataTransfer.setData(
-            "text/plain",
-            card.dataset.courseId
+        coursePlan = coursePlan.filter(id =>
+            id !== courseID
         );
 
-    });
-
-    // Set up each semester drop zone.
-    dropZones.forEach(zone => {
-
-        zone.addEventListener("dragover", function(event) {
-
-            event.preventDefault();
-
-            zone.classList.add("drag-over");
-
-        });
-
-        zone.addEventListener("dragleave", function() {
-
-            zone.classList.remove("drag-over");
-
-        });
-
-        zone.addEventListener("drop", function(event) {
-
-            event.preventDefault();
-
-            zone.classList.remove("drag-over");
-
-            const courseId =
-                event.dataTransfer.getData("text/plain");
-
-            const course = findCourse(courseId);
-
-            if (!course || getCourseStatus(course) !== "available") {
-                return;
-            }
-
-            const existing =
-                zone.querySelector(`[data-course-id="${courseId}"]`);
-
-            if (existing) {
-                return;
-            }
-
-            const courseCard = document.createElement("div");
-
-            courseCard.className = "planned-course";
-            courseCard.dataset.courseId = courseId;
-
-            courseCard.textContent =
-                `${course.id} - ${course.name} (${course.credits} credits)`;
-
-            zone.appendChild(courseCard);
-
-            updateSemesterCredits();
-
-        });
-
-    });
-
-}
-
-// =========================================
-// Update Semester Credits
-// =========================================
-
-function updateSemesterCredits() {
-
-    const semesters = [
-        "fall",
-        "spring",
-        "summer"
-    ];
-
-    semesters.forEach(semester => {
-
-        const zone = document.getElementById(
-            `${semester}-semester`
-        );
-
-        let total = 0;
-
-        zone.querySelectorAll(".planned-course").forEach(card => {
-
-            const course = findCourse(card.dataset.courseId);
-
-            if (course) {
-                total += Number(course.credits) || 0;
-            }
-
-        });
-
-        document.getElementById(
-            `${semester}-credits`
-        ).textContent = total;
-
-    });
-
-}
-
-// =========================================
-// Clear Semester Plan
-// =========================================
-
-function clearSemesterPlan() {
-
-    const semesters = [
-        "fall-semester",
-        "spring-semester",
-        "summer-semester"
-    ];
-
-    semesters.forEach(id => {
-
-        const zone = document.getElementById(id);
-
-        zone.querySelectorAll(".planned-course").forEach(course => {
-            course.remove();
-        });
-
-    });
-
-    updateSemesterCredits();
-
-}
-
-// =========================================
-// Reset Completed Courses
-// =========================================
-
-function resetAdvisor() {
-
-    const confirmed = confirm(
-        "Are you sure you want to reset all completed courses?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    completedCourses.clear();
-
-    clearSemesterPlan();
-
-    refreshAdvisor();
-
-    document.getElementById("course-details").textContent =
-        "No course selected. Select a course to view its details.";
-
-    document.getElementById("course-search").value = "";
-
-    document.getElementById("course-filter").value = "all";
-
-    displayCompletedCourses();
-
-}
-
-// =========================================
-// Course Search Event Listener
-// =========================================
-
-function setupCourseSearch() {
-
-    const searchInput =
-        document.getElementById("course-search");
-
-    searchInput.addEventListener("input", function() {
-
-        searchCourses();
-
-    });
-
-}
-
-// =========================================
-// Setup Advisor Buttons
-// =========================================
-
-function setupAdvisorButtons() {
-
-    document.getElementById("clear-plan")
-        .addEventListener("click", function() {
-
-            clearSemesterPlan();
-
-        });
-
-    document.getElementById("reset-advisor")
-        .addEventListener("click", function() {
-
-            resetAdvisor();
-
-        });
-
-}
-// =========================================
-// Initialize Smart Class Advisor
-// =========================================
-
-async function initializeAdvisor() {
-
-    await loadCourses();
-
-    if (!Array.isArray(courses) || courses.length === 0) {
-
-        document.getElementById("course-list").textContent =
-            "No course information was found.";
-
-        return;
+        renderCoursePlan();
 
     }
 
-    displayCompletedCourses();
+});
 
-    displayAvailableCourses();
 
-    displayCourseNotes();
+// 11. UPDATE THE INTERFACE
 
-    updateProgress();
+function renderAll() {
 
-    updateSemesterCredits();
+    renderCompletedCourses();
 
-    setupDragAndDrop();
+    renderAvailableCourses();
 
-    setupCourseSearch();
-
-    setupCourseFilter();
-
-    setupAdvisorButtons();
-
-    console.log("DSC Smart Class Advisor initialized!");
+    renderCoursePlan();
 
 }
 
-// =========================================
-// Start the Smart Class Advisor
-// =========================================
 
-initializeAdvisor();
+// 12. START THE ADVISOR
+
+renderAll();

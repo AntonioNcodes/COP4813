@@ -13,6 +13,7 @@
 <header class="site-header">
     <div class="header-inner">
         <a class="brand" href="index.html">My COP4813</a>
+
         <nav class="main-nav" aria-label="Main navigation">
             <a href="index.html">Home</a>
             <a href="about.html">About Me</a>
@@ -25,149 +26,207 @@
 
     <section class="hero">
         <p class="eyebrow">DAYTONA STATE COLLEGE</p>
+
         <h1>BSIT Class Advisor</h1>
+
         <p>
             Explore courses, check prerequisites, track completed classes,
             and organize your upcoming semesters.
         </p>
+
         <a class="catalog-link"
            href="https://daytonastate.smartcatalogiq.com/en/2026-2027/college-catalog/program-guides/bs-degree/information-technology-bsit-b-s-degree"
-           target="_blank" rel="noopener">
+           target="_blank"
+           rel="noopener">
             View Official BSIT Program Guide ↗
         </a>
     </section>
 
     <section class="overview-grid" aria-label="Degree overview">
+
         <article class="overview-card">
-            <span class="overview-label">Degree requirement</span>
+            <h2 class="overview-label">Degree Requirement</h2>
             <strong>128</strong>
             <span>total credit hours</span>
         </article>
+
         <article class="overview-card">
-            <span class="overview-label">General education</span>
+            <h2 class="overview-label">General Education</h2>
             <strong>36</strong>
             <span>credit hours</span>
         </article>
+
         <article class="overview-card">
-            <span class="overview-label">Lower-level technical</span>
+            <h2 class="overview-label">Lower-Level Technical</h2>
             <strong>44</strong>
             <span>credit hours</span>
         </article>
+
         <article class="overview-card">
-            <span class="overview-label">Upper-level program</span>
+            <h2 class="overview-label">Upper-Level Program</h2>
             <strong>48</strong>
             <span>credit hours</span>
         </article>
+
     </section>
 
     <section class="panel">
+
         <div class="section-heading">
             <div>
                 <p class="eyebrow">YOUR PROGRESS</p>
                 <h2>Degree Progress</h2>
+
                 <p class="section-description">
                     Select courses you have completed to update your planner.
                 </p>
             </div>
         </div>
+
         <div id="progress-summary" class="progress-grid">
             <p>Loading your progress...</p>
         </div>
+
     </section>
 
     <section class="panel">
+
         <div class="section-heading">
             <div>
                 <p class="eyebrow">STEP 1</p>
                 <h2>Completed Courses</h2>
+
                 <p class="section-description">
                     Check the courses you have already completed.
                 </p>
             </div>
         </div>
+
         <div class="filter-row">
+
             <label for="course-search">Find a course</label>
-            <input id="course-search" type="search"
-                   placeholder="Search by course code or name">
+
+            <input
+                id="course-search"
+                type="search"
+                placeholder="Search by course code or name"
+            >
+
             <label for="completed-category">Category</label>
+
             <select id="completed-category">
                 <option value="all">All categories</option>
                 <option value="Prerequisite">Prerequisite courses</option>
                 <option value="Program">Required BSIT courses</option>
                 <option value="Elective">Program electives</option>
             </select>
+
         </div>
+
         <div id="completed-courses" class="course-grid">
             <p>Loading courses...</p>
         </div>
+
     </section>
 
     <section class="panel">
+
         <div class="section-heading">
             <div>
                 <p class="eyebrow">STEP 2</p>
                 <h2>Eligible Courses</h2>
+
                 <p class="section-description">
                     Courses appear here when their listed prerequisites are met.
                 </p>
             </div>
         </div>
+
         <div class="filter-row">
+
             <label for="available-category">Show</label>
+
             <select id="available-category">
                 <option value="all">All eligible courses</option>
                 <option value="Program">Required BSIT courses</option>
                 <option value="Elective">Program electives</option>
             </select>
+
         </div>
+
         <div id="available-courses" class="course-grid">
             <p>Loading eligible courses...</p>
         </div>
+
     </section>
 
     <section class="panel">
+
         <div class="section-heading">
             <div>
                 <p class="eyebrow">STEP 3</p>
                 <h2>Semester Planner</h2>
+
                 <p class="section-description">
                     Add eligible courses to build a plan for an upcoming semester.
                 </p>
             </div>
         </div>
+
         <div class="planner-controls">
+
             <label for="semester-name">Planning semester</label>
-            <input id="semester-name" type="text"
-                   value="Spring 2027" placeholder="Example: Fall 2027">
+
+            <input
+                id="semester-name"
+                type="text"
+                value="Spring 2027"
+                placeholder="Example: Fall 2027"
+            >
+
         </div>
+
         <div id="course-plan" class="course-grid">
             <p>Your semester plan is empty.</p>
         </div>
+
         <div id="plan-summary" class="plan-summary"></div>
+
     </section>
 
     <section class="panel explanation-panel">
+
         <h2>How Prerequisites Work</h2>
+
         <div class="rule-examples">
+
             <div>
                 <strong>AND</strong>
-                <p>Every prerequisite group must be satisfied.</p>
+                <p>
+                    Every prerequisite group must be satisfied.
+                </p>
             </div>
+
             <div>
                 <strong>OR</strong>
-                <p>Completing one course in an alternative group is enough.</p>
+                <p>
+                    Completing one course in an alternative group is enough.
+                </p>
             </div>
+
         </div>
+
         <p class="small-note">
             This advisor is an educational planning tool. Always confirm
             course requirements and your graduation audit with a DSC advisor.
         </p>
+
     </section>
 
 </main>
 
 <footer class="site-footer">
-    <p>My COP4813 | BSIT Class Advisor | Daytona State College</p>
+    <p>My COP4813 | BSIT Class Advisor | Daytona State College | By Antonio Nava-Martinez </p>
 </footer>
 
 </body>

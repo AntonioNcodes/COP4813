@@ -1,30 +1,62 @@
-
 {
   "program": {
     "name": "Bachelor of Science in Information Technology",
-    "shortName": "BSIT",
     "school": "Daytona State College",
-    "totalCredits": 128
+    "catalogYear": "2026-2027",
+    "totalCredits": 128,
+    "creditRequirements": {
+      "generalEducation": 36,
+      "lowerLevelTechnical": 44,
+      "upperLevelProgramSpecific": 48
+    }
   },
-  "creditRequirements": {
-    "generalEducation": 36,
-    "lowerLevelTechnical": 44,
-    "upperLevelProgramSpecific": 48
+  "prerequisiteLogic": {
+    "explanation": "Each item inside a prerequisite array is an OR group. All groups must be satisfied (AND)."
   },
   "courses": [
     {
-      "id": "COP2800",
-      "name": "Java Computer Programming",
+      "id": "MAC1105",
+      "name": "College Algebra",
       "credits": 3,
       "category": "Prerequisite",
-      "description": "Introduces programming concepts using the Java programming language.",
-      "topics": [
-        "Variables and data types",
-        "Conditional statements",
-        "Loops",
-        "Methods",
-        "Object-oriented programming"
-      ],
+      "description": "Introduces algebraic concepts used in higher-level mathematics.",
+      "topics": ["Equations", "Functions", "Polynomials", "Exponents"],
+      "prerequisites": []
+    },
+    {
+      "id": "MAC1114",
+      "name": "Trigonometry",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Studies trigonometric functions and their applications.",
+      "topics": ["Angles", "Trigonometric functions", "Identities", "Applications"],
+      "prerequisites": []
+    },
+    {
+      "id": "MAC1140",
+      "name": "Pre-Calculus",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Prepares students for calculus through advanced algebra and functions.",
+      "topics": ["Functions", "Polynomial equations", "Exponential functions", "Logarithms"],
+      "prerequisites": []
+    },
+    {
+      "id": "MAC2311C",
+      "name": "Calculus I",
+      "credits": 4,
+      "category": "Prerequisite",
+      "description": "Introduces differential and integral calculus.",
+      "topics": ["Limits", "Derivatives", "Integrals", "Applications of calculus"],
+      "prerequisites": []
+    },
+    {
+      "id": "STA2023",
+      "name": "Elementary Statistics",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces statistical methods for collecting, analyzing, and interpreting data.",
+      "topics": ["Descriptive statistics", "Probability", "Distributions", "Hypothesis testing"],
       "prerequisites": []
     },
     {
@@ -32,15 +64,117 @@
       "name": "Discrete Analysis",
       "credits": 3,
       "category": "Prerequisite",
-      "description": "Introduces mathematical concepts used in computer science.",
-      "topics": [
-        "Logic",
-        "Sets",
-        "Functions",
-        "Relations",
-        "Graph theory"
-      ],
+      "description": "Introduces mathematical reasoning and discrete structures used in computing.",
+      "topics": ["Logic", "Sets", "Relations", "Functions", "Graph theory"],
       "prerequisites": []
+    },
+    {
+      "id": "MAD2104",
+      "name": "Discrete Mathematics",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Covers discrete mathematical concepts used in computer science.",
+      "topics": ["Logic", "Combinatorics", "Relations", "Graphs"],
+      "prerequisites": []
+    },
+    {
+      "id": "COP2360",
+      "name": "C# Computer Programming",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces programming and problem solving with C#.",
+      "topics": ["Variables", "Conditionals", "Loops", "Methods", "Classes"],
+      "prerequisites": []
+    },
+    {
+      "id": "COP2800",
+      "name": "Java Computer Programming",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces programming and object-oriented development using Java.",
+      "topics": ["Variables", "Loops", "Methods", "Classes", "Object-oriented programming"],
+      "prerequisites": []
+    },
+    {
+      "id": "CET3116",
+      "name": "Digital Technology",
+      "credits": 4,
+      "category": "Prerequisite",
+      "description": "Introduces digital systems and the technology behind computer hardware.",
+      "topics": ["Digital logic", "Number systems", "Logic gates", "Digital circuits"],
+      "prerequisites": []
+    },
+    {
+      "id": "EET3086",
+      "name": "Electrical Circuits",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces electrical circuit principles and analysis.",
+      "topics": ["Voltage", "Current", "Resistance", "Circuit analysis"],
+      "prerequisites": []
+    },
+    {
+      "id": "ENC1101",
+      "name": "English Composition I",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Develops college-level writing, research, and communication skills.",
+      "topics": ["Academic writing", "Research", "Organization", "Revision"],
+      "prerequisites": []
+    },
+    {
+      "id": "EET1021C",
+      "name": "Introduction to Electronics",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces basic electronic concepts and laboratory skills.",
+      "topics": ["Electronic components", "Circuits", "Measurements", "Basic electronics"],
+      "prerequisites": []
+    },
+    {
+      "id": "CET1600",
+      "name": "Introduction to Networking",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces computer networking concepts and technologies.",
+      "topics": ["Network models", "IP addressing", "Network devices", "Protocols"],
+      "prerequisites": []
+    },
+    {
+      "id": "CET1112C",
+      "name": "Computer and Network Concepts",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Introduces computer hardware, software, and networking fundamentals.",
+      "topics": ["Computer systems", "Hardware", "Software", "Networking"],
+      "prerequisites": []
+    },
+    {
+      "id": "EGN3443",
+      "name": "Probability and Statistics for Engineers",
+      "credits": 3,
+      "category": "Prerequisite",
+      "description": "Applies probability and statistical methods to engineering problems.",
+      "topics": ["Probability", "Statistical distributions", "Data analysis"],
+      "prerequisites": []
+    },
+    {
+      "id": "GEB3213",
+      "name": "Business Writing",
+      "credits": 3,
+      "category": "Program",
+      "description": "Develops professional writing and communication skills for business environments.",
+      "topics": ["Business correspondence", "Reports", "Professional communication", "Presentations"],
+      "prerequisites": [["ENC1101"]]
+    },
+    {
+      "id": "CIS4250",
+      "name": "Ethics in Computing",
+      "credits": 1,
+      "category": "Program",
+      "description": "Explores ethical, legal, and social responsibilities in information technology.",
+      "topics": ["Privacy", "Intellectual property", "Professional ethics", "Technology policy"],
+      "prerequisites": [["GEB3213"]]
     },
     {
       "id": "CTS3348",
@@ -48,86 +182,206 @@
       "credits": 3,
       "category": "Program",
       "description": "Covers Linux operating system administration and system management.",
-      "topics": [
-        "Linux commands",
-        "User management",
-        "File permissions",
-        "System administration",
-        "Networking"
-      ],
-      "prerequisites": [
-        ["MAC1105", "MAC1114", "MAC1140", "MAC2311C"]
-      ]
+      "topics": ["Linux commands", "User management", "File permissions", "Services", "System security"],
+      "prerequisites": [["MAC1105", "MAC1114", "MAC1140", "MAC2311C"]]
     },
     {
       "id": "COP3530",
       "name": "Data Structures",
       "credits": 3,
       "category": "Program",
-      "description": "Studies common data structures and algorithms used in software development.",
-      "topics": [
-        "Arrays",
-        "Linked lists",
-        "Stacks and queues",
-        "Trees",
-        "Searching and sorting"
-      ],
-      "prerequisites": [
-        ["COP2800", "COP2360", "COP2220"],
-        ["COT3100", "MAD2104"]
-      ]
+      "description": "Studies data structures and algorithms used to organize and process information.",
+      "topics": ["Arrays", "Linked lists", "Stacks", "Queues", "Trees", "Searching and sorting"],
+      "prerequisites": [["COP2800", "COP2360"], ["COT3100", "MAD2104"]]
+    },
+    {
+      "id": "CEN3722",
+      "name": "Human Computer Interfaces",
+      "credits": 3,
+      "category": "Program",
+      "description": "Studies how people interact with software and digital interfaces.",
+      "topics": ["Interface design", "Usability", "Accessibility", "User testing", "Prototyping"],
+      "prerequisites": [["COP2800", "COP2360"]]
     },
     {
       "id": "COP4708",
       "name": "Applied Databases I",
       "credits": 3,
       "category": "Program",
-      "description": "Introduces database design, SQL, and database management.",
-      "topics": [
-        "Relational databases",
-        "SQL",
-        "Database design",
-        "Queries",
-        "Normalization"
-      ],
-      "prerequisites": [
-        ["COP2800", "COP2360", "COP2220"]
-      ]
+      "description": "Introduces relational database design, SQL, and database management.",
+      "topics": ["Relational databases", "SQL", "Queries", "Normalization", "Database design"],
+      "prerequisites": [["COP2800", "COP2360"]]
     },
     {
       "id": "COP4610",
       "name": "Operating Systems",
       "credits": 3,
       "category": "Program",
-      "description": "Explores operating system concepts and how computers manage resources.",
-      "topics": [
-        "Processes",
-        "Memory management",
-        "File systems",
-        "Scheduling",
-        "Operating system security"
-      ],
-      "prerequisites": [
-        ["CTS3348"]
-      ]
+      "description": "Explores how operating systems manage computer resources and applications.",
+      "topics": ["Processes", "Memory management", "File systems", "Scheduling", "Security"],
+      "prerequisites": [["CTS3348"]]
     },
     {
       "id": "CIS4360",
       "name": "Applied Cybersecurity",
       "credits": 3,
       "category": "Program",
-      "description": "Introduces practical cybersecurity concepts and security techniques.",
-      "topics": [
-        "Network security",
-        "System security",
-        "Threats and vulnerabilities",
-        "Security tools",
-        "Risk management"
-      ],
-      "prerequisites": [
-        ["CTS3348"],
-        ["CET1600", "CNT3104"]
-      ]
+      "description": "Applies cybersecurity concepts to protect systems, networks, and information.",
+      "topics": ["Threats", "Vulnerabilities", "Network security", "Security tools", "Risk management"],
+      "prerequisites": [["CTS3348"], ["CET1600", "CNT3104"]]
+    },
+    {
+      "id": "CNT3104",
+      "name": "Introduction to Telecommunications",
+      "credits": 2,
+      "category": "Program",
+      "description": "Introduces telecommunications systems and the fundamentals of data transmission.",
+      "topics": ["Signals", "Transmission media", "Communication systems", "Network fundamentals"],
+      "prerequisites": [["EET1021C", "EET3086"]]
+    },
+    {
+      "id": "CNT4007",
+      "name": "Data Communication",
+      "credits": 3,
+      "category": "Program",
+      "description": "Studies how data is transmitted between computers and network devices.",
+      "topics": ["Network protocols", "Data transmission", "Network architecture", "Communication standards"],
+      "prerequisites": [["CNT3104"], ["STA2023", "EGN3443"]]
+    },
+    {
+      "id": "CNT4703",
+      "name": "Voice/Data Network Design",
+      "credits": 3,
+      "category": "Program",
+      "description": "Introduces the design and planning of voice and data networks.",
+      "topics": ["Network planning", "Network architecture", "Voice networks", "Data networks"],
+      "prerequisites": [["CNT4007"]]
+    },
+    {
+      "id": "CDA4101",
+      "name": "Computer Organization and Design",
+      "credits": 3,
+      "category": "Program",
+      "description": "Examines computer architecture and how hardware components work together.",
+      "topics": ["Processor architecture", "Memory", "Instruction sets", "Digital systems"],
+      "prerequisites": [["CET1112C", "CET3116"]]
+    },
+    {
+      "id": "CEN4801",
+      "name": "Systems Integration",
+      "credits": 3,
+      "category": "Program",
+      "description": "Studies how hardware, software, networks, and business processes are integrated.",
+      "topics": ["System integration", "Requirements", "Testing", "Workflows", "Project coordination"],
+      "prerequisites": [["COP4708"], ["COP3530"]]
+    },
+    {
+      "id": "CEN4010",
+      "name": "Software Engineering",
+      "credits": 3,
+      "category": "Program",
+      "description": "Introduces the processes and methods used to design and develop software systems.",
+      "topics": ["Software life cycle", "Requirements", "Design", "Testing", "Maintenance"],
+      "prerequisites": [["COP3530"]]
+    },
+    {
+      "id": "COP4813",
+      "name": "Web Systems I",
+      "credits": 3,
+      "category": "Program",
+      "description": "Introduces the development of interactive and data-driven web applications.",
+      "topics": ["HTML", "CSS", "JavaScript", "Web architecture", "Client-server applications"],
+      "prerequisites": [["COP3530"]]
+    },
+    {
+      "id": "CIS4510",
+      "name": "IT Project Management",
+      "credits": 3,
+      "category": "Program",
+      "description": "Covers planning, managing, and evaluating information technology projects.",
+      "topics": ["Project planning", "Scheduling", "Risk", "Budgets", "Team management"],
+      "prerequisites": [["CEN4801"]]
+    },
+    {
+      "id": "CAI4002",
+      "name": "Introduction to Artificial Intelligence",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Introduces artificial intelligence concepts and their applications.",
+      "topics": ["AI concepts", "Machine learning overview", "Intelligent systems", "AI applications"],
+      "prerequisites": []
+    },
+    {
+      "id": "CAI4805",
+      "name": "AI Implementation and Maintenance",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Explores implementing and maintaining artificial intelligence solutions.",
+      "topics": ["AI implementation", "Deployment", "Maintenance", "Evaluation"],
+      "prerequisites": []
+    },
+    {
+      "id": "CAP3744",
+      "name": "Data Analytics and Visualization",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Explores techniques for analyzing data and communicating findings visually.",
+      "topics": ["Data preparation", "Analytics", "Visualization", "Reporting"],
+      "prerequisites": []
+    },
+    {
+      "id": "COP4709",
+      "name": "Applied Database II",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Builds on database fundamentals with more advanced database applications.",
+      "topics": ["Advanced SQL", "Database programming", "Database applications", "Advanced design"],
+      "prerequisites": [["COP4708"]]
+    },
+    {
+      "id": "COP4834",
+      "name": "Applied Web Systems II",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Builds on web development concepts through more advanced web applications.",
+      "topics": ["Advanced web development", "Dynamic applications", "Web services", "Integration"],
+      "prerequisites": [["COP4813"]]
+    },
+    {
+      "id": "CET4860",
+      "name": "Introduction to Digital Forensics",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Introduces methods for identifying and examining digital evidence.",
+      "topics": ["Evidence handling", "Forensic imaging", "File systems", "Investigation process"],
+      "prerequisites": []
+    },
+    {
+      "id": "CET4861",
+      "name": "Advanced Digital Forensics",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Explores advanced techniques for digital forensic investigations.",
+      "topics": ["Advanced examination", "Evidence analysis", "Forensic tools", "Case studies"],
+      "prerequisites": [["CET4860"]]
+    },
+    {
+      "id": "CET4862",
+      "name": "Network Forensics and Incident Response",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Examines network evidence and methods for responding to security incidents.",
+      "topics": ["Network evidence", "Traffic analysis", "Incident handling", "Response procedures"],
+      "prerequisites": []
+    },
+    {
+      "id": "CET4884",
+      "name": "Security Methods and Practices",
+      "credits": 3,
+      "category": "Elective",
+      "description": "Explores practical security methods for protecting information systems.",
+      "topics": ["Security controls", "Risk assessment", "Security policies", "Protection methods"],
+      "prerequisites": []
     }
   ]
 }

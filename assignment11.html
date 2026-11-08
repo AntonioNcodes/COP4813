@@ -4,139 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Assignment 11 - BSIT Class Advisor</title>
-
-    <link rel="stylesheet" href="style.css">
+    <title>BSIT Class Advisor | My COP4813</title>
+    <link rel="stylesheet" href="assignment11.css">
+    <script src="assignment11.js" defer></script>
 </head>
-
 <body>
 
-    <header>
-        <h1>My COP4813</h1>
-        <p>Web programming and personal portfolio</p>
-
-        <nav>
+<header class="site-header">
+    <div class="header-inner">
+        <a class="brand" href="index.html">My COP4813</a>
+        <nav class="main-nav" aria-label="Main navigation">
             <a href="index.html">Home</a>
             <a href="about.html">About Me</a>
-            <a href="assignment2.html">Assignment 2</a>
-            <a href="assignment3.html">Assignment 3</a>
-            <a href="assignment4.html">Assignment 4</a>
-            <a href="assignment5.html">Assignment 5</a>
-            <a href="assignment6.html">Assignment 6</a>
-            <a href="assignment7.html">Assignment 7</a>
-            <a href="assignment9.html">Assignment 9</a>
-            <a href="audit.html">Assignment 10</a>
-            <a href="assignment11.html">Assignment 11</a>
+            <a href="assignment11.html" aria-current="page">Assignment 11</a>
         </nav>
-    </header>
+    </div>
+</header>
 
-    <main id="advisor-app">
+<main class="page-container" id="advisor-app">
 
-        <section class="assignment-intro">
-            <h2>BSIT Class Advisor</h2>
+    <section class="hero">
+        <p class="eyebrow">DAYTONA STATE COLLEGE</p>
+        <h1>BSIT Class Advisor</h1>
+        <p>
+            Explore courses, check prerequisites, track completed classes,
+            and organize your upcoming semesters.
+        </p>
+        <a class="catalog-link"
+           href="https://daytonastate.smartcatalogiq.com/en/2026-2027/college-catalog/program-guides/bs-degree/information-technology-bsit-b-s-degree"
+           target="_blank" rel="noopener">
+            View Official BSIT Program Guide ↗
+        </a>
+    </section>
 
-            <p>
-                This interactive advisor helps students explore the
-                Bachelor of Science in Information Technology program
-                at Daytona State College.
-            </p>
+    <section class="overview-grid" aria-label="Degree overview">
+        <article class="overview-card">
+            <span class="overview-label">Degree requirement</span>
+            <strong>128</strong>
+            <span>total credit hours</span>
+        </article>
+        <article class="overview-card">
+            <span class="overview-label">General education</span>
+            <strong>36</strong>
+            <span>credit hours</span>
+        </article>
+        <article class="overview-card">
+            <span class="overview-label">Lower-level technical</span>
+            <strong>44</strong>
+            <span>credit hours</span>
+        </article>
+        <article class="overview-card">
+            <span class="overview-label">Upper-level program</span>
+            <strong>48</strong>
+            <span>credit hours</span>
+        </article>
+    </section>
 
-            <p>
-                Select completed courses, review prerequisites,
-                explore course information, and organize a semester plan.
-            </p>
-
-            <p>
-                <a href="https://daytonastate.smartcatalogiq.com/en/2026-2027/college-catalog/program-guides/bs-degree/information-technology-bsit-b-s-degree"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    View the official DSC BSIT program guide
-                </a>
-            </p>
-        </section>
-
-
-        <!-- PROGRESS SUMMARY -->
-
-        <section class="advisor-section">
-            <h2>Degree Progress Summary</h2>
-
-            <p>
-                Track completed courses and planned credits
-                as you work toward your degree.
-            </p>
-
-            <div id="progress-summary">
-                Loading progress...
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">YOUR PROGRESS</p>
+                <h2>Degree Progress</h2>
+                <p class="section-description">
+                    Select courses you have completed to update your planner.
+                </p>
             </div>
-        </section>
+        </div>
+        <div id="progress-summary" class="progress-grid">
+            <p>Loading your progress...</p>
+        </div>
+    </section>
 
-
-        <!-- COMPLETED COURSES -->
-
-        <section class="advisor-section">
-            <h2>1. Select Completed Courses</h2>
-
-            <p>
-                Check the courses you have already completed.
-                The advisor will use your selections to evaluate prerequisites.
-            </p>
-
-            <div id="completed-courses">
-                Loading completed courses...
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">STEP 1</p>
+                <h2>Completed Courses</h2>
+                <p class="section-description">
+                    Check the courses you have already completed.
+                </p>
             </div>
-        </section>
+        </div>
+        <div class="filter-row">
+            <label for="course-search">Find a course</label>
+            <input id="course-search" type="search"
+                   placeholder="Search by course code or name">
+            <label for="completed-category">Category</label>
+            <select id="completed-category">
+                <option value="all">All categories</option>
+                <option value="Prerequisite">Prerequisite courses</option>
+                <option value="Program">Required BSIT courses</option>
+                <option value="Elective">Program electives</option>
+            </select>
+        </div>
+        <div id="completed-courses" class="course-grid">
+            <p>Loading courses...</p>
+        </div>
+    </section>
 
-
-        <!-- AVAILABLE COURSES -->
-
-        <section class="advisor-section">
-            <h2>2. Explore Available Courses</h2>
-
-            <p>
-                Review course descriptions, credit hours, topics,
-                and prerequisite requirements.
-            </p>
-
-            <p>
-                Courses become eligible when their prerequisite
-                requirements are satisfied.
-            </p>
-
-            <div id="available-courses">
-                Loading available courses...
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">STEP 2</p>
+                <h2>Eligible Courses</h2>
+                <p class="section-description">
+                    Courses appear here when their listed prerequisites are met.
+                </p>
             </div>
-        </section>
+        </div>
+        <div class="filter-row">
+            <label for="available-category">Show</label>
+            <select id="available-category">
+                <option value="all">All eligible courses</option>
+                <option value="Program">Required BSIT courses</option>
+                <option value="Elective">Program electives</option>
+            </select>
+        </div>
+        <div id="available-courses" class="course-grid">
+            <p>Loading eligible courses...</p>
+        </div>
+    </section>
 
-
-        <!-- SEMESTER PLAN -->
-
-        <section class="advisor-section">
-            <h2>3. Build Your Semester Plan</h2>
-
-            <p>
-                Add eligible courses to your semester plan.
-                You can add multiple courses, including multiple electives.
-            </p>
-
-            <div id="course-plan">
-                Your semester plan is empty.
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">STEP 3</p>
+                <h2>Semester Planner</h2>
+                <p class="section-description">
+                    Add eligible courses to build a plan for an upcoming semester.
+                </p>
             </div>
-        </section>
+        </div>
+        <div class="planner-controls">
+            <label for="semester-name">Planning semester</label>
+            <input id="semester-name" type="text"
+                   value="Spring 2027" placeholder="Example: Fall 2027">
+        </div>
+        <div id="course-plan" class="course-grid">
+            <p>Your semester plan is empty.</p>
+        </div>
+        <div id="plan-summary" class="plan-summary"></div>
+    </section>
 
-    </main>
+    <section class="panel explanation-panel">
+        <h2>How Prerequisites Work</h2>
+        <div class="rule-examples">
+            <div>
+                <strong>AND</strong>
+                <p>Every prerequisite group must be satisfied.</p>
+            </div>
+            <div>
+                <strong>OR</strong>
+                <p>Completing one course in an alternative group is enough.</p>
+            </div>
+        </div>
+        <p class="small-note">
+            This advisor is an educational planning tool. Always confirm
+            course requirements and your graduation audit with a DSC advisor.
+        </p>
+    </section>
 
+</main>
 
-    <footer>
-        <p>My COP4813 - Assignment 11</p>
-        <p>BSIT Class Advisor | Daytona State College</p>
-    </footer>
-
-
-    <!-- Load JavaScript after the page content -->
-
-    <script src="assignment11.js"></script>
+<footer class="site-footer">
+    <p>My COP4813 | BSIT Class Advisor | Daytona State College</p>
+</footer>
 
 </body>
 </html>

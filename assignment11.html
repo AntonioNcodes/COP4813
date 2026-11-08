@@ -1,436 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="DSC Smart Class Advisor - Interactive course planning tool for students.">
+    <meta name="description" content="Dynamic Class Advisor for college students.">
 
     <meta name="theme-color" content="#0b3d91">
 
-    <title>Assignment 11 | DSC Smart Class Advisor</title>
+    <title>Assignment 11 - Dynamic Class Advisor</title>
 
-    <link rel="stylesheet" href="assignment11.css">
+    <link rel="stylesheet" href="style.css">
     <script src="assignment11.js" defer></script>
 </head>
 
 <body>
 
-    <!-- ================================
-         Header
-    ================================= -->
-
     <header class="site-header">
-        <h1>DSC Smart Class Advisor</h1>
-        <p>Assignment 11 - Dynamic Objects</p>
-        <p>Software Development A.S. Degree Planner</p>
+        <h1>Dynamic Class Advisor</h1>
+        <p>Plan your college courses with confidence.</p>
     </header>
 
+    <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-navigation"
+    >
+        <span aria-hidden="true">&#9776;</span>
+        <span class="menu-button-text">Menu</span>
+    </button>
 
-    <!-- ================================
-         Navigation
-    ================================= -->
-
-    <nav class="main-navigation" aria-label="Page navigation">
-        <a href="index.html">Back to COP4813 Home</a>
+    <nav class="main-navigation" id="site-navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+        </ul>
     </nav>
-
 
     <main>
 
-        <!-- ================================
-             Introduction
-        ================================= -->
-
-        <section class="intro-section">
-
-            <h2>Welcome to Your Class Advisor</h2>
+        <section class="home-section">
+            <h2>Welcome to the Class Advisor</h2>
 
             <p>
-                Planning your college courses can sometimes be confusing.
-                The DSC Smart Class Advisor is designed to help students
-                organize their classes and understand their degree
-                requirements.
+                This tool helps students identify courses they have completed,
+                discover courses they are eligible to take, and create a
+                personalized course plan.
             </p>
+        </section>
+
+        <section class="home-section">
+            <h2>1. Select Completed Courses</h2>
 
             <p>
                 Select the courses you have already completed.
-                The advisor will check prerequisites and show you
-                which courses you can take next.
             </p>
 
-            <p>
-                You can also organize available courses into semesters
-                using the drag-and-drop planner.
-            </p>
-
+            <div id="completed-courses"></div>
         </section>
 
-
-        <!-- ================================
-             Academic Progress
-        ================================= -->
-
-        <section class="progress-section">
-
-            <h2>My Academic Progress</h2>
+        <section class="home-section">
+            <h2>2. Available Courses</h2>
 
             <p>
-                Track your completed credits and see how far you are
-                toward your degree.
+                Courses will appear here based on your completed prerequisites.
             </p>
 
-            <div class="progress-info">
-
-                <p>
-                    Completed Credits:
-                    <span id="completed-credits">0</span>
-                </p>
-
-                <p>
-                    Remaining Credits:
-                    <span id="remaining-credits">0</span>
-                </p>
-
-                <p>
-                    Total Degree Credits:
-                    <span id="total-credits">60</span>
-                </p>
-
-            </div>
-
-            <div
-                class="progress-bar"
-                role="progressbar"
-                aria-label="Degree completion progress"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow="0"
-                id="progress-bar"
-            >
-                <div id="progress-fill"></div>
-            </div>
-
-            <p id="progress-message" aria-live="polite">
-                Start by marking your completed courses below.
-            </p>
-
+            <div id="available-courses"></div>
         </section>
 
-
-        <!-- ================================
-             Course Search and Filters
-        ================================= -->
-
-        <section class="search-section">
-
-            <h2>Find a Course</h2>
+        <section class="home-section">
+            <h2>3. Your Course Plan</h2>
 
             <p>
-                Search for a course by its course number or name.
+                Add eligible courses to your personal course plan.
             </p>
 
-            <label for="course-search">
-                Search Courses:
-            </label>
-
-            <input
-                type="search"
-                id="course-search"
-                placeholder="Example: COP1000 or Programming"
-            >
-
-            <label for="course-filter">
-                Filter Courses:
-            </label>
-
-            <select id="course-filter">
-
-                <option value="all">All Courses</option>
-
-                <option value="completed">
-                    Completed Courses
-                </option>
-
-                <option value="available">
-                    Available Courses
-                </option>
-
-                <option value="locked">
-                    Locked Courses
-                </option>
-
-            </select>
-
-        </section>
-
-
-        <!-- ================================
-             Completed Courses
-        ================================= -->
-
-        <section class="courses-section">
-
-            <h2>My Courses</h2>
-
-            <p>
-                Check the box next to each course you have
-                successfully completed.
-            </p>
-
-            <p>
-                The advisor will automatically update your
-                available courses when you make changes.
-            </p>
-
-            <div id="course-list" aria-live="polite">
-
-                <p>Loading course information...</p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================================
-             Available Courses
-        ================================= -->
-
-        <section class="available-section">
-
-            <h2>Available Courses</h2>
-
-            <p>
-                These courses are available based on your
-                completed courses and prerequisite requirements.
-            </p>
-
-            <div id="available-courses" aria-live="polite">
-
-                <p>Available courses will appear here.</p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================================
-             Locked Courses
-        ================================= -->
-
-        <section class="locked-section">
-
-            <h2>Courses With Unmet Prerequisites</h2>
-
-            <p>
-                These courses are currently unavailable because
-                one or more prerequisite requirements have not
-                been completed.
-            </p>
-
-            <div id="locked-courses" aria-live="polite">
-
-                <p>Locked courses will appear here.</p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================================
-             Alternative Course Choices
-        ================================= -->
-
-        <section class="alternatives-section">
-
-            <h2>Course Selection Notes</h2>
-
-            <p>
-                Some degree requirements allow students to choose
-                between two or more courses.
-            </p>
-
-            <p>
-                When a requirement uses OR, students only need
-                to complete one of the listed courses.
-            </p>
-
-            <div id="course-notes" aria-live="polite">
-
-                <p>
-                    Special course requirements and selection
-                    notes will appear here.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================================
-             Semester Planner
-        ================================= -->
-
-        <section class="planner-section">
-
-            <h2>My Semester Planner</h2>
-
-            <p>
-                Drag available courses into the semester where
-                you would like to take them.
-            </p>
-
-            <p>
-                You can organize courses into Fall, Spring,
-                and Summer semesters.
-            </p>
-
-            <div class="semester-container">
-
-                <!-- Fall -->
-
-                <div class="semester">
-
-                    <h3>Fall Semester</h3>
-
-                    <div
-                        class="drop-zone"
-                        id="fall-semester"
-                        data-semester="Fall"
-                    >
-                        <p>Drop courses here</p>
-                    </div>
-
-                    <p>
-                        Credits:
-                        <span id="fall-credits">0</span>
-                    </p>
-
-                </div>
-
-
-                <!-- Spring -->
-
-                <div class="semester">
-
-                    <h3>Spring Semester</h3>
-
-                    <div
-                        class="drop-zone"
-                        id="spring-semester"
-                        data-semester="Spring"
-                    >
-                        <p>Drop courses here</p>
-                    </div>
-
-                    <p>
-                        Credits:
-                        <span id="spring-credits">0</span>
-                    </p>
-
-                </div>
-
-
-                <!-- Summer -->
-
-                <div class="semester">
-
-                    <h3>Summer Semester</h3>
-
-                    <div
-                        class="drop-zone"
-                        id="summer-semester"
-                        data-semester="Summer"
-                    >
-                        <p>Drop courses here</p>
-                    </div>
-
-                    <p>
-                        Credits:
-                        <span id="summer-credits">0</span>
-                    </p>
-
-                </div>
-
-            </div>
-
-            <button
-                type="button"
-                id="clear-plan"
-                class="course-button"
-            >
-                Clear Semester Plan
-            </button>
-
-        </section>
-
-
-        <!-- ================================
-             Course Information
-        ================================= -->
-
-        <section class="course-details-section">
-
-            <h2>Course Information</h2>
-
-            <p>
-                Select a course to learn more about its credit
-                hours, prerequisites, and additional information.
-            </p>
-
-            <div id="course-details" aria-live="polite">
-
-                <p>
-                    No course selected. Select a course to
-                    view its details.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================================
-             Reset Advisor
-        ================================= -->
-
-        <section class="reset-section">
-
-            <h2>Reset My Advisor</h2>
-
-            <p>
-                Want to test the advisor with different completed
-                courses? You can reset your selections and start over.
-            </p>
-
-            <button
-                type="button"
-                id="reset-advisor"
-                class="course-button"
-            >
-                Reset Completed Courses
-            </button>
-
+            <div id="course-plan"></div>
         </section>
 
     </main>
 
-
-    <!-- ================================
-         Footer
-    ================================= -->
-
     <footer class="site-footer">
-
         <p>COP4813 Web Systems - Assignment 11</p>
-
-        <p>DSC Smart Class Advisor</p>
-
     </footer>
 
 </body>
-
 </html>

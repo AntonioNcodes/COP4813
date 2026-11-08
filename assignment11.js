@@ -1088,20 +1088,6 @@ function addCourseToPlan(courseId) {
         return;
     }
 
-    // Only one program elective is needed.
-    if (
-        course.category === "Program Elective" &&
-        plannedCourses.some(item => item.category === "Program Elective")
-    ) {
-        alert("The current catalog requires one 3-credit program elective. Remove the other elective before adding a different one.");
-        return;
-    }
-
-    plannedCourses.push(course);
-    renderSemesterPlan();
-    renderEligibleCourses();
-}
-
 
 // -----------------------------------------------------
 // 9. GRADUATION PROGRESS

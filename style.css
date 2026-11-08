@@ -1880,362 +1880,86 @@ button:focus-visible {
 }
 
 
-/* =========================================
-   Assignment 11 - Dynamic Objects
-   DSC Smart Class Advisor
-========================================= */
 
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    color: #172033;
-    background-color: #eaf2f8;
-}
-
-/* =========================================
-   Header
-========================================= */
-
-.site-header {
-    background: linear-gradient(135deg, #0b3d91, #06265c);
-    color: white;
-    text-align: center;
-    padding: 35px 20px;
-    border-bottom: 6px solid #e21b2d;
-}
-
-.site-header h1 {
-    margin: 0;
-    font-size: 2.3rem;
-}
-
-.site-header p {
-    margin: 8px 0 0;
-    font-size: 1.05rem;
-}
-
-/* =========================================
-   Navigation
-========================================= */
-
-.main-navigation {
-    background-color: #071a3d;
-    padding: 12px 20px;
-    text-align: center;
-}
-
-.main-navigation a {
-    display: inline-block;
-    padding: 10px 20px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-}
-
-.main-navigation a:hover,
-.main-navigation a:focus {
-    background-color: #e21b2d;
-}
-
-/* =========================================
-   Main Content
-========================================= */
-
-main {
-    max-width: 1100px;
-    margin: 35px auto;
-    padding: 0 20px;
-}
-
-section {
-    margin-bottom: 25px;
-    padding: 28px;
-    background-color: white;
-    border-left: 6px solid #e21b2d;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-section h2 {
-    margin-top: 0;
-    color: #0b3d91;
-    border-bottom: 3px solid #e21b2d;
-    padding-bottom: 8px;
-}
-
-/* =========================================
-   Course Cards
-========================================= */
+/* ASSIGNMENT 11 - DYNAMIC CLASS ADVISOR */
 
 .course-card {
-    margin: 15px 0;
-    padding: 18px;
-    background-color: #f7faff;
-    border: 1px solid #dce5ef;
+    background-color: #eaf2f8;
+    border: 1px solid #c5d5e5;
     border-left: 5px solid #0b3d91;
     border-radius: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.course-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 12px 0;
 }
 
 .course-card h3 {
-    margin-top: 0;
     color: #0b3d91;
+    margin-top: 0;
 }
 
 .course-card p {
-    margin: 6px 0;
+    line-height: 1.6;
 }
 
-.course-card.completed {
-    border-left-color: #218838;
+.course-card label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.course-card.locked {
-    border-left-color: #c41224;
-    background-color: #fff8f8;
-}
-
-.course-card.available {
-    border-left-color: #218838;
-}
-
-/* =========================================
-   Course Checkboxes
-========================================= */
-
-.course-checkbox {
+.course-card input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    margin-right: 8px;
     cursor: pointer;
     accent-color: #0b3d91;
 }
 
-.course-label {
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* =========================================
-   Status Badges
-========================================= */
-
-.course-status {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    font-weight: bold;
-}
-
-.status-completed {
-    background-color: #d8f3df;
-    color: #176b35;
-}
-
-.status-available {
-    background-color: #dceaff;
-    color: #0b3d91;
-}
-
-.status-locked {
-    background-color: #ffe1e1;
-    color: #a31224;
-}
-
-/* =========================================
-   Progress Tracker
-========================================= */
-
-.progress-info {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    font-weight: bold;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 20px;
-    margin-top: 15px;
-    overflow: hidden;
-    background-color: #dce5ef;
-    border-radius: 20px;
-}
-
-#progress-fill {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #0b3d91, #218838);
-    border-radius: 20px;
-    transition: width 0.4s ease;
-}
-
-/* =========================================
-   Course Buttons
-========================================= */
-
-.course-button {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: #0b3d91;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.course-button:hover,
-.course-button:focus {
-    background-color: #e21b2d;
-}
-
-.course-button:disabled {
-    background-color: #9aa7b7;
+.course-card input:disabled {
     cursor: not-allowed;
 }
 
-/* =========================================
-   Semester Planner
-========================================= */
-
-.semester-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
-
-.semester {
-    min-width: 0;
-}
-
-.semester h3 {
-    color: #0b3d91;
-    text-align: center;
-}
-
-.drop-zone {
-    min-height: 180px;
-    padding: 15px;
-    background-color: #f1f6fc;
-    border: 2px dashed #0b3d91;
-    border-radius: 8px;
-    text-align: center;
-    color: #536174;
-}
-
-.drop-zone.drag-over {
-    background-color: #dceaff;
-    border-color: #218838;
-}
-
-.planned-course {
-    margin: 10px 0;
-    padding: 12px;
-    background-color: white;
-    border: 1px solid #dce5ef;
-    border-left: 4px solid #0b3d91;
-    border-radius: 6px;
-    color: #172033;
-    cursor: grab;
-    overflow-wrap: anywhere;
-}
-
-.planned-course:active {
-    cursor: grabbing;
-}
-
-/* =========================================
-   Course Information
-========================================= */
-
-#course-details {
-    padding: 18px;
-    background-color: #f7faff;
-    border: 1px solid #dce5ef;
-    border-radius: 8px;
-}
-
-#course-details h3 {
-    color: #0b3d91;
-}
-
-/* =========================================
-   Footer
-========================================= */
-
-.site-footer {
-    padding: 22px;
-    background-color: #071a3d;
-    border-top: 5px solid #e21b2d;
+.add-course-button,
+.remove-course-button {
+    background-color: #0b3d91;
     color: white;
-    text-align: center;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
 }
 
-.site-footer p {
-    margin: 5px;
+.add-course-button:hover,
+.remove-course-button:hover {
+    background-color: #06265c;
 }
 
-/* =========================================
-   Mobile Layout
-========================================= */
-
-@media (max-width: 700px) {
-
-    .site-header h1 {
-        font-size: 1.8rem;
-    }
-
-    main {
-        margin: 20px auto;
-        padding: 0 12px;
-    }
-
-    section {
-        padding: 20px;
-    }
-
-    .semester-container {
-        grid-template-columns: 1fr;
-    }
-
-    .progress-info {
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .main-navigation a {
-        width: 100%;
-    }
-}
-
-/* =========================================
-   Accessibility
-========================================= */
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
+.add-course-button:focus-visible,
+.remove-course-button:focus-visible {
     outline: 3px solid #e21b2d;
     outline-offset: 3px;
 }
 
-[draggable="true"] {
-    touch-action: manipulation;
+#completed-courses,
+#available-courses,
+#course-plan {
+    margin-top: 15px;
 }
 
+@media (max-width: 600px) {
+    .course-card {
+        padding: 12px;
+    }
+
+    .course-card label {
+        font-size: 14px;
+    }
+
+    .add-course-button,
+    .remove-course-button {
+        width: 100%;
+    }
+}

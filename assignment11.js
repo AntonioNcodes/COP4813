@@ -1075,19 +1075,23 @@ function renderSemesterPlan() {
 
 
 function addCourseToPlan(courseId) {
-    const course = getCourse(courseId);
+    const course = courses.find(item => item.id === courseId);
 
-    if (!course || isCompleted(courseId)) return;
+    if (!course) return;
 
-    if (!prerequisitesMet(course)) {
-        alert("You must complete the listed prerequisites before adding this course.");
+    if (completedCourses.has(courseId)) {
+        alert("You have already completed this course.");
         return;
     }
 
     if (plannedCourses.some(item => item.id === courseId)) {
+        alert("This course is already in your semester plan.");
         return;
     }
 
+    plannedCourses.push(course);
+    renderAdvisor();
+}
 
 // -----------------------------------------------------
 // 9. GRADUATION PROGRESS

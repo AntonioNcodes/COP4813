@@ -1963,3 +1963,27 @@ button:focus-visible {
         width: 100%;
     }
 }
+
+
+/* Expandable course information */
+
+.course-details {
+    margin: 12px 0;
+    padding: 10px;
+    background-color: #eaf2f8;
+    border-radius: 6px;
+}
+
+.course-details summary {
+    color: #0b3d91;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.course-details p {
+    margin-top: 10px;
+}
+
+.course-details ul {
+    padding-left: 25px;
+}

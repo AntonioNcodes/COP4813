@@ -609,3 +609,10 @@ select:focus {
         width: 100%;
     }
 }
+
+.overview-label {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+}

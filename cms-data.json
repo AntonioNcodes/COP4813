@@ -1,0 +1,69 @@
+{
+  "cms": [
+    {
+      "system": "WordPress",
+      "support": "Open-source software maintained by the WordPress community.",
+      "technology": "PHP, MySQL or MariaDB, HTML, CSS, and JavaScript.",
+      "capabilities": "Supports themes, plugins, custom templates, APIs, blogging, and e-commerce.",
+      "limitations": "Requires regular updates. Poorly maintained plugins can create security risks.",
+      "examples": [
+        {
+          "name": "The New Yorker",
+          "url": "https://www.newyorker.com/"
+        }
+      ]
+    },
+    {
+      "system": "Drupal",
+      "support": "Open-source software maintained by the Drupal community.",
+      "technology": "PHP, MySQL, MariaDB, PostgreSQL, HTML, CSS, and JavaScript.",
+      "capabilities": "Supports themes, modules, custom content types, user permissions, and APIs.",
+      "limitations": "Can be difficult for beginners. Advanced customization may require programming experience.",
+      "examples": [
+        {
+          "name": "NASA",
+          "url": "https://www.nasa.gov/"
+        }
+      ]
+    },
+    {
+      "system": "Joomla",
+      "support": "Open-source software maintained by the Joomla community.",
+      "technology": "PHP, MySQL or MariaDB, HTML, CSS, and JavaScript.",
+      "capabilities": "Supports templates, extensions, multilingual websites, user management, and content organization.",
+      "limitations": "Has a learning curve, and some advanced extensions require payment.",
+      "examples": [
+        {
+          "name": "Linux",
+          "url": "https://www.linux.com/"
+        }
+      ]
+    },
+    {
+      "system": "Shopify",
+      "support": "Commercial hosted platform supported by Shopify.",
+      "technology": "Cloud hosting, Liquid, HTML, CSS, JavaScript, and Shopify-managed databases.",
+      "capabilities": "Supports themes, apps, product management, payment processing, inventory, and online stores.",
+      "limitations": "Requires a paid subscription. Some advanced features and apps cost extra.",
+      "examples": [
+        {
+          "name": "Allbirds",
+          "url": "https://www.allbirds.com/"
+        }
+      ]
+    },
+    {
+      "system": "Ghost",
+      "support": "Open-source publishing platform developed by Ghost Foundation, with paid hosting available through Ghost(Pro).",
+      "technology": "Node.js, JavaScript, HTML, CSS, and MySQL.",
+      "capabilities": "Supports themes, memberships, subscriptions, newsletters, publishing, and APIs.",
+      "limitations": "Primarily designed for publishing. Some advanced customization requires programming knowledge.",
+      "examples": [
+        {
+          "name": "Ghost",
+          "url": "https://ghost.org/"
+        }
+      ]
+    }
+  ]
+}

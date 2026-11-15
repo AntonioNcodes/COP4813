@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
     const tableBody = document.getElementById("cms-table-body");

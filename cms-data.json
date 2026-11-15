@@ -1,3 +1,4 @@
+
 {
   "cms": [
     {
@@ -10,6 +11,16 @@
         {
           "name": "The New Yorker",
           "url": "https://www.newyorker.com/"
+        }
+      ],
+      "sources": [
+        {
+          "name": "WordPress Documentation",
+          "url": "https://wordpress.org/documentation/"
+        },
+        {
+          "name": "WordPress Developer Resources",
+          "url": "https://developer.wordpress.org/"
         }
       ]
     },
@@ -24,6 +35,12 @@
           "name": "NASA",
           "url": "https://www.nasa.gov/"
         }
+      ],
+      "sources": [
+        {
+          "name": "Drupal Documentation",
+          "url": "https://www.drupal.org/docs"
+        }
       ]
     },
     {
@@ -36,6 +53,12 @@
         {
           "name": "Linux",
           "url": "https://www.linux.com/"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Joomla Documentation",
+          "url": "https://docs.joomla.org/"
         }
       ]
     },
@@ -50,6 +73,12 @@
           "name": "Allbirds",
           "url": "https://www.allbirds.com/"
         }
+      ],
+      "sources": [
+        {
+          "name": "Shopify Developer Documentation",
+          "url": "https://shopify.dev/docs"
+        }
       ]
     },
     {
@@ -62,6 +91,12 @@
         {
           "name": "Ghost",
           "url": "https://ghost.org/"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Ghost Documentation",
+          "url": "https://ghost.org/docs/"
         }
       ]
     }

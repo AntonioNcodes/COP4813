@@ -24,9 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${cms.capabilities}</td>
                     <td>${cms.limitations}</td>
                     <td>
+                        <strong>Examples:</strong><br>
                         ${cms.examples.map(site =>
                             `<a href="${site.url}" target="_blank" rel="noopener noreferrer">
                                 ${site.name}
+                            </a>`
+                        ).join("<br>")}
+
+                        <br><br>
+
+                        <strong>Research Sources:</strong><br>
+                        ${cms.sources.map(source =>
+                            `<a href="${source.url}" target="_blank" rel="noopener noreferrer">
+                                ${source.name}
                             </a>`
                         ).join("<br>")}
                     </td>

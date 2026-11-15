@@ -3,33 +3,10 @@
   "cms": [
     {
       "system": "WordPress",
-      "support": "Open-source software maintained by the WordPress community.",
+      "support": "Open-source software supported by a large community of developers and users. Official documentation and community forums are available.",
       "technology": "PHP, MySQL or MariaDB, HTML, CSS, and JavaScript.",
-      "capabilities": "Supports themes, plugins, custom templates, APIs, blogging, and e-commerce.",
-      "limitations": "Requires regular updates. Poorly maintained plugins can create security risks.",
-      "examples": [
-        {
-          "name": "The New Yorker",
-          "url": "https://www.newyorker.com/"
-        }
-      ],
-      "sources": [
-        {
-          "name": "WordPress Documentation",
-          "url": "https://wordpress.org/documentation/"
-        },
-        {
-          "name": "WordPress Developer Resources",
-          "url": "https://developer.wordpress.org/"
-        }
-      ]
-    },
-    {
-      "system": "Drupal",
-      "support": "Open-source software maintained by the Drupal community.",
-      "technology": "PHP, MySQL, MariaDB, PostgreSQL, HTML, CSS, and JavaScript.",
-      "capabilities": "Supports themes, modules, custom content types, user permissions, and APIs.",
-      "limitations": "Can be difficult for beginners. Advanced customization may require programming experience.",
+      "capabilities": "Supports customizable themes, plugins, blogging, e-commerce, multimedia, custom templates, and website management.",
+      "limitations": "Requires regular updates to its core software, themes, and plugins. Poorly maintained plugins can create security risks.",
       "examples": [
         {
           "name": "NASA",
@@ -38,36 +15,79 @@
       ],
       "sources": [
         {
+          "name": "WordPress Requirements",
+          "url": "https://wordpress.org/about/requirements/"
+        },
+        {
+          "name": "WordPress Documentation",
+          "url": "https://wordpress.org/documentation/"
+        },
+        {
+          "name": "NASA CMS Selection",
+          "url": "https://www.nasa.gov/wp-content/uploads/2023/07/533091-apr-jun-2023-it-talk-design-0.pdf"
+        }
+      ]
+    },
+    {
+      "system": "Drupal",
+      "support": "Open-source software maintained by the Drupal community. Users can access official documentation, community forums, and professional development services.",
+      "technology": "PHP, MySQL, MariaDB, PostgreSQL, or SQLite, along with HTML, CSS, and JavaScript.",
+      "capabilities": "Supports custom content types, themes, modules, user permissions, multilingual websites, workflows, and API integrations.",
+      "limitations": "Can be difficult for beginners to learn. Advanced customization and maintenance may require programming experience.",
+      "examples": [
+        {
+          "name": "The Russell Group",
+          "url": "https://www.russellgroup.ac.uk/"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Drupal System Requirements",
+          "url": "https://www.drupal.org/docs/getting-started/system-requirements"
+        },
+        {
           "name": "Drupal Documentation",
           "url": "https://www.drupal.org/docs"
+        },
+        {
+          "name": "The Russell Group Drupal Case Study",
+          "url": "https://new.drupal.org/case-study/the-russell-group-connecting-policy-research-and-university-impact-with-drupal-and-big-blue-door"
         }
       ]
     },
     {
       "system": "Joomla",
-      "support": "Open-source software maintained by the Joomla community.",
-      "technology": "PHP, MySQL or MariaDB, HTML, CSS, and JavaScript.",
-      "capabilities": "Supports templates, extensions, multilingual websites, user management, and content organization.",
-      "limitations": "Has a learning curve, and some advanced extensions require payment.",
+      "support": "Open-source software supported by the Joomla community. Users can access documentation, community forums, and third-party development services.",
+      "technology": "PHP, MySQL, MariaDB, or PostgreSQL, along with HTML, CSS, and JavaScript.",
+      "capabilities": "Supports templates, extensions, multilingual websites, user management, content organization, and custom website features.",
+      "limitations": "Has a learning curve for beginners. Some advanced features require third-party extensions, which may need additional costs and maintenance.",
       "examples": [
         {
-          "name": "Linux",
-          "url": "https://www.linux.com/"
+          "name": "MediaServe",
+          "url": "https://mediaserve.com/"
         }
       ],
       "sources": [
         {
+          "name": "Joomla Technical Requirements",
+          "url": "https://manual.joomla.org/docs/get-started/technical-requirements/"
+        },
+        {
           "name": "Joomla Documentation",
           "url": "https://docs.joomla.org/"
+        },
+        {
+          "name": "Joomla Community Website Example",
+          "url": "https://magazine.joomla.org/issues/2023/september/showtime-joomlers-show-sites"
         }
       ]
     },
     {
       "system": "Shopify",
-      "support": "Commercial hosted platform supported by Shopify.",
-      "technology": "Cloud hosting, Liquid, HTML, CSS, JavaScript, and Shopify-managed databases.",
-      "capabilities": "Supports themes, apps, product management, payment processing, inventory, and online stores.",
-      "limitations": "Requires a paid subscription. Some advanced features and apps cost extra.",
+      "support": "Commercial hosted platform supported by Shopify. Provides customer support, developer resources, and a community forum.",
+      "technology": "Cloud-hosted platform using Liquid, HTML, CSS, JavaScript, and JSON for theme development.",
+      "capabilities": "Supports online stores, product management, payment processing, inventory tracking, customizable themes, apps, and sales integrations.",
+      "limitations": "Requires a paid subscription. Some advanced features, themes, and third-party apps can involve additional costs.",
       "examples": [
         {
           "name": "Allbirds",
@@ -78,25 +98,43 @@
         {
           "name": "Shopify Developer Documentation",
           "url": "https://shopify.dev/docs"
+        },
+        {
+          "name": "Shopify Theme Development",
+          "url": "https://help.shopify.com/en/partners/build-integrate/making-themes"
+        },
+        {
+          "name": "Allbirds Shopify Case Study",
+          "url": "https://www.shopify.com/ca/case-studies/allbirds"
         }
       ]
     },
-   {
-  "system": "Ghost",
-  "support": "Open-source publishing platform developed by Ghost Foundation, with paid hosting available through Ghost(Pro).",
-  "technology": "Node.js, JavaScript, HTML, CSS, and MySQL.",
-  "capabilities": "Supports themes, memberships, subscriptions, newsletters, publishing, and APIs.",
-  "limitations": "Primarily designed for publishing. Some advanced customization requires programming knowledge.",
-  "examples": [
     {
-      "name": "Ghost",
-      "url": "https://ghost.org/"
-    }
-  ],
-  "sources": [
-    {
-      "name": "Ghost Documentation",
-      "url": "https://ghost.org/docs/"
+      "system": "Ghost",
+      "support": "Open-source publishing platform developed by the Ghost Foundation. Offers community resources, official documentation, and paid managed hosting through Ghost(Pro).",
+      "technology": "Node.js, MySQL 8 for supported production hosting, Handlebars, HTML, CSS, and JavaScript.",
+      "capabilities": "Supports website publishing, custom themes, memberships, paid subscriptions, email newsletters, analytics, and APIs.",
+      "limitations": "Primarily designed for publishing and membership websites. Advanced customization and self-hosting may require technical knowledge.",
+      "examples": [
+        {
+          "name": "The Lever",
+          "url": "https://www.levernews.com/"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Ghost Developer Documentation",
+          "url": "https://ghost.org/docs/"
+        },
+        {
+          "name": "Ghost Hosting Requirements",
+          "url": "https://docs.ghost.org/hosting/"
+        },
+        {
+          "name": "Google News Initiative Ghost CMS Profile",
+          "url": "https://newsinitiative.withgoogle.com/cms-providers/ghost/"
+        }
+      ]
     }
   ]
 }

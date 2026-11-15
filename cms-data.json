@@ -81,24 +81,22 @@
         }
       ]
     },
+   {
+  "system": "Ghost",
+  "support": "Open-source publishing platform developed by Ghost Foundation, with paid hosting available through Ghost(Pro).",
+  "technology": "Node.js, JavaScript, HTML, CSS, and MySQL.",
+  "capabilities": "Supports themes, memberships, subscriptions, newsletters, publishing, and APIs.",
+  "limitations": "Primarily designed for publishing. Some advanced customization requires programming knowledge.",
+  "examples": [
     {
-      "system": "Ghost",
-      "support": "Open-source publishing platform developed by Ghost Foundation, with paid hosting available through Ghost(Pro).",
-      "technology": "Node.js, JavaScript, HTML, CSS, and MySQL.",
-      "capabilities": "Supports themes, memberships, subscriptions, newsletters, publishing, and APIs.",
-      "limitations": "Primarily designed for publishing. Some advanced customization requires programming knowledge.",
-      "examples": [
-        {
-          "name": "Ghost",
-          "url": "https://ghost.org/"
-        }
-      ],
-      "sources": [
-        {
-          "name": "Ghost Documentation",
-          "url": "https://ghost.org/docs/"
-        }
-      ]
+      "name": "Ghost",
+      "url": "https://ghost.org/"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Ghost Documentation",
+      "url": "https://ghost.org/docs/"
     }
   ]
 }

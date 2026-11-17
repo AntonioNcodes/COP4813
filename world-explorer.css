@@ -1,5 +1,5 @@
 
-/* World Explorer - Assignment 13 */
+/* World Explorer - Video Game Design */
 
 * {
     box-sizing: border-box;
@@ -8,94 +8,229 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #eaf2f8;
-    color: #172b4d;
-    line-height: 1.6;
+    color: #ffffff;
+    background: linear-gradient(180deg, #56c7e8, #b4e8f5);
+    min-height: 100vh;
 }
 
-header {
-    background: #0b3d91;
-    color: white;
+.game-header {
     text-align: center;
-    padding: 35px 20px;
+    padding: 25px 15px;
+    background: #1769aa;
+    border-bottom: 6px solid #104b7a;
 }
 
-header h1 {
-    margin: 0;
+.game-header h1 {
     font-size: 2.5rem;
+    margin: 15px 0 5px;
+    text-shadow: 3px 3px #104b7a;
 }
 
-header p {
-    margin-bottom: 0;
+.game-header p {
+    margin: 0;
     font-size: 1.1rem;
 }
 
-main {
-    width: 90%;
-    max-width: 850px;
+.home-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    float: left;
+}
+
+.home-link:hover {
+    text-decoration: underline;
+}
+
+.game-container {
+    width: 92%;
+    max-width: 1000px;
     margin: 30px auto;
 }
 
-section {
-    background: white;
-    margin-bottom: 22px;
+.welcome-panel,
+.map-panel,
+.adventure-panel,
+.passport-panel {
+    background: #ffffff;
+    color: #26364a;
+    border: 4px solid #1769aa;
+    border-radius: 18px;
     padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+    box-shadow: 0 6px 0 #104b7a;
 }
 
-h2 {
-    color: #0b3d91;
-    margin-top: 0;
+.welcome-panel {
+    text-align: center;
 }
 
-.instructions li {
-    margin-bottom: 8px;
+.welcome-panel h2,
+.map-panel h2,
+.adventure-panel h2,
+.passport-panel h2 {
+    color: #1769aa;
 }
 
 button {
-    background: #0b3d91;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 7px;
+    font-family: inherit;
+    font-weight: bold;
     font-size: 1rem;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 12px;
     cursor: pointer;
+    background: #ffbd35;
+    color: #26364a;
+    box-shadow: 0 5px 0 #d58c10;
+    transition: transform 0.15s, background 0.15s;
 }
 
-button:hover {
-    background: #06265c;
+button:hover:not(:disabled) {
+    background: #ffd46d;
+    transform: translateY(-3px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #d58c10;
 }
 
 button:focus-visible,
 a:focus-visible {
     outline: 3px solid #e21b2d;
-    outline-offset: 3px;
+    outline-offset: 4px;
 }
 
-a {
-    color: #0b3d91;
+button:disabled {
+    cursor: not-allowed;
+}
+
+#start-button {
+    background: #28bd76;
+    color: white;
+    box-shadow: 0 5px 0 #16834f;
+    margin-top: 15px;
+}
+
+#start-button:hover {
+    background: #39d68b;
+}
+
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    background: #1769aa;
+    text-align: center;
+    padding: 18px 10px;
+    border-radius: 15px;
+    border-bottom: 5px solid #104b7a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat span {
+    font-size: 1.8rem;
+}
+
+.stat strong {
+    font-size: 1.5rem;
+}
+
+.stat small {
+    font-size: 0.9rem;
+}
+
+.map-panel {
+    text-align: center;
+}
+
+.world-map {
+    min-height: 300px;
+    padding: 30px 15px;
+    border-radius: 15px;
+    background:
+        radial-gradient(ellipse at 20% 30%, #8bd46a 0 12%, transparent 13%),
+        radial-gradient(ellipse at 75% 25%, #8bd46a 0 15%, transparent 16%),
+        radial-gradient(ellipse at 45% 75%, #8bd46a 0 17%, transparent 18%),
+        #70c9ed;
+    border: 4px solid #45a9d1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+.destination {
+    background: #ffffff;
+    color: #1769aa;
+    border: 3px solid #1769aa;
+    box-shadow: 0 5px 0 #104b7a;
+    min-width: 125px;
+}
+
+.destination.locked {
+    background: #c8d3dc;
+    color: #536273;
+    border-color: #8b9aa7;
+    box-shadow: 0 5px 0 #73808b;
+}
+
+.adventure-panel {
+    min-height: 160px;
+    text-align: center;
+}
+
+.passport-stamps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.stamp {
+    background: #eaf7ff;
+    border: 3px dashed #1769aa;
+    border-radius: 12px;
+    padding: 15px;
+    color: #1769aa;
     font-weight: bold;
 }
 
 footer {
-    background: #06265c;
-    color: white;
+    background: #104b7a;
     text-align: center;
-    padding: 18px;
+    padding: 20px;
     margin-top: 35px;
 }
 
 @media (max-width: 600px) {
-    header h1 {
+    .game-header h1 {
         font-size: 2rem;
     }
 
-    main {
-        width: 94%;
+    .home-link {
+        float: none;
+        display: block;
+        margin-bottom: 10px;
     }
 
-    section {
-        padding: 18px;
+    .stats-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .world-map {
+        gap: 15px;
+    }
+
+    .destination {
+        width: 100%;
     }
 }

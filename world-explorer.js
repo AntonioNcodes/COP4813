@@ -4,6 +4,7 @@
 const destinations = [
     {
         country: "Japan",
+        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Mt_Fuji.jpg?width=1200",
         flag: "🇯🇵",
         questions: [
             {

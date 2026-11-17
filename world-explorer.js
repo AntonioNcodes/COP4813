@@ -1,6 +1,8 @@
 
-// WORLD EXPLORER - Assignment 13
-// Interactive travel adventure game
+// ========================================
+// WORLD EXPLORER - ASSIGNMENT 13
+// Interactive Travel Adventure Game
+// ========================================
 
 const destinations = [
     {
@@ -135,12 +137,17 @@ const destinations = [
     }
 ];
 
+// ========================================
+// GAME VARIABLES
+// ========================================
+
 let currentCountry = 0;
 let score = 0;
 let completedCountries = [];
 let discoveredLandmarks = [];
-let matchedItems = [];
-let selectedItem = null;
+let matchedPairs = [];
+let selectedCards = [];
+let cardsLocked = false;
 let gameStarted = false;
 
 const gamePanel = document.getElementById("adventure-panel");
@@ -151,17 +158,24 @@ const stampDisplay = document.getElementById("stamp-count");
 
 const startButton = document.getElementById("start-button");
 
+// ========================================
+// START GAME
+// ========================================
+
 startButton.addEventListener("click", startAdventure);
 
-// Start the adventure
 function startAdventure() {
     currentCountry = 0;
     score = 0;
     completedCountries = [];
     discoveredLandmarks = [];
-    matchedItems = [];
-    selectedItem = null;
+    matchedPairs = [];
+    selectedCards = [];
+    cardsLocked = false;
     gameStarted = true;
+
+    document.getElementById("passport-stamps").innerHTML =
+        "<p>No stamps collected yet. Your journey awaits!</p>";
 
     updateStats();
     updateMap();
@@ -175,62 +189,89 @@ function startAdventure() {
     document.getElementById("destination-0").focus();
 }
 
-// Update the score and passport information
+// ========================================
+// UPDATE SCORE AND PASSPORT
+// ========================================
+
 function updateStats() {
     scoreDisplay.textContent = score;
+
     completedDisplay.textContent =
         `${completedCountries.length} / ${destinations.length}`;
+
     stampDisplay.textContent = completedCountries.length;
 }
 
-// Unlock destinations as the player progresses
+// ========================================
+// UPDATE WORLD MAP
+// ========================================
+
 function updateMap() {
     destinations.forEach((destination, index) => {
         const button = document.getElementById(`destination-${index}`);
-        const unlocked = index <= completedCountries.length;
 
-        button.disabled = !unlocked;
+        const completed = completedCountries.includes(index);
+        const unlocked = index === completedCountries.length;
+
+        button.disabled = !gameStarted || !unlocked;
+
         button.classList.toggle("locked", !unlocked);
+        button.classList.toggle("completed", completed);
 
-        button.textContent = unlocked
-            ? `${destination.flag} ${destination.country}`
-            : `🔒 ${destination.country}`;
+        if (completed) {
+            button.textContent =
+                `✅ ${destination.country}`;
+        } else if (unlocked) {
+            button.textContent =
+                `${destination.flag} ${destination.country}`;
+        } else {
+            button.textContent =
+                `🔒 ${destination.country}`;
+        }
     });
 }
 
-// Open a destination
+// ========================================
+// DESTINATION BUTTONS
+// ========================================
+
 destinations.forEach((destination, index) => {
     document
         .getElementById(`destination-${index}`)
         .addEventListener("click", () => {
-            if (!gameStarted) {
-                gamePanel.innerHTML =
-                    "<h2>Start your adventure first!</h2>";
-                return;
-            }
 
-            if (index > completedCountries.length) {
+            if (!gameStarted || index !== completedCountries.length) {
                 return;
             }
 
             currentCountry = index;
+
             discoveredLandmarks = [];
-            matchedItems = [];
-            selectedItem = null;
+            matchedPairs = [];
+            selectedCards = [];
+            cardsLocked = false;
 
             showDestination();
         });
 });
 
-// Display destination information
+// ========================================
+// SHOW DESTINATION
+// ========================================
+
 function showDestination() {
     const destination = destinations[currentCountry];
 
     gamePanel.innerHTML = `
         <h2>${destination.flag} Welcome to ${destination.country}!</h2>
+
         <p>Explore all three landmarks to continue your adventure.</p>
+
         <div id="landmark-list" class="landmark-list"></div>
-        <p id="explore-progress">Landmarks discovered: 0 / 3</p>
+
+        <p id="explore-progress">
+            Landmarks discovered: 0 / 3
+        </p>
     `;
 
     const list = document.getElementById("landmark-list");
@@ -239,7 +280,11 @@ function showDestination() {
         const button = document.createElement("button");
 
         button.className = "landmark-button";
-        button.innerHTML = `${landmark.icon}<br>${landmark.name}`;
+
+        button.innerHTML = `
+            ${landmark.icon}<br>
+            ${landmark.name}
+        `;
 
         button.addEventListener("click", () => {
             discoverLandmark(index);
@@ -249,54 +294,69 @@ function showDestination() {
     });
 }
 
-// Discover a landmark and reveal its fact
+// ========================================
+// DISCOVER LANDMARKS
+// ========================================
+
 function discoverLandmark(index) {
     if (discoveredLandmarks.includes(index)) {
         return;
     }
 
-    const landmark = destinations[currentCountry].landmarks[index];
+    const destination = destinations[currentCountry];
+    const landmark = destination.landmarks[index];
 
     discoveredLandmarks.push(index);
-    score += 10;
 
+    score += 10;
     updateStats();
 
     const fact = document.createElement("p");
+
     fact.className = "landmark-fact";
     fact.textContent = `💡 ${landmark.fact}`;
 
-    gamePanel.appendChild(fact);
+    gamePanel.insertBefore(
+        fact,
+        document.getElementById("explore-progress")
+    );
 
     document.getElementById("explore-progress").textContent =
         `Landmarks discovered: ${discoveredLandmarks.length} / 3`;
 
+    const buttons = document.querySelectorAll(".landmark-button");
+
+    buttons[index].disabled = true;
+    buttons[index].textContent = `✅ ${landmark.name}`;
+
     if (discoveredLandmarks.length === 3) {
         const continueButton = document.createElement("button");
 
-        continueButton.textContent = "Start Matching Challenge →";
+        continueButton.textContent =
+            "Start Matching Challenge →";
+
         continueButton.addEventListener("click", showMatchingGame);
 
         gamePanel.appendChild(continueButton);
     }
 }
 
-// Memory matching mini-game
+// ========================================
+// MATCHING MINI-GAME
+// ========================================
+
 function showMatchingGame() {
     const destination = destinations[currentCountry];
 
-    // Each pair contains an icon and its matching name
     const cards = [];
 
     destination.matches.forEach((item, index) => {
         cards.push({
-            value: item.name,
             display: item.icon,
             pair: index
         });
 
         cards.push({
-            value: item.name,
             display: item.name,
             pair: index
         });
@@ -305,14 +365,19 @@ function showMatchingGame() {
     // Shuffle the cards
     cards.sort(() => Math.random() - 0.5);
 
-    matchedItems = [];
-    selectedItem = null;
+    matchedPairs = [];
+    selectedCards = [];
+    cardsLocked = false;
 
     gamePanel.innerHTML = `
         <h2>🧩 ${destination.country} Matching Challenge</h2>
-        <p>Find each matching pair! Match the picture with its name.</p>
+
+        <p>Flip the cards and find all three matching pairs!</p>
+
         <div id="matching-board" class="matching-board"></div>
+
         <p id="match-progress">Pairs found: 0 / 3</p>
+
         <p id="match-feedback" aria-live="polite"></p>
     `;
 
@@ -322,90 +387,130 @@ function showMatchingGame() {
         const button = document.createElement("button");
 
         button.className = "match-card";
-        button.textContent = card.display;
+        button.textContent = "❓";
 
         button.addEventListener("click", () => {
-            selectMatch(button, card, index);
+            flipCard(button, card, index);
         });
 
         board.appendChild(button);
     });
 }
 
-// Select matching cards
-function selectMatch(button, card, index) {
+// ========================================
+// FLIP MATCHING CARDS
+// ========================================
+
+function flipCard(button, card, index) {
     if (
+        cardsLocked ||
         button.disabled ||
-        (selectedItem && selectedItem.index === index)
+        selectedCards.some(item => item.index === index)
     ) {
         return;
     }
 
-    if (!selectedItem) {
-        selectedItem = { button, card, index };
-        button.classList.add("selected");
-        document.getElementById("match-feedback").textContent =
-            "Now select its matching name!";
-        return;
-    }
+    button.textContent = card.display;
+    button.classList.add("selected");
 
-    if (selectedItem.card.pair === card.pair) {
-        selectedItem.button.disabled = true;
-        button.disabled = true;
+    selectedCards.push({
+        button: button,
+        pair: card.pair,
+        index: index
+    });
 
-        selectedItem.button.classList.add("matched");
-        button.classList.add("matched");
+    if (selectedCards.length === 2) {
+        cardsLocked = true;
 
-        matchedItems.push(card.pair);
-        score += 20;
+        const firstCard = selectedCards[0];
+        const secondCard = selectedCards[1];
 
-        document.getElementById("match-feedback").textContent =
-            "Great match! You earned 20 points.";
+        if (firstCard.pair === secondCard.pair) {
 
-        selectedItem = null;
-        updateStats();
+            firstCard.button.disabled = true;
+            secondCard.button.disabled = true;
 
-        document.getElementById("match-progress").textContent =
-            `Pairs found: ${matchedItems.length} / 3`;
+            firstCard.button.classList.remove("selected");
+            secondCard.button.classList.remove("selected");
 
-        if (matchedItems.length === 3) {
-            const finishButton = document.createElement("button");
+            firstCard.button.classList.add("matched");
+            secondCard.button.classList.add("matched");
 
-            finishButton.textContent = "Complete Destination 🏆";
-            finishButton.addEventListener("click", completeDestination);
+            matchedPairs.push(firstCard.pair);
 
-            gamePanel.appendChild(finishButton);
+            score += 20;
+            updateStats();
+
+            document.getElementById("match-feedback").textContent =
+                "🎉 Great match! You earned 20 points.";
+
+            document.getElementById("match-progress").textContent =
+                `Pairs found: ${matchedPairs.length} / 3`;
+
+            selectedCards = [];
+            cardsLocked = false;
+
+            if (matchedPairs.length === 3) {
+                const finishButton = document.createElement("button");
+
+                finishButton.textContent =
+                    "Complete Destination 🏆";
+
+                finishButton.addEventListener("click", completeDestination);
+
+                gamePanel.appendChild(finishButton);
+            }
+
+        } else {
+
+            document.getElementById("match-feedback").textContent =
+                "Not a match! Try again.";
+
+            const first = firstCard;
+            const second = secondCard;
+
+            setTimeout(() => {
+                first.button.textContent = "❓";
+                second.button.textContent = "❓";
+
+                first.button.classList.remove("selected");
+                second.button.classList.remove("selected");
+
+                selectedCards = [];
+                cardsLocked = false;
+
+            }, 900);
         }
-    } else {
-        document.getElementById("match-feedback").textContent =
-            "Not a match. Try another card!";
-
-        selectedItem.button.classList.remove("selected");
-        selectedItem = null;
     }
 }
 
-// Complete a country and award a passport stamp
+// ========================================
+// COMPLETE DESTINATION
+// ========================================
+
 function completeDestination() {
     const destination = destinations[currentCountry];
 
     completedCountries.push(currentCountry);
 
-    const stamp = document.createElement("div");
-    stamp.className = "stamp";
-    stamp.textContent = `${destination.flag} ${destination.country}`;
-
+    // Add passport stamp
     const passport = document.getElementById("passport-stamps");
 
     if (completedCountries.length === 1) {
         passport.innerHTML = "";
     }
 
+    const stamp = document.createElement("div");
+
+    stamp.className = "stamp";
+    stamp.textContent = `${destination.flag} ${destination.country}`;
+
     passport.appendChild(stamp);
 
     updateStats();
     updateMap();
 
+    // Check if all destinations are completed
     if (completedCountries.length === destinations.length) {
         showFinalResults();
         return;
@@ -413,29 +518,53 @@ function completeDestination() {
 
     gamePanel.innerHTML = `
         <h2>🏆 Destination Completed!</h2>
+
         <p>You successfully explored ${destination.country}!</p>
+
         <p>You earned a passport stamp and unlocked your next destination.</p>
-        <button id="continue-journey">Continue Your Journey 🌎</button>
+
+        <button id="continue-journey">
+            Continue Your Journey 🌎
+        </button>
     `;
 
+    // Move to the next country
     document
         .getElementById("continue-journey")
         .addEventListener("click", () => {
+
             currentCountry = completedCountries.length;
+
+            discoveredLandmarks = [];
+            matchedPairs = [];
+            selectedCards = [];
+            cardsLocked = false;
+
             showDestination();
         });
 }
 
-// Final results
+// ========================================
+// FINAL RESULTS
+// ========================================
+
 function showFinalResults() {
     gamePanel.innerHTML = `
         <h2>🎉 World Explorer Champion!</h2>
+
         <p>You explored all five countries!</p>
+
         <h3>⭐ Final Score: ${score}</h3>
+
         <p>🌍 Countries completed: 5 / 5</p>
+
         <p>🎟️ Passport stamps collected: 5</p>
+
         <p>Congratulations on completing your world adventure!</p>
-        <button id="play-again">Play Again 🔄</button>
+
+        <button id="play-again">
+            Play Again 🔄
+        </button>
     `;
 
     document

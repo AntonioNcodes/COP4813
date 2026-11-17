@@ -1,0 +1,101 @@
+
+/* World Explorer - Assignment 13 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eaf2f8;
+    color: #172b4d;
+    line-height: 1.6;
+}
+
+header {
+    background: #0b3d91;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+}
+
+main {
+    width: 90%;
+    max-width: 850px;
+    margin: 30px auto;
+}
+
+section {
+    background: white;
+    margin-bottom: 22px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    color: #0b3d91;
+    margin-top: 0;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+}
+
+button {
+    background: #0b3d91;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 7px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #06265c;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #e21b2d;
+    outline-offset: 3px;
+}
+
+a {
+    color: #0b3d91;
+    font-weight: bold;
+}
+
+footer {
+    background: #06265c;
+    color: white;
+    text-align: center;
+    padding: 18px;
+    margin-top: 35px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+
+    main {
+        width: 94%;
+    }
+
+    section {
+        padding: 18px;
+    }
+}

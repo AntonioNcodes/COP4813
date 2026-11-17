@@ -277,21 +277,24 @@ button:disabled {
    MATCHING GAME
 ======================================== */
 
+/* MATCHING GAME */
 .matching-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 25px 0;
+    gap: 20px;
+    margin: 30px 0;
 }
 
 .match-card {
-    min-height: 100px;
+    min-height: 150px;
+    padding: 20px;
     background: #f1e8ff;
     color: #57318c;
     border: 3px solid #8958c7;
-    box-shadow: 0 5px 0 #57318c;
+    border-radius: 15px;
+    box-shadow: 0 6px 0 #57318c;
     overflow-wrap: anywhere;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .match-card.selected {

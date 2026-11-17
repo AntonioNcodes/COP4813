@@ -1,54 +1,102 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 13 - World Explorer</title>
+
+    <title>World Explorer - Adventure Game</title>
+
     <link rel="stylesheet" href="world-explorer.css">
     <script src="world-explorer.js" defer></script>
 </head>
+
 <body>
 
-    <header>
-        <h1>World Explorer</h1>
-        <p>Around the World Challenge</p>
+    <header class="game-header">
+        <a href="index.html" class="home-link">← Back to COP4813</a>
+        <h1>🌎 World Explorer</h1>
+        <p>Your adventure around the world starts here!</p>
     </header>
 
-    <main>
-        <section class="intro">
+    <main class="game-container">
+
+        <section class="welcome-panel">
             <h2>Welcome, Explorer!</h2>
             <p>
-                Travel around the world, explore different countries,
-                and learn about geography, history, landmarks, food,
-                and traditions.
+                Travel across the world, discover amazing places,
+                complete missions, and collect passport stamps.
             </p>
-            <p>
-                Complete challenges, earn points, and collect passport
-                stamps as you unlock new destinations.
-            </p>
+
+            <button id="start-button">Start Adventure 🚀</button>
         </section>
 
-        <section class="instructions">
-            <h2>How to Play</h2>
-            <ul>
-                <li>Start your journey at the first destination.</li>
-                <li>Answer questions about each country.</li>
-                <li>Earn points for correct answers.</li>
-                <li>Complete a destination to unlock the next country.</li>
-                <li>Collect passport stamps along the way!</li>
-            </ul>
+        <section class="stats-panel">
+            <div class="stat">
+                <span>⭐</span>
+                <strong id="score">0</strong>
+                <small>Points</small>
+            </div>
+
+            <div class="stat">
+                <span>🌍</span>
+                <strong id="countries-completed">0 / 5</strong>
+                <small>Countries</small>
+            </div>
+
+            <div class="stat">
+                <span>🎟️</span>
+                <strong id="stamp-count">0</strong>
+                <small>Passport Stamps</small>
+            </div>
         </section>
 
-        <section id="game">
-            <h2>Ready to Explore?</h2>
-            <button id="start-button">Start Adventure</button>
+        <section class="map-panel">
+            <h2>🗺️ Your World Adventure</h2>
+            <p>Choose an unlocked destination to explore.</p>
+
+            <div id="world-map" class="world-map">
+
+                <button class="destination" id="destination-0">
+                    🇯🇵 Japan
+                </button>
+
+                <button class="destination locked" id="destination-1" disabled>
+                    🔒 Egypt
+                </button>
+
+                <button class="destination locked" id="destination-2" disabled>
+                    🔒 Brazil
+                </button>
+
+                <button class="destination locked" id="destination-3" disabled>
+                    🔒 France
+                </button>
+
+                <button class="destination locked" id="destination-4" disabled>
+                    🔒 Italy
+                </button>
+
+            </div>
         </section>
 
-        <p><a href="index.html">Back to COP4813 Home</a></p>
+        <section id="adventure-panel" class="adventure-panel">
+            <h2>Ready for Your First Adventure?</h2>
+            <p>Start your journey to unlock your first destination!</p>
+        </section>
+
+        <section class="passport-panel">
+            <h2>📖 Explorer Passport</h2>
+            <p>Collect a stamp every time you complete a country.</p>
+            <div id="passport-stamps" class="passport-stamps">
+                <p>No stamps collected yet. Your journey awaits!</p>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <p>Assignment 13 - World Explorer</p>
+        <p>World Explorer | COP4813 Assignment 13</p>
     </footer>
 
 </body>

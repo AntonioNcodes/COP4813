@@ -1,249 +1,444 @@
 
-// World Explorer - Assignment 13
+// WORLD EXPLORER - Assignment 13
+// Interactive travel adventure game
 
 const destinations = [
     {
         country: "Japan",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Mt_Fuji.jpg?width=1200",
         flag: "🇯🇵",
-        questions: [
+        landmarks: [
             {
-                category: "Geography",
-                question: "What is the capital of Japan?",
-                answers: ["Tokyo", "Kyoto", "Osaka"],
-                correct: "Tokyo"
+                name: "Mount Fuji",
+                icon: "🗻",
+                fact: "Mount Fuji is Japan's tallest mountain and an important cultural symbol."
             },
             {
-                category: "History",
-                question: "Which Japanese city is famous for its historic temples and shrines?",
-                answers: ["Sapporo", "Kyoto", "Nagoya"],
-                correct: "Kyoto"
+                name: "Tokyo",
+                icon: "🏙️",
+                fact: "Tokyo is Japan's capital and one of the world's largest metropolitan areas."
             },
             {
-                category: "Culture",
-                question: "Which food is traditionally made with vinegared rice?",
-                answers: ["Tacos", "Sushi", "Pasta"],
-                correct: "Sushi"
+                name: "Cherry Blossoms",
+                icon: "🌸",
+                fact: "Cherry blossom season is celebrated throughout Japan every spring."
             }
         ],
-        souvenir: "Japanese Passport Stamp 🇯🇵"
+        matches: [
+            { icon: "🍣", name: "Sushi" },
+            { icon: "⛩️", name: "Shrine" },
+            { icon: "🥋", name: "Martial Arts" }
+        ]
     },
     {
         country: "Egypt",
         flag: "🇪🇬",
-        questions: [
+        landmarks: [
             {
-                category: "Geography",
-                question: "Which river flows through Egypt?",
-                answers: ["Amazon", "Nile", "Mississippi"],
-                correct: "Nile"
+                name: "Pyramids of Giza",
+                icon: "🔺",
+                fact: "The Great Pyramid of Giza is one of the Seven Wonders of the Ancient World."
             },
             {
-                category: "History",
-                question: "Which ancient structures are found at Giza?",
-                answers: ["Pyramids", "Colosseum", "Stonehenge"],
-                correct: "Pyramids"
+                name: "River Nile",
+                icon: "🌊",
+                fact: "The Nile River has supported communities and agriculture in Egypt for thousands of years."
             },
             {
-                category: "Culture",
-                question: "Which food is a popular Egyptian dish made with rice, pasta, and lentils?",
-                answers: ["Koshari", "Sushi", "Paella"],
-                correct: "Koshari"
+                name: "Great Sphinx",
+                icon: "🗿",
+                fact: "The Great Sphinx is an ancient monument with a lion's body and a human head."
             }
         ],
-        souvenir: "Egyptian Passport Stamp 🇪🇬"
+        matches: [
+            { icon: "🐪", name: "Camel" },
+            { icon: "🏺", name: "Ancient Pottery" },
+            { icon: "🌴", name: "Oasis" }
+        ]
     },
     {
         country: "Brazil",
         flag: "🇧🇷",
-        questions: [
+        landmarks: [
             {
-                category: "Geography",
-                question: "What is the largest country in South America?",
-                answers: ["Chile", "Brazil", "Peru"],
-                correct: "Brazil"
+                name: "Christ the Redeemer",
+                icon: "🗽",
+                fact: "This famous statue overlooks Rio de Janeiro from Mount Corcovado."
             },
             {
-                category: "History",
-                question: "Which famous Brazilian city is home to the Christ the Redeemer statue?",
-                answers: ["Rio de Janeiro", "Brasília", "Salvador"],
-                correct: "Rio de Janeiro"
+                name: "Amazon Rainforest",
+                icon: "🌳",
+                fact: "The Amazon is the world's largest tropical rainforest."
             },
             {
-                category: "Culture",
-                question: "Which Brazilian celebration is famous for parades and samba?",
-                answers: ["Carnival", "Oktoberfest", "Diwali"],
-                correct: "Carnival"
+                name: "Iguazu Falls",
+                icon: "💧",
+                fact: "Iguazu Falls is a spectacular waterfall system on the border of Brazil and Argentina."
             }
         ],
-        souvenir: "Brazilian Passport Stamp 🇧🇷"
+        matches: [
+            { icon: "⚽", name: "Football" },
+            { icon: "🎭", name: "Carnival" },
+            { icon: "🥁", name: "Samba" }
+        ]
     },
     {
         country: "France",
         flag: "🇫🇷",
-        questions: [
+        landmarks: [
             {
-                category: "Geography",
-                question: "What is the capital of France?",
-                answers: ["Lyon", "Paris", "Nice"],
-                correct: "Paris"
+                name: "Eiffel Tower",
+                icon: "🗼",
+                fact: "The Eiffel Tower was completed in 1889 for the World's Fair in Paris."
             },
             {
-                category: "History",
-                question: "Which famous landmark stands in Paris?",
-                answers: ["Eiffel Tower", "Big Ben", "Leaning Tower"],
-                correct: "Eiffel Tower"
+                name: "Louvre Museum",
+                icon: "🖼️",
+                fact: "The Louvre is one of the world's most visited art museums."
             },
             {
-                category: "Culture",
-                question: "Which pastry is especially associated with France?",
-                answers: ["Croissant", "Doughnut", "Churro"],
-                correct: "Croissant"
+                name: "Palace of Versailles",
+                icon: "🏰",
+                fact: "The Palace of Versailles was once the home of French kings."
             }
         ],
-        souvenir: "French Passport Stamp 🇫🇷"
+        matches: [
+            { icon: "🥐", name: "Croissant" },
+            { icon: "🧀", name: "Cheese" },
+            { icon: "🎨", name: "Art" }
+        ]
     },
     {
         country: "Italy",
         flag: "🇮🇹",
-        questions: [
+        landmarks: [
             {
-                category: "Geography",
-                question: "Which Italian city is famous for its canals?",
-                answers: ["Venice", "Milan", "Naples"],
-                correct: "Venice"
+                name: "Colosseum",
+                icon: "🏛️",
+                fact: "The Colosseum in Rome hosted public events and gladiator contests in ancient times."
             },
             {
-                category: "History",
-                question: "Which ancient Roman structure is a famous landmark in Rome?",
-                answers: ["Colosseum", "Parthenon", "Acropolis"],
-                correct: "Colosseum"
+                name: "Leaning Tower of Pisa",
+                icon: "🗼",
+                fact: "The Tower of Pisa is famous for its unintended tilt."
             },
             {
-                category: "Culture",
-                question: "Which food is traditionally associated with Naples?",
-                answers: ["Pizza", "Sushi", "Curry"],
-                correct: "Pizza"
+                name: "Venice",
+                icon: "🚤",
+                fact: "Venice is famous for its canals and traditional gondola boats."
             }
         ],
-        souvenir: "Italian Passport Stamp 🇮🇹"
+        matches: [
+            { icon: "🍕", name: "Pizza" },
+            { icon: "🍝", name: "Pasta" },
+            { icon: "🍨", name: "Gelato" }
+        ]
     }
 ];
 
-let destinationIndex = 0;
-let questionIndex = 0;
+let currentCountry = 0;
 let score = 0;
-let stamps = [];
+let completedCountries = [];
+let discoveredLandmarks = [];
+let matchedItems = [];
+let selectedItem = null;
+let gameStarted = false;
 
-const game = document.getElementById("game");
+const gamePanel = document.getElementById("adventure-panel");
 
-function startGame() {
-    destinationIndex = 0;
-    questionIndex = 0;
+const scoreDisplay = document.getElementById("score");
+const completedDisplay = document.getElementById("countries-completed");
+const stampDisplay = document.getElementById("stamp-count");
+
+const startButton = document.getElementById("start-button");
+
+startButton.addEventListener("click", startAdventure);
+
+// Start the adventure
+function startAdventure() {
+    currentCountry = 0;
     score = 0;
-    stamps = [];
+    completedCountries = [];
+    discoveredLandmarks = [];
+    matchedItems = [];
+    selectedItem = null;
+    gameStarted = true;
 
-    showQuestion();
-}
+    updateStats();
+    updateMap();
 
-function showQuestion() {
-    const destination = destinations[destinationIndex];
-    const question = destination.questions[questionIndex];
-
-    game.innerHTML = `
-        <h2>${destination.flag} Exploring ${destination.country}</h2>
-        <p><strong>Destination:</strong> ${destinationIndex + 1} of ${destinations.length}</p>
-        <p><strong>Category:</strong> ${question.category}</p>
-        <p>${question.question}</p>
-        <div id="answers"></div>
-        <p id="feedback" aria-live="polite"></p>
-        <p><strong>Score:</strong> ${score}</p>
-        <p><strong>Passport Stamps:</strong> ${stamps.length}</p>
+    gamePanel.innerHTML = `
+        <h2>🚀 Adventure Started!</h2>
+        <p>Your first destination is Japan!</p>
+        <p>Click Japan on the map to begin exploring.</p>
     `;
 
-    const answers = document.getElementById("answers");
+    document.getElementById("destination-0").focus();
+}
 
-    question.answers.forEach(answer => {
+// Update the score and passport information
+function updateStats() {
+    scoreDisplay.textContent = score;
+    completedDisplay.textContent =
+        `${completedCountries.length} / ${destinations.length}`;
+    stampDisplay.textContent = completedCountries.length;
+}
+
+// Unlock destinations as the player progresses
+function updateMap() {
+    destinations.forEach((destination, index) => {
+        const button = document.getElementById(`destination-${index}`);
+        const unlocked = index <= completedCountries.length;
+
+        button.disabled = !unlocked;
+        button.classList.toggle("locked", !unlocked);
+
+        button.textContent = unlocked
+            ? `${destination.flag} ${destination.country}`
+            : `🔒 ${destination.country}`;
+    });
+}
+
+// Open a destination
+destinations.forEach((destination, index) => {
+    document
+        .getElementById(`destination-${index}`)
+        .addEventListener("click", () => {
+            if (!gameStarted) {
+                gamePanel.innerHTML =
+                    "<h2>Start your adventure first!</h2>";
+                return;
+            }
+
+            if (index > completedCountries.length) {
+                return;
+            }
+
+            currentCountry = index;
+            discoveredLandmarks = [];
+            matchedItems = [];
+            selectedItem = null;
+
+            showDestination();
+        });
+});
+
+// Display destination information
+function showDestination() {
+    const destination = destinations[currentCountry];
+
+    gamePanel.innerHTML = `
+        <h2>${destination.flag} Welcome to ${destination.country}!</h2>
+        <p>Explore all three landmarks to continue your adventure.</p>
+        <div id="landmark-list" class="landmark-list"></div>
+        <p id="explore-progress">Landmarks discovered: 0 / 3</p>
+    `;
+
+    const list = document.getElementById("landmark-list");
+
+    destination.landmarks.forEach((landmark, index) => {
         const button = document.createElement("button");
-        button.textContent = answer;
-        button.style.margin = "5px";
-        button.addEventListener("click", () => checkAnswer(answer));
-        answers.appendChild(button);
+
+        button.className = "landmark-button";
+        button.innerHTML = `${landmark.icon}<br>${landmark.name}`;
+
+        button.addEventListener("click", () => {
+            discoverLandmark(index);
+        });
+
+        list.appendChild(button);
     });
 }
 
-function checkAnswer(answer) {
-    const question = destinations[destinationIndex].questions[questionIndex];
-    const feedback = document.getElementById("feedback");
-    const answerButtons = document.querySelectorAll("#answers button");
-
-    answerButtons.forEach(button => {
-        button.disabled = true;
-    });
-
-    if (answer === question.correct) {
-        score += 10;
-        feedback.textContent = "Correct! You earned 10 points. Great job!";
-    } else {
-        feedback.textContent = `Not quite! The correct answer is ${question.correct}.`;
-    }
-
-    const nextButton = document.createElement("button");
-    nextButton.textContent = "Continue";
-    nextButton.style.marginTop = "12px";
-    nextButton.addEventListener("click", nextQuestion);
-
-    game.appendChild(nextButton);
-}
-
-function nextQuestion() {
-    questionIndex++;
-
-    if (questionIndex < destinations[destinationIndex].questions.length) {
-        showQuestion();
+// Discover a landmark and reveal its fact
+function discoverLandmark(index) {
+    if (discoveredLandmarks.includes(index)) {
         return;
     }
 
-    const destination = destinations[destinationIndex];
-    stamps.push(destination.souvenir);
+    const landmark = destinations[currentCountry].landmarks[index];
 
-    destinationIndex++;
+    discoveredLandmarks.push(index);
+    score += 10;
 
-    if (destinationIndex < destinations.length) {
-        showDestinationComplete();
-    } else {
-        showFinalResults();
+    updateStats();
+
+    const fact = document.createElement("p");
+    fact.className = "landmark-fact";
+    fact.textContent = `💡 ${landmark.fact}`;
+
+    gamePanel.appendChild(fact);
+
+    document.getElementById("explore-progress").textContent =
+        `Landmarks discovered: ${discoveredLandmarks.length} / 3`;
+
+    if (discoveredLandmarks.length === 3) {
+        const continueButton = document.createElement("button");
+
+        continueButton.textContent = "Start Matching Challenge →";
+        continueButton.addEventListener("click", showMatchingGame);
+
+        gamePanel.appendChild(continueButton);
     }
 }
 
-function showDestinationComplete() {
-    const destination = destinations[destinationIndex - 1];
+// Memory matching mini-game
+function showMatchingGame() {
+    const destination = destinations[currentCountry];
 
-    game.innerHTML = `
-        <h2>Destination Completed!</h2>
-        <p>You explored ${destination.flag} ${destination.country}.</p>
-        <p>You collected: ${destination.souvenir}</p>
-        <p><strong>Current Score:</strong> ${score}</p>
-        <button id="next-destination">Unlock Next Destination</button>
+    // Each pair contains an icon and its matching name
+    const cards = [];
+
+    destination.matches.forEach((item, index) => {
+        cards.push({
+            value: item.name,
+            display: item.icon,
+            pair: index
+        });
+
+        cards.push({
+            value: item.name,
+            display: item.name,
+            pair: index
+        });
+    });
+
+    // Shuffle the cards
+    cards.sort(() => Math.random() - 0.5);
+
+    matchedItems = [];
+    selectedItem = null;
+
+    gamePanel.innerHTML = `
+        <h2>🧩 ${destination.country} Matching Challenge</h2>
+        <p>Find each matching pair! Match the picture with its name.</p>
+        <div id="matching-board" class="matching-board"></div>
+        <p id="match-progress">Pairs found: 0 / 3</p>
+        <p id="match-feedback" aria-live="polite"></p>
     `;
 
-    document.getElementById("next-destination").addEventListener("click", () => {
-        questionIndex = 0;
-        showQuestion();
+    const board = document.getElementById("matching-board");
+
+    cards.forEach((card, index) => {
+        const button = document.createElement("button");
+
+        button.className = "match-card";
+        button.textContent = card.display;
+
+        button.addEventListener("click", () => {
+            selectMatch(button, card, index);
+        });
+
+        board.appendChild(button);
     });
 }
 
-function showFinalResults() {
-    game.innerHTML = `
-        <h2>Congratulations, World Explorer!</h2>
-        <p>You visited all ${destinations.length} destinations!</p>
-        <h3>Final Score: ${score} / ${destinations.length * 30}</h3>
-        <h3>Your Passport Stamps</h3>
-        <ul>${stamps.map(stamp => `<li>${stamp}</li>`).join("")}</ul>
-        <button id="play-again">Play Again</button>
-    `;
+// Select matching cards
+function selectMatch(button, card, index) {
+    if (
+        button.disabled ||
+        (selectedItem && selectedItem.index === index)
+    ) {
+        return;
+    }
 
-    document.getElementById("play-again").addEventListener("click", startGame);
+    if (!selectedItem) {
+        selectedItem = { button, card, index };
+        button.classList.add("selected");
+        document.getElementById("match-feedback").textContent =
+            "Now select its matching name!";
+        return;
+    }
+
+    if (selectedItem.card.pair === card.pair) {
+        selectedItem.button.disabled = true;
+        button.disabled = true;
+
+        selectedItem.button.classList.add("matched");
+        button.classList.add("matched");
+
+        matchedItems.push(card.pair);
+        score += 20;
+
+        document.getElementById("match-feedback").textContent =
+            "Great match! You earned 20 points.";
+
+        selectedItem = null;
+        updateStats();
+
+        document.getElementById("match-progress").textContent =
+            `Pairs found: ${matchedItems.length} / 3`;
+
+        if (matchedItems.length === 3) {
+            const finishButton = document.createElement("button");
+
+            finishButton.textContent = "Complete Destination 🏆";
+            finishButton.addEventListener("click", completeDestination);
+
+            gamePanel.appendChild(finishButton);
+        }
+    } else {
+        document.getElementById("match-feedback").textContent =
+            "Not a match. Try another card!";
+
+        selectedItem.button.classList.remove("selected");
+        selectedItem = null;
+    }
 }
 
-document.getElementById("start-button").addEventListener("click", startGame);
+// Complete a country and award a passport stamp
+function completeDestination() {
+    const destination = destinations[currentCountry];
+
+    completedCountries.push(currentCountry);
+
+    const stamp = document.createElement("div");
+    stamp.className = "stamp";
+    stamp.textContent = `${destination.flag} ${destination.country}`;
+
+    const passport = document.getElementById("passport-stamps");
+
+    if (completedCountries.length === 1) {
+        passport.innerHTML = "";
+    }
+
+    passport.appendChild(stamp);
+
+    updateStats();
+    updateMap();
+
+    if (completedCountries.length === destinations.length) {
+        showFinalResults();
+        return;
+    }
+
+    gamePanel.innerHTML = `
+        <h2>🏆 Destination Completed!</h2>
+        <p>You successfully explored ${destination.country}!</p>
+        <p>You earned a passport stamp and unlocked your next destination.</p>
+        <button id="continue-journey">Continue Your Journey 🌎</button>
+    `;
+
+    document
+        .getElementById("continue-journey")
+        .addEventListener("click", () => {
+            currentCountry = completedCountries.length;
+            showDestination();
+        });
+}
+
+// Final results
+function showFinalResults() {
+    gamePanel.innerHTML = `
+        <h2>🎉 World Explorer Champion!</h2>
+        <p>You explored all five countries!</p>
+        <h3>⭐ Final Score: ${score}</h3>
+        <p>🌍 Countries completed: 5 / 5</p>
+        <p>🎟️ Passport stamps collected: 5</p>
+        <p>Congratulations on completing your world adventure!</p>
+        <button id="play-again">Play Again 🔄</button>
+    `;
+
+    document
+        .getElementById("play-again")
+        .addEventListener("click", startAdventure);
+}

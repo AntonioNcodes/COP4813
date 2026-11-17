@@ -1,37 +1,70 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Explore countries, discover landmarks, and complete challenges in World Explorer.">
+
+    <meta name="theme-color" content="#0b3d91">
+
     <title>World Explorer - Adventure Game</title>
 
+    <!-- Leaflet Map Stylesheet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Game Stylesheet -->
     <link rel="stylesheet" href="world-explorer.css">
+
+    <!-- Leaflet Map Library -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        defer
+    ></script>
+
+    <!-- Game JavaScript -->
     <script src="world-explorer.js" defer></script>
 </head>
 
 <body>
 
     <header class="game-header">
-        <a href="index.html" class="home-link">← Back to COP4813</a>
+
+        <a href="index.html" class="home-link">
+            ← Back to COP4813
+        </a>
+
         <h1>🌎 World Explorer</h1>
+
         <p>Your adventure around the world starts here!</p>
+
     </header>
 
     <main class="game-container">
 
+        <!-- Welcome Section -->
         <section class="welcome-panel">
+
             <h2>Welcome, Explorer!</h2>
+
             <p>
                 Travel across the world, discover amazing places,
                 complete missions, and collect passport stamps.
             </p>
 
-            <button id="start-button">Start Adventure 🚀</button>
+            <button id="start-button">
+                Start Adventure 🚀
+            </button>
+
         </section>
 
+        <!-- Player Statistics -->
         <section class="stats-panel">
+
             <div class="stat">
                 <span>⭐</span>
                 <strong id="score">0</strong>
@@ -49,54 +82,68 @@
                 <strong id="stamp-count">0</strong>
                 <small>Passport Stamps</small>
             </div>
+
         </section>
 
+        <!-- Interactive World Map -->
         <section class="map-panel">
+
             <h2>🗺️ Your World Adventure</h2>
-            <p>Choose an unlocked destination to explore.</p>
 
-            <div id="world-map" class="world-map">
+            <p>
+                Select an unlocked destination on the map to explore.
+            </p>
 
-                <button class="destination" id="destination-0">
-                    🇯🇵 Japan
-                </button>
+            <div
+                id="world-map"
+                class="world-map"
+                aria-label="Interactive world map showing game destinations"
+            ></div>
 
-                <button class="destination locked" id="destination-1" disabled>
-                    🔒 Egypt
-                </button>
+            <p class="map-instructions">
+                🔒 Complete each country to unlock your next destination.
+            </p>
 
-                <button class="destination locked" id="destination-2" disabled>
-                    🔒 Brazil
-                </button>
-
-                <button class="destination locked" id="destination-3" disabled>
-                    🔒 France
-                </button>
-
-                <button class="destination locked" id="destination-4" disabled>
-                    🔒 Italy
-                </button>
-
-            </div>
         </section>
 
-        <section id="adventure-panel" class="adventure-panel">
+        <!-- Adventure Activities -->
+        <section
+            id="adventure-panel"
+            class="adventure-panel"
+            aria-live="polite"
+        >
+
             <h2>Ready for Your First Adventure?</h2>
-            <p>Start your journey to unlock your first destination!</p>
+
+            <p>
+                Start your journey to unlock your first destination!
+            </p>
+
         </section>
 
+        <!-- Explorer Passport -->
         <section class="passport-panel">
+
             <h2>📖 Explorer Passport</h2>
-            <p>Collect a stamp every time you complete a country.</p>
+
+            <p>
+                Collect a stamp every time you complete a country.
+            </p>
+
             <div id="passport-stamps" class="passport-stamps">
+
                 <p>No stamps collected yet. Your journey awaits!</p>
+
             </div>
+
         </section>
 
     </main>
 
     <footer>
+
         <p>World Explorer | COP4813 Assignment 13</p>
+
     </footer>
 
 </body>

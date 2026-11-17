@@ -234,3 +234,89 @@ footer {
         width: 100%;
     }
 }
+
+
+/* Interactive World Explorer Features */
+
+.landmark-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.landmark-button {
+    min-height: 120px;
+    background: #e5f5ff;
+    color: #1769aa;
+    border: 3px solid #1769aa;
+    box-shadow: 0 5px 0 #104b7a;
+    line-height: 1.7;
+}
+
+.landmark-button:hover:not(:disabled) {
+    background: #c5eaff;
+}
+
+.landmark-fact {
+    background: #fff4ce;
+    color: #674b0b;
+    border-left: 5px solid #ffbd35;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.matching-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.match-card {
+    min-height: 90px;
+    background: #f1e8ff;
+    color: #57318c;
+    border: 3px solid #8958c7;
+    box-shadow: 0 5px 0 #57318c;
+    overflow-wrap: anywhere;
+}
+
+.match-card.selected {
+    background: #ffe49b;
+    border-color: #d58c10;
+}
+
+.match-card.matched {
+    background: #b9f4ce;
+    color: #176b3b;
+    border-color: #28a45d;
+    box-shadow: 0 5px 0 #176b3b;
+}
+
+.match-card:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+.stamp {
+    text-align: center;
+    min-width: 110px;
+}
+
+@media (max-width: 600px) {
+    .landmark-list {
+        grid-template-columns: 1fr;
+    }
+
+    .matching-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .landmark-button {
+        min-height: 85px;
+    }
+}
+

@@ -447,7 +447,9 @@ function checkCollisions() {
 
         if (touching) {
 
-            lives--;
+           keys = {};
+           
+           lives--;
 
             player.x = Math.max(
                 0,

@@ -11,7 +11,6 @@ const titleScreen = document.getElementById("title-screen");
 const gameScreen = document.getElementById("game-screen");
 
 const startButton = document.getElementById("start-button");
-const memoryButton = document.getElementById("memory-button");
 const journalButton = document.getElementById("journal-button");
 
 const canvas = document.getElementById("game-canvas");
@@ -33,7 +32,7 @@ let lives = 3;
 let collectedCount = 0;
 
 let gameRunning = false;
-let memoryVision = false;
+
 let animationId = null;
 
 let cameraX = 0;
@@ -80,18 +79,6 @@ const artifacts = [
     }
 ];
 
-// SECRET ARTIFACT
-
-const secretArtifact = {
-    x: 1200,
-    y: 340,
-    name: "Golden Pharaoh's Memory",
-    fact: "Ancient Egyptians used hieroglyphs as one of their writing systems.",
-    question: "What were hieroglyphs?\nA. Weapons\nB. A writing system\nC. Musical instruments",
-    answer: "B",
-    collected: false
-};
-
 // OBSTACLES
 
 const obstacles = [
@@ -115,7 +102,7 @@ function startGame() {
     collectedCount = 0;
 
     cameraX = 0;
-    memoryVision = false;
+
 
     player.x = 70;
     player.y = groundY - player.height;
@@ -128,9 +115,6 @@ function startGame() {
         item.collected = false;
     });
 
-    secretArtifact.collected = false;
-
-    memoryButton.textContent = "Activate Memory Vision";
 
     titleScreen.hidden = true;
     gameScreen.hidden = false;
@@ -347,29 +331,6 @@ function drawArtifacts() {
 
     });
 
-    // Reveal the secret artifact only with Memory Vision
-
-    if (memoryVision && !secretArtifact.collected) {
-
-        const x = secretArtifact.x - cameraX;
-
-        ctx.fillStyle = "#fff176";
-        ctx.beginPath();
-        ctx.arc(x, secretArtifact.y, 17, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        ctx.fillStyle = "#70451b";
-        ctx.font = "bold 13px Georgia";
-        ctx.textAlign = "center";
-        ctx.fillText("M", x, secretArtifact.y + 5);
-
-    }
-
-}
 
 // DRAW OBSTACLES
 
@@ -400,32 +361,6 @@ function drawObstacles() {
     });
 
 }
-
-// PHARAOH'S MEMORY
-
-memoryButton.addEventListener("click", function() {
-
-    if (!gameRunning) return;
-
-    memoryVision = !memoryVision;
-
-    if (memoryVision) {
-
-        memoryButton.textContent = "Deactivate Memory Vision";
-
-        gameMessage.textContent =
-            "Memory Vision activated! Look for the hidden golden artifact marked with M.";
-
-    } else {
-
-        memoryButton.textContent = "Activate Memory Vision";
-
-        gameMessage.textContent =
-            "Memory Vision deactivated. Explore the desert!";
-
-    }
-
-});
 
 // CHECK ARTIFACT COLLECTION
 
@@ -500,24 +435,6 @@ function checkCollisions() {
         }
 
     });
-
-    // Secret artifact
-
-    if (
-        memoryVision &&
-        !secretArtifact.collected
-    ) {
-
-        const distance = Math.hypot(
-            playerCenterX - secretArtifact.x,
-            playerCenterY - secretArtifact.y
-        );
-
-        if (distance < 38) {
-            collectArtifact(secretArtifact);
-        }
-
-    }
 
     // Obstacle collisions
 
@@ -660,21 +577,7 @@ function gameLoop() {
 
     checkCollisions();
 
-    // Memory Vision reveals a hidden clue
 
-    if (memoryVision) {
-
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 16px Georgia";
-        ctx.textAlign = "center";
-
-        ctx.fillText(
-            "Ancient symbols reveal a hidden discovery!",
-            canvas.width / 2,
-            35
-        );
-
-    }
 
     if (gameRunning) {
         checkWin();

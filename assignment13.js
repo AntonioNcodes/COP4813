@@ -446,6 +446,8 @@ function collectArtifact(item) {
         "\n\nEnter A, B, or C:"
     );
 
+   keys = {};
+
     if (response && response.trim().toUpperCase() === item.answer) {
 
         score += 100;

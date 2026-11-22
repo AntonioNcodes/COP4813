@@ -330,7 +330,7 @@ function drawArtifacts() {
         );
 
     });
-
+}
 
 // DRAW OBSTACLES
 

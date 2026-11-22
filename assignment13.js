@@ -430,6 +430,8 @@ memoryButton.addEventListener("click", function() {
 // CHECK ARTIFACT COLLECTION
 
 function collectArtifact(item) {
+       keys = {};
+    player.velocityY = 0;
 
     item.collected = true;
 

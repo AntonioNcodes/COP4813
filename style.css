@@ -3185,3 +3185,211 @@ select:focus-visible {
     }
 }
 
+
+/* =================================
+   SECRETS OF ANCIENT EGYPT
+   Assignment 13 - Game Part 1
+================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #fff4d6;
+    background: linear-gradient(
+        180deg,
+        #172b49,
+        #80502c,
+        #d19a45
+    );
+}
+
+/* HEADER */
+
+.game-header {
+    text-align: center;
+    padding: 30px 15px;
+    background: #182c43;
+    border-bottom: 4px solid #d6a441;
+}
+
+.game-header h1 {
+    margin: 0;
+    color: #f5c85b;
+    font-size: 2.5rem;
+}
+
+.game-header p {
+    margin-bottom: 0;
+    color: #f8e5b5;
+    font-size: 1.1rem;
+}
+
+/* MAIN GAME CONTAINER */
+
+.game-container {
+    width: 92%;
+    max-width: 1000px;
+    margin: 35px auto;
+    padding: 25px;
+    background: rgba(30, 35, 43, 0.94);
+    border: 3px solid #d6a441;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* TITLE SCREEN */
+
+.title-screen {
+    text-align: center;
+    padding: 30px 15px;
+}
+
+.title-screen h2 {
+    color: #f5c85b;
+    font-size: 2rem;
+}
+
+.title-screen > p {
+    max-width: 650px;
+    margin: 15px auto 25px;
+    line-height: 1.7;
+}
+
+/* BUTTONS */
+
+button {
+    padding: 13px 24px;
+    border: 2px solid #f5c85b;
+    border-radius: 7px;
+    background: #a66a28;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+button:hover {
+    background: #d18d35;
+    transform: translateY(-2px);
+}
+
+button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 4px;
+}
+
+/* INSTRUCTIONS */
+
+.instructions {
+    max-width: 650px;
+    margin: 35px auto 0;
+    padding: 20px;
+    background: #28394a;
+    border: 1px solid #c89a43;
+    border-radius: 10px;
+}
+
+.instructions h3 {
+    color: #f5c85b;
+}
+
+.instructions p {
+    line-height: 1.6;
+}
+
+/* GAME SCREEN */
+
+.game-screen {
+    text-align: center;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: #28394a;
+    border: 1px solid #d6a441;
+    border-radius: 8px;
+}
+
+.game-info p {
+    margin: 5px;
+    color: #f5c85b;
+    font-weight: bold;
+}
+
+/* GAME CANVAS */
+
+#game-canvas {
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    margin: 0 auto;
+    background: #e9b85e;
+    border: 3px solid #d6a441;
+    border-radius: 5px;
+}
+
+/* GAME CONTROLS */
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#game-message {
+    min-height: 30px;
+    margin-top: 20px;
+    color: #f5d98c;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+
+.game-footer {
+    padding: 20px;
+    text-align: center;
+    background: #182c43;
+    border-top: 3px solid #d6a441;
+    color: #f8e5b5;
+}
+
+/* ACCESSIBILITY AND MOBILE */
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    .game-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .game-container {
+        width: 95%;
+        padding: 12px;
+    }
+
+    .title-screen {
+        padding: 20px 5px;
+    }
+
+    .game-controls button {
+        width: 100%;
+    }
+}
+
+

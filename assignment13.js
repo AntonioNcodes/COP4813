@@ -1,11 +1,10 @@
-
 /* ==========================================
    SECRETS OF ANCIENT EGYPT
-   COP4813 - Assignment 13
-   Educational 2D Adventure Game
+   COP4813 - ASSIGNMENT 13
+   Three-Level Educational Adventure
 ========================================== */
 
-// GAME ELEMENTS
+// HTML ELEMENTS
 
 const titleScreen = document.getElementById("title-screen");
 const gameScreen = document.getElementById("game-screen");
@@ -21,22 +20,24 @@ const livesDisplay = document.getElementById("lives");
 const artifactsDisplay = document.getElementById("artifacts");
 const gameMessage = document.getElementById("game-message");
 
-// INVENTORY ELEMENTS
-
 const ankhDisplay = document.getElementById("ankh-count");
 const papyrusDisplay = document.getElementById("papyrus-count");
 const scarabDisplay = document.getElementById("scarab-count");
 const treasuresDisplay = document.getElementById("treasures-collected");
 
-// QUESTION ELEMENTS
+const levelName = document.getElementById("level-name");
+const levelDescription = document.getElementById("level-description");
+const levelNumber = document.getElementById("level-number");
 
 const questionPanel = document.getElementById("question-panel");
 const questionArtifact = document.getElementById("question-artifact");
 const questionTitle = document.getElementById("question-title");
+const questionImage = document.getElementById("question-image");
 const questionText = document.getElementById("question-text");
 const answerOptions = document.getElementById("answer-options");
 const answerFeedback = document.getElementById("answer-feedback");
 const continueButton = document.getElementById("continue-button");
+
 
 // GAME SETTINGS
 
@@ -47,6 +48,7 @@ const gravity = 0.65;
 let score = 0;
 let lives = 3;
 let collectedCount = 0;
+let currentLevel = 0;
 
 let gameRunning = false;
 let questionActive = false;
@@ -60,6 +62,9 @@ let keys = {};
 let activeArtifact = null;
 let currentEndPanel = null;
 
+let journalEntries = [];
+
+
 // INVENTORY
 
 let inventory = {
@@ -67,6 +72,7 @@ let inventory = {
     Papyrus: 0,
     Scarab: 0
 };
+
 
 // PLAYER
 
@@ -80,69 +86,225 @@ const player = {
     jumping: false
 };
 
-// HISTORICAL ARTIFACTS AND QUESTIONS
 
-const artifacts = [
+// LEVELS AND HISTORICAL QUESTIONS
+
+const levels = [
+
     {
-        x: 380,
-        y: 340,
-        name: "Ankh",
-        symbol: "☥",
-        fact: "The ankh was an ancient Egyptian symbol associated with life and immortality.",
-        question: "What did the Ankh symbolize in Ancient Egypt?",
-        options: [
-            "Life",
-            "War",
-            "Farming"
-        ],
-        answer: 0,
-        collected: false
+        name: "Desert of Secrets",
+        description: "Explore the Egyptian desert and discover ancient treasures.",
+        background: "#e7bd78",
+
+        artifacts: [
+
+            {
+                x: 350,
+                name: "Ankh",
+                symbol: "☥",
+                question: "What did the Ankh symbolize in Ancient Egypt?",
+                options: ["Life", "War", "Farming", "Wealth"],
+                answer: 0,
+                fact: "The Ankh was an ancient Egyptian symbol associated with life and immortality.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankh.svg"
+            },
+
+            {
+                x: 700,
+                name: "Papyrus",
+                symbol: "📜",
+                question: "What plant was used to make papyrus?",
+                options: ["Palm tree", "Papyrus plant", "Olive tree", "Cedar tree"],
+                answer: 1,
+                fact: "Ancient Egyptians made a writing material called papyrus from a plant that grew along the Nile River.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Papyrus_plant.jpg"
+            },
+
+            {
+                x: 1050,
+                name: "Scarab",
+                symbol: "🪲",
+                question: "What was the scarab beetle associated with?",
+                options: ["Ocean travel", "War", "Rebirth and renewal", "Farming"],
+                answer: 2,
+                fact: "The scarab beetle was an important symbol associated with rebirth and renewal.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Scarab_beetle.jpg"
+            },
+
+            {
+                x: 1400,
+                name: "Papyrus",
+                symbol: "📜",
+                question: "Which river was essential to ancient Egyptian civilization?",
+                options: ["Amazon", "Nile", "Mississippi", "Danube"],
+                answer: 1,
+                fact: "The Nile River provided water, transportation, and fertile soil for farming.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Nile_River.jpg"
+            },
+
+            {
+                x: 1750,
+                name: "Ankh",
+                symbol: "☥",
+                question: "What were the large pyramids mainly built as?",
+                options: ["Markets", "Schools", "Tombs", "Farms"],
+                answer: 2,
+                fact: "Many Egyptian pyramids were built as royal tombs for pharaohs.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Pyramids_of_Giza.jpg"
+            }
+
+        ]
     },
 
     {
-        x: 850,
-        y: 340,
-        name: "Papyrus",
-        symbol: "📜",
-        fact: "Ancient Egyptians made a writing material called papyrus from a plant that grew along the Nile River.",
-        question: "What plant was used to make papyrus?",
-        options: [
-            "Palm tree",
-            "Papyrus plant",
-            "Olive tree"
-        ],
-        answer: 1,
-        collected: false
+        name: "Temple of Knowledge",
+        description: "Enter an ancient temple and learn about Egyptian culture and writing.",
+        background: "#c69a60",
+
+        artifacts: [
+
+            {
+                x: 350,
+                name: "Papyrus",
+                symbol: "📜",
+                question: "What were hieroglyphics?",
+                options: ["A type of food", "A writing system", "A musical instrument", "A building"],
+                answer: 1,
+                fact: "Hieroglyphics were a writing system that used pictures and symbols.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_hieroglyphics.jpg"
+            },
+
+            {
+                x: 700,
+                name: "Ankh",
+                symbol: "☥",
+                question: "Who was the ancient Egyptian sun god?",
+                options: ["Ra", "Osiris", "Anubis", "Horus"],
+                answer: 0,
+                fact: "Ra was an important ancient Egyptian sun god.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ra_Egyptian_god.jpg"
+            },
+
+            {
+                x: 1050,
+                name: "Scarab",
+                symbol: "🪲",
+                question: "What was the main purpose of the Rosetta Stone?",
+                options: ["Build pyramids", "Translate hieroglyphics", "Store food", "Measure land"],
+                answer: 1,
+                fact: "The Rosetta Stone helped researchers understand Egyptian hieroglyphics.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Rosetta_Stone.jpg"
+            },
+
+            {
+                x: 1400,
+                name: "Papyrus",
+                symbol: "📜",
+                question: "What was the main role of a scribe?",
+                options: ["Write and record information", "Build boats", "Grow crops", "Train soldiers"],
+                answer: 0,
+                fact: "Scribes were trained writers who recorded information and important documents.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ancient_Egyptian_scribe.jpg"
+            },
+
+            {
+                x: 1750,
+                name: "Ankh",
+                symbol: "☥",
+                question: "Which animal was closely associated with the god Anubis?",
+                options: ["Lion", "Jackal", "Eagle", "Horse"],
+                answer: 1,
+                fact: "Anubis was commonly depicted with the head of a jackal and was associated with mummification.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Anubis.jpg"
+            }
+
+        ]
     },
 
     {
-        x: 1650,
-        y: 340,
-        name: "Scarab",
-        symbol: "🪲",
-        fact: "The scarab beetle was an important symbol in Ancient Egypt associated with rebirth and renewal.",
-        question: "What was the scarab beetle associated with?",
-        options: [
-            "Rebirth and renewal",
-            "Ocean travel",
-            "Farming tools"
-        ],
-        answer: 0,
-        collected: false
+        name: "Pharaoh's Tomb",
+        description: "Explore the royal tomb and uncover the final secrets of Ancient Egypt.",
+        background: "#8e765b",
+
+        artifacts: [
+
+            {
+                x: 350,
+                name: "Scarab",
+                symbol: "🪲",
+                question: "What was the purpose of mummification?",
+                options: ["Prepare the body for the afterlife", "Prepare for battle", "Celebrate a festival", "Build a home"],
+                answer: 0,
+                fact: "Mummification preserved bodies because ancient Egyptians believed in an afterlife.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_mummy.jpg"
+            },
+
+            {
+                x: 700,
+                name: "Ankh",
+                symbol: "☥",
+                question: "What was the title of an ancient Egyptian ruler?",
+                options: ["Senator", "Emperor", "Pharaoh", "Knight"],
+                answer: 2,
+                fact: "The pharaoh was the ruler of ancient Egypt.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tutankhamun_mask.jpg"
+            },
+
+            {
+                x: 1050,
+                name: "Papyrus",
+                symbol: "📜",
+                question: "Who was Tutankhamun?",
+                options: ["A famous pharaoh", "A Roman general", "A Greek philosopher", "A builder"],
+                answer: 0,
+                fact: "Tutankhamun was a young Egyptian pharaoh whose tomb was discovered in 1922.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tutankhamun_mask.jpg"
+            },
+
+            {
+                x: 1400,
+                name: "Scarab",
+                symbol: "🪲",
+                question: "What was placed inside some ancient Egyptian tombs?",
+                options: ["Modern computers", "Food and valuable objects", "Cars", "Electric lights"],
+                answer: 1,
+                fact: "Some tombs contained food, jewelry, furniture, and other objects for the afterlife.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_tomb_treasures.jpg"
+            },
+
+            {
+                x: 1750,
+                name: "Ankh",
+                symbol: "☥",
+                question: "What was the Valley of the Kings used for?",
+                options: ["Growing crops", "Royal burials", "Trading boats", "Building schools"],
+                answer: 1,
+                fact: "The Valley of the Kings was a burial site for many New Kingdom pharaohs.",
+                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Valley_of_the_Kings.jpg"
+            }
+
+        ]
     }
+
 ];
+
+
+// CURRENT LEVEL ARTIFACTS
+
+function getArtifacts() {
+    return levels[currentLevel].artifacts;
+}
+
 
 // OBSTACLES
 
 const obstacles = [
-    { x: 600, width: 45, height: 38 },
-    { x: 1050, width: 50, height: 42 },
-    { x: 1500, width: 55, height: 40 }
+    { x: 550, width: 45, height: 38 },
+    { x: 950, width: 50, height: 42 },
+    { x: 1350, width: 55, height: 40 },
+    { x: 1650, width: 45, height: 38 }
 ];
 
-// HISTORY JOURNAL
-
-let journalEntries = [];
 
 // START GAME
 
@@ -153,6 +315,7 @@ function startGame() {
     score = 0;
     lives = 3;
     collectedCount = 0;
+    currentLevel = 0;
 
     inventory = {
         Ankh: 0,
@@ -160,23 +323,25 @@ function startGame() {
         Scarab: 0
     };
 
-    cameraX = 0;
-    keys = {};
+    journalEntries = [];
 
     player.x = 70;
     player.y = groundY - player.height;
     player.velocityY = 0;
     player.jumping = false;
 
-    journalEntries = [];
+    cameraX = 0;
+    keys = {};
 
-    activeArtifact = null;
     questionActive = false;
     journalOpen = false;
     endPanelOpen = false;
+    activeArtifact = null;
 
-    artifacts.forEach(item => {
-        item.collected = false;
+    levels.forEach(level => {
+        level.artifacts.forEach(item => {
+            item.collected = false;
+        });
     });
 
     questionPanel.hidden = true;
@@ -190,34 +355,40 @@ function startGame() {
     titleScreen.hidden = true;
     gameScreen.hidden = false;
 
-    gameMessage.textContent =
-        "Your adventure begins! Find the three ancient treasures and unlock the temple.";
-
-    updateDisplay();
-
     gameRunning = true;
 
-    cancelAnimationFrame(animationId);
+    updateLevelDisplay();
+    updateDisplay();
 
+    gameMessage.textContent =
+        "Your adventure begins! Find the five treasures in the desert.";
+
+    cancelAnimationFrame(animationId);
     gameLoop();
 }
+
+
+// LEVEL DISPLAY
+
+function updateLevelDisplay() {
+
+    const level = levels[currentLevel];
+
+    levelName.textContent = level.name;
+    levelDescription.textContent = level.description;
+    levelNumber.textContent = currentLevel + 1;
+}
+
 
 // KEYBOARD CONTROLS
 
 window.addEventListener("keydown", function(event) {
 
-    if (
-        ["ArrowLeft", "ArrowRight", "ArrowUp", " "].includes(event.key)
-    ) {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", " "].includes(event.key)) {
         event.preventDefault();
     }
 
-    if (
-        !gameRunning ||
-        questionActive ||
-        journalOpen ||
-        endPanelOpen
-    ) {
+    if (!gameRunning || questionActive || journalOpen || endPanelOpen) {
         return;
     }
 
@@ -226,10 +397,9 @@ window.addEventListener("keydown", function(event) {
 });
 
 window.addEventListener("keyup", function(event) {
-
     keys[event.key.toLowerCase()] = false;
-
 });
+
 
 // PLAYER MOVEMENT
 
@@ -255,44 +425,28 @@ function movePlayer() {
     player.y += player.velocityY;
 
     if (player.y + player.height >= groundY) {
-
         player.y = groundY - player.height;
         player.velocityY = 0;
         player.jumping = false;
-
     }
 
-    // Keep player inside the world
-
-    player.x = Math.max(
-        0,
-        Math.min(player.x, worldWidth - player.width)
-    );
-
-    // Move camera with player
+    player.x = Math.max(0, Math.min(player.x, worldWidth - player.width));
 
     cameraX = Math.max(
         0,
-        Math.min(
-            player.x - canvas.width / 2,
-            worldWidth - canvas.width
-        )
+        Math.min(player.x - canvas.width / 2, worldWidth - canvas.width)
     );
-
 }
 
-// DRAW BACKGROUND
+
+// BACKGROUND
 
 function drawBackground() {
 
-    // Sky
+    const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
 
-    const sky = ctx.createLinearGradient(
-        0, 0, 0, canvas.height
-    );
-
-    sky.addColorStop(0, "#78b6d5");
-    sky.addColorStop(1, "#f2cc83");
+    sky.addColorStop(0, "#80b9d6");
+    sky.addColorStop(1, "#f4d49b");
 
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -311,15 +465,25 @@ function drawBackground() {
     drawPyramid(1100 - cameraX * 0.4, 280, 200, 180);
     drawPyramid(1750 - cameraX * 0.4, 295, 160, 165);
 
-    // Desert ground
+    // Ground
 
-    ctx.fillStyle = "#d6a04c";
+    ctx.fillStyle = levels[currentLevel].background;
     ctx.fillRect(0, groundY, canvas.width, 65);
 
-    ctx.fillStyle = "#b77b34";
+    ctx.fillStyle = "#a7773f";
     ctx.fillRect(0, groundY + 8, canvas.width, 8);
 
+    // Level-specific scenery
+
+    if (currentLevel === 1) {
+        drawTemple();
+    }
+
+    if (currentLevel === 2) {
+        drawTomb();
+    }
 }
+
 
 // DRAW PYRAMIDS
 
@@ -334,8 +498,6 @@ function drawPyramid(x, y, width, height) {
     ctx.closePath();
     ctx.fill();
 
-    // Pyramid shadow
-
     ctx.fillStyle = "#a97438";
 
     ctx.beginPath();
@@ -344,8 +506,45 @@ function drawPyramid(x, y, width, height) {
     ctx.lineTo(x + width / 2, y);
     ctx.closePath();
     ctx.fill();
-
 }
+
+
+// TEMPLE SCENERY
+
+function drawTemple() {
+
+    ctx.fillStyle = "#a88b61";
+
+    ctx.fillRect(650 - cameraX * 0.35, 190, 260, 195);
+
+    ctx.fillStyle = "#e0c18b";
+
+    for (let i = 0; i < 5; i++) {
+        ctx.fillRect(675 - cameraX * 0.35 + i * 48, 210, 25, 175);
+    }
+
+    ctx.fillStyle = "#755637";
+    ctx.fillRect(640 - cameraX * 0.35, 190, 280, 20);
+}
+
+
+// TOMB SCENERY
+
+function drawTomb() {
+
+    ctx.fillStyle = "#554637";
+    ctx.fillRect(650 - cameraX * 0.35, 200, 260, 185);
+
+    ctx.fillStyle = "#8b704d";
+    ctx.fillRect(675 - cameraX * 0.35, 225, 210, 160);
+
+    ctx.fillStyle = "#d4a642";
+
+    for (let i = 0; i < 5; i++) {
+        ctx.fillRect(700 - cameraX * 0.35 + i * 35, 260, 12, 35);
+    }
+}
+
 
 // DRAW PLAYER
 
@@ -379,47 +578,37 @@ function drawPlayer() {
     ctx.fillStyle = "#523a29";
     ctx.fillRect(x + 8, y + 38, 7, 10);
     ctx.fillRect(x + 21, y + 38, 7, 10);
-
 }
+
 
 // DRAW ARTIFACTS
 
 function drawArtifacts() {
 
-    artifacts.forEach(item => {
+    getArtifacts().forEach(item => {
 
         if (item.collected) return;
 
         const x = item.x - cameraX;
 
-        // Artifact background
-
         ctx.fillStyle = "#ffd447";
-
         ctx.beginPath();
-        ctx.arc(x, item.y, 16, 0, Math.PI * 2);
+        ctx.arc(x, 340, 17, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.strokeStyle = "#99651d";
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Artifact letter
-
         ctx.fillStyle = "#70451b";
-        ctx.font = "bold 14px Georgia";
+        ctx.font = "bold 19px Georgia";
         ctx.textAlign = "center";
 
-        ctx.fillText(
-            item.name === "Ankh" ? "A" :
-            item.name === "Papyrus" ? "P" : "S",
-            x,
-            item.y + 5
-        );
+        ctx.fillText(item.symbol, x, 347);
 
     });
-
 }
+
 
 // DRAW OBSTACLES
 
@@ -430,7 +619,6 @@ function drawObstacles() {
         const x = obstacle.x - cameraX;
 
         ctx.fillStyle = "#79543a";
-
         ctx.fillRect(
             x,
             groundY - obstacle.height,
@@ -439,7 +627,6 @@ function drawObstacles() {
         );
 
         ctx.fillStyle = "#b58a5c";
-
         ctx.fillRect(
             x + 5,
             groundY - obstacle.height + 5,
@@ -448,10 +635,10 @@ function drawObstacles() {
         );
 
     });
-
 }
 
-// OPEN HISTORICAL QUESTION
+
+// OPEN QUESTION
 
 function collectArtifact(item) {
 
@@ -459,46 +646,43 @@ function collectArtifact(item) {
 
     keys = {};
 
-    player.velocityY = 0;
-
     activeArtifact = item;
     questionActive = true;
 
+    player.velocityY = 0;
+
     questionArtifact.textContent = item.symbol;
-
-    questionTitle.textContent =
-        "Ancient " + item.name + " Challenge";
-
+    questionTitle.textContent = "Ancient " + item.name + " Challenge";
     questionText.textContent = item.question;
 
-    answerFeedback.textContent = "";
+    questionImage.src = item.image;
+    questionImage.alt = "Historical image related to " + item.name;
 
+    questionImage.onerror = function() {
+        questionImage.alt = "Historical image unavailable";
+        questionImage.style.display = "none";
+    };
+
+    questionImage.onload = function() {
+        questionImage.style.display = "block";
+    };
+
+    answerFeedback.textContent = "";
     answerFeedback.className = "";
 
     answerOptions.innerHTML = "";
-
     continueButton.hidden = true;
-
-    gameMessage.textContent =
-        "You discovered an ancient " + item.name + "!";
-
-    // Create answer buttons
 
     item.options.forEach((option, index) => {
 
         const button = document.createElement("button");
 
         button.type = "button";
-
-        button.className = "answer-button";
-
         button.textContent =
             String.fromCharCode(65 + index) + ". " + option;
 
         button.addEventListener("click", function() {
-
             checkAnswer(index, button);
-
         });
 
         answerOptions.appendChild(button);
@@ -507,22 +691,21 @@ function collectArtifact(item) {
 
     questionPanel.hidden = false;
 
+    gameMessage.textContent = "Answer the question to collect your treasure!";
+
 }
 
-// CHECK PLAYER ANSWER
+
+// CHECK ANSWER
 
 function checkAnswer(selectedAnswer, selectedButton) {
 
     if (!activeArtifact || activeArtifact.collected) return;
 
     const item = activeArtifact;
-
-    const answerButtons =
-        answerOptions.querySelectorAll("button");
+    const answerButtons = answerOptions.querySelectorAll("button");
 
     if (selectedAnswer === item.answer) {
-
-        // Correct answer
 
         answerButtons.forEach(button => {
             button.disabled = true;
@@ -533,82 +716,94 @@ function checkAnswer(selectedAnswer, selectedButton) {
         item.collected = true;
 
         inventory[item.name]++;
-
         collectedCount++;
-
         score += 100;
 
         answerFeedback.textContent =
-            "Correct! You discovered the secret of the " +
-            item.name + "! +100 points. " + item.fact;
+            "Correct! " + item.fact + " You earned 100 points!";
 
-        answerFeedback.className = "correct-feedback";
+        answerFeedback.className = "correct";
 
         gameMessage.textContent =
-            "Excellent! " + item.name + " added to your inventory.";
-
-        // Add information to the journal
+            item.name + " collected! Great work!";
 
         journalEntries.push({
             name: item.name,
+            level: levels[currentLevel].name,
             fact: item.fact
         });
 
         updateDisplay();
 
-        // Check if all treasures have been collected
-
-        if (collectedCount === artifacts.length) {
-
+        if (getArtifacts().every(artifact => artifact.collected)) {
             answerFeedback.textContent +=
-                " You have discovered all three ancient treasures! The Ancient Temple awaits!";
-
+                " You found all five treasures in this level!";
         }
 
         continueButton.textContent = "Continue Adventure";
-
         continueButton.hidden = false;
 
     } else {
 
-        // Incorrect answer
-
         selectedButton.classList.add("incorrect-answer");
 
         answerFeedback.textContent =
-            "Not quite! Try again. Remember: " + item.fact;
+            "Not quite! Try again. Hint: " + item.fact;
 
-        answerFeedback.className = "incorrect-feedback";
+        answerFeedback.className = "incorrect";
 
     }
 
 }
 
-// CONTINUE ADVENTURE
+
+// CONTINUE BUTTON
 
 continueButton.addEventListener("click", function() {
 
     questionPanel.hidden = true;
 
     questionActive = false;
-
     activeArtifact = null;
 
     answerOptions.innerHTML = "";
-
     answerFeedback.textContent = "";
+
+    questionImage.style.display = "block";
 
     keys = {};
 
-    if (collectedCount === artifacts.length) {
+    const levelComplete = getArtifacts().every(item => item.collected);
 
-        gameMessage.textContent =
-            "All three treasures have been collected! Find the Ancient Temple.";
+    if (levelComplete) {
+
+        if (currentLevel < levels.length - 1) {
+
+            currentLevel++;
+
+            player.x = 70;
+            player.y = groundY - player.height;
+            player.velocityY = 0;
+            player.jumping = false;
+
+            cameraX = 0;
+
+            updateLevelDisplay();
+
+            gameMessage.textContent =
+                "Level complete! Welcome to " + levels[currentLevel].name + "!";
+
+        } else {
+
+            winGame();
+            return;
+
+        }
 
     } else {
 
         gameMessage.textContent =
-            "Keep exploring and discover more ancient treasures!";
+            "Keep exploring and collect the remaining treasures!";
 
     }
 
@@ -616,7 +811,8 @@ continueButton.addEventListener("click", function() {
 
 });
 
-// CHECK COLLISIONS
+
+// COLLISIONS
 
 function checkCollisions() {
 
@@ -625,28 +821,22 @@ function checkCollisions() {
     const playerCenterX = player.x + player.width / 2;
     const playerCenterY = player.y + player.height / 2;
 
-    // Artifact collisions
-
-    artifacts.forEach(item => {
+    getArtifacts().forEach(item => {
 
         if (item.collected) return;
 
         const distance = Math.hypot(
             playerCenterX - item.x,
-            playerCenterY - item.y
+            playerCenterY - 340
         );
 
         if (distance < 35) {
-
             collectArtifact(item);
-
         }
 
     });
 
     if (questionActive) return;
-
-    // Obstacle collisions
 
     obstacles.forEach(obstacle => {
 
@@ -667,20 +857,16 @@ function checkCollisions() {
             );
 
             player.y = groundY - player.height;
-
             player.velocityY = 0;
-
             player.jumping = false;
 
             gameMessage.textContent =
-                "You hit an ancient stone barrier! Jump over the obstacles to continue your journey.";
+                "You hit a stone barrier! Jump over obstacles next time.";
 
             updateDisplay();
 
             if (lives <= 0) {
-
                 endGame();
-
             }
 
         }
@@ -689,7 +875,8 @@ function checkCollisions() {
 
 }
 
-// HISTORY JOURNAL
+
+// JOURNAL
 
 journalButton.addEventListener("click", openJournal);
 
@@ -698,59 +885,45 @@ function openJournal() {
     if (!gameRunning || questionActive || journalOpen) return;
 
     keys = {};
-
     journalOpen = true;
 
-    // Create journal panel
+    const panel = document.createElement("section");
 
-    const journalPanel = document.createElement("section");
-
-    journalPanel.className = "journal-panel";
-
-    journalPanel.setAttribute("role", "dialog");
-
-    journalPanel.setAttribute("aria-modal", "true");
-
-    journalPanel.setAttribute("aria-labelledby", "journal-title");
+    panel.className = "journal-panel";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
 
     const heading = document.createElement("h2");
-
-    heading.id = "journal-title";
-
     heading.textContent = "Ancient Egyptian History Journal";
 
-    journalPanel.appendChild(heading);
+    panel.appendChild(heading);
 
     if (journalEntries.length === 0) {
 
         const message = document.createElement("p");
 
         message.textContent =
-            "Your journal is empty. Explore the desert and answer historical questions to discover ancient knowledge!";
+            "Your journal is empty. Collect treasures to discover historical facts!";
 
-        journalPanel.appendChild(message);
+        panel.appendChild(message);
 
     } else {
 
         journalEntries.forEach(entry => {
 
             const entryBox = document.createElement("div");
-
             entryBox.className = "journal-entry";
 
             const title = document.createElement("h3");
-
-            title.textContent = entry.name;
+            title.textContent = entry.name + " - " + entry.level;
 
             const fact = document.createElement("p");
-
             fact.textContent = entry.fact;
 
             entryBox.appendChild(title);
-
             entryBox.appendChild(fact);
 
-            journalPanel.appendChild(entryBox);
+            panel.appendChild(entryBox);
 
         });
 
@@ -758,49 +931,43 @@ function openJournal() {
 
     const closeButton = document.createElement("button");
 
-    closeButton.type = "button";
-
     closeButton.textContent = "Return to Adventure";
 
     closeButton.addEventListener("click", function() {
 
-        journalPanel.remove();
-
+        panel.remove();
         journalOpen = false;
 
         gameLoop();
 
     });
 
-    journalPanel.appendChild(closeButton);
-
-    gameScreen.appendChild(journalPanel);
+    panel.appendChild(closeButton);
+    gameScreen.appendChild(panel);
 
     closeButton.focus();
 
 }
 
-// UPDATE SCORE, INVENTORY, AND PROGRESS
+
+// UPDATE DISPLAY
 
 function updateDisplay() {
 
     scoreDisplay.textContent = score;
-
     livesDisplay.textContent = lives;
-
     artifactsDisplay.textContent = collectedCount;
 
     ankhDisplay.textContent = inventory.Ankh;
-
     papyrusDisplay.textContent = inventory.Papyrus;
-
     scarabDisplay.textContent = inventory.Scarab;
 
     treasuresDisplay.textContent = collectedCount;
 
 }
 
-// CREATE END SCREEN
+
+// END SCREEN
 
 function showEndPanel(title, message) {
 
@@ -809,56 +976,42 @@ function showEndPanel(title, message) {
     const panel = document.createElement("section");
 
     panel.className = "end-panel";
-
     panel.setAttribute("role", "dialog");
-
     panel.setAttribute("aria-modal", "true");
 
     const heading = document.createElement("h2");
-
     heading.textContent = title;
 
     const description = document.createElement("p");
-
     description.textContent = message;
 
     const scoreText = document.createElement("p");
-
     scoreText.textContent = "Final Score: " + score;
 
     const treasureText = document.createElement("p");
-
     treasureText.textContent =
-        "Ancient Treasures Collected: " + collectedCount + " / 3";
+        "Treasures Collected: " + collectedCount + " / 15";
 
     const returnButton = document.createElement("button");
-
-    returnButton.type = "button";
-
     returnButton.textContent = "Return to Main Menu";
 
     returnButton.addEventListener("click", function() {
 
         panel.remove();
-
         currentEndPanel = null;
 
         endPanelOpen = false;
+        gameRunning = false;
 
         gameScreen.hidden = true;
-
         titleScreen.hidden = false;
 
     });
 
     panel.appendChild(heading);
-
     panel.appendChild(description);
-
     panel.appendChild(scoreText);
-
     panel.appendChild(treasureText);
-
     panel.appendChild(returnButton);
 
     gameScreen.appendChild(panel);
@@ -868,6 +1021,7 @@ function showEndPanel(title, message) {
     returnButton.focus();
 
 }
+
 
 // GAME OVER
 
@@ -880,51 +1034,35 @@ function endGame() {
     cancelAnimationFrame(animationId);
 
     keys = {};
-
     questionPanel.hidden = true;
 
     showEndPanel(
         "Adventure Over!",
-        "Your journey through Ancient Egypt has ended. Try again to discover all three ancient treasures!"
+        "Your journey through Ancient Egypt has ended. Try again to discover all the treasures!"
     );
 
 }
 
-// WIN CONDITION
 
-function checkWin() {
+// WIN GAME
 
-    if (player.x >= worldWidth - 100) {
+function winGame() {
 
-        // Require all treasures before winning
+    gameRunning = false;
 
-        if (collectedCount < artifacts.length) {
+    cancelAnimationFrame(animationId);
 
-            player.x = worldWidth - 130;
+    score += 200;
 
-            gameMessage.textContent =
-                "The Ancient Temple is locked! Find all three treasures before entering.";
+    updateDisplay();
 
-            return;
-
-        }
-
-        gameRunning = false;
-
-        cancelAnimationFrame(animationId);
-
-        score += 200;
-
-        updateDisplay();
-
-        showEndPanel(
-            "The Ancient Temple Is Unlocked!",
-            "Congratulations! You discovered the Ankh, Papyrus, and Scarab and uncovered the secrets of Ancient Egypt. You completed your educational adventure and earned 200 bonus points!"
-        );
-
-    }
+    showEndPanel(
+        "Secrets of Ancient Egypt Uncovered!",
+        "Congratulations! You completed all three levels, collected 15 treasures, and discovered fascinating facts about Ancient Egypt. You earned 200 bonus points!"
+    );
 
 }
+
 
 // MAIN GAME LOOP
 
@@ -939,30 +1077,16 @@ function gameLoop() {
         return;
     }
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     movePlayer();
 
     drawBackground();
-
     drawObstacles();
-
     drawArtifacts();
-
     drawPlayer();
 
     checkCollisions();
-
-    if (gameRunning && !questionActive) {
-
-        checkWin();
-
-    }
 
     if (
         gameRunning &&
@@ -970,9 +1094,7 @@ function gameLoop() {
         !journalOpen &&
         !endPanelOpen
     ) {
-
         animationId = requestAnimationFrame(gameLoop);
-
     }
 
 }

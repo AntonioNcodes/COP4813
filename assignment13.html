@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,7 @@
     <!-- HEADER -->
     <header class="game-header">
         <h1>Secrets of Ancient Egypt</h1>
-        <p>Explore the ancient world. Discover its secrets. Unlock the temple.</p>
+        <p>Explore the ancient world. Discover its secrets.</p>
     </header>
 
     <!-- MAIN CONTAINER -->
@@ -28,10 +29,17 @@
             <h2>Welcome, Adventurer!</h2>
 
             <p>
-                Travel through the ancient Egyptian desert and discover
-                valuable treasures. Answer historical questions, collect
-                ancient artifacts, and unlock the hidden temple.
+                Travel through Ancient Egypt, explore mysterious temples,
+                discover hidden treasures, and test your knowledge of
+                Egyptian history.
             </p>
+
+            <!-- ILLUSTRATED GAME PREVIEW -->
+            <div class="title-art">
+                <img
+                    src="images/desert-level.png"
+                    alt="Illustrated Ancient Egyptian desert with pyramids and a temple">
+            </div>
 
             <button id="start-button">Start Adventure</button>
 
@@ -39,15 +47,31 @@
                 <h3>How to Play</h3>
 
                 <p>Use the arrow keys or WASD to move your character.</p>
-                <p>Jump over obstacles and explore the desert.</p>
-                <p>Find ancient artifacts and answer their questions.</p>
-                <p>Collect all three treasures to unlock the Ancient Temple!</p>
+                <p>Jump over obstacles and explore each level.</p>
+                <p>Find ancient artifacts and answer historical questions.</p>
+                <p>Collect treasures and complete all three levels!</p>
             </div>
 
         </section>
 
         <!-- GAME SCREEN -->
         <section id="game-screen" class="game-screen" hidden>
+
+            <!-- LEVEL INFORMATION -->
+            <section class="level-information">
+
+                <h2 id="level-name">Level 1: The Desert of Secrets</h2>
+
+                <p id="level-description">
+                    Explore the desert and discover ancient treasures.
+                </p>
+
+                <p>
+                    Level:
+                    <span id="level-number">1</span> of 3
+                </p>
+
+            </section>
 
             <!-- GAME INFORMATION -->
             <div class="game-info">
@@ -60,7 +84,7 @@
 
             </div>
 
-            <!-- INVENTORY -->
+            <!-- TREASURE INVENTORY -->
             <section class="inventory">
 
                 <h3>Ancient Treasure Inventory</h3>
@@ -89,7 +113,7 @@
 
             </section>
 
-            <!-- GAME PROGRESS -->
+            <!-- MISSION PROGRESS -->
             <section class="game-progress">
 
                 <h3>Your Mission</h3>
@@ -99,8 +123,8 @@
                 </p>
 
                 <p>
-                    Collect the Ankh, Papyrus, and Scarab to unlock
-                    the Ancient Temple!
+                    Explore all three locations and complete the
+                    challenges to unlock the Pharaoh's Tomb.
                 </p>
 
             </section>
@@ -116,25 +140,42 @@
                     aria-label="Ancient Egyptian adventure game">
                 </canvas>
 
-                <!-- QUESTION OVERLAY -->
+                <!-- QUESTION PANEL -->
                 <section
                     id="question-panel"
                     class="question-panel"
                     hidden>
 
-                    <div class="question-artifact" id="question-artifact">
-                        ☥
+                    <div class="question-heading">
+
+                        <div
+                            id="question-artifact"
+                            class="question-artifact">
+                            ☥
+                        </div>
+
+                        <h2 id="question-title">
+                            Ancient Egyptian Challenge
+                        </h2>
+
                     </div>
 
-                    <h2 id="question-title">
-                        Ancient Egyptian Challenge
-                    </h2>
+                    <!-- HISTORICAL QUESTION IMAGE -->
+                    <div class="question-image-container">
 
+                        <img
+                            id="question-image"
+                            src="images/pyramids.jpg"
+                            alt="Historical photograph related to the question">
+
+                    </div>
+
+                    <!-- QUESTION -->
                     <p id="question-text">
-                        Answer the question to discover this ancient treasure!
+                        Answer the question to discover an ancient treasure!
                     </p>
 
-                    <!-- ANSWER BUTTONS ARE CREATED BY JAVASCRIPT -->
+                    <!-- MULTIPLE CHOICE ANSWERS -->
                     <div
                         id="answer-options"
                         class="answer-options">
@@ -180,4 +221,5 @@
     </footer>
 
 </body>
+
 </html>

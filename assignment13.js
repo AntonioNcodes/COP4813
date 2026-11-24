@@ -39,7 +39,15 @@ const answerFeedback = document.getElementById("answer-feedback");
 const continueButton = document.getElementById("continue-button");
 
 
-// IMAGE FALLBACK
+// SMALLER QUESTION PHOTOS
+
+questionImage.style.width = "130px";
+questionImage.style.maxWidth = "100%";
+questionImage.style.height = "95px";
+questionImage.style.objectFit = "contain";
+questionImage.style.display = "block";
+questionImage.style.margin = "10px auto";
+questionImage.style.borderRadius = "10px";
 
 questionImage.onerror = function () {
     questionImage.style.display = "none";
@@ -53,7 +61,7 @@ questionImage.onload = function () {
 
 // GAME SETTINGS
 
-const worldWidth = 2200;
+const worldWidth = 2600;
 const groundY = 385;
 const gravity = 0.65;
 
@@ -124,7 +132,6 @@ const levels = [
         background: "#e7bd78",
 
         artifacts: [
-
             {
                 x: 350,
                 name: "Ankh",
@@ -135,9 +142,8 @@ const levels = [
                 fact: "The Ankh was an ancient Egyptian symbol associated with life and immortality.",
                 image: images.ankh
             },
-
             {
-                x: 700,
+                x: 800,
                 name: "Papyrus",
                 symbol: "📜",
                 question: "What plant was used to make papyrus?",
@@ -146,9 +152,8 @@ const levels = [
                 fact: "Ancient Egyptians made a writing material called papyrus from a plant that grew along the Nile River.",
                 image: images.papyrus
             },
-
             {
-                x: 1050,
+                x: 1250,
                 name: "Scarab",
                 symbol: "🪲",
                 question: "What was the scarab beetle associated with?",
@@ -157,9 +162,8 @@ const levels = [
                 fact: "The scarab beetle was an important symbol associated with rebirth and renewal.",
                 image: images.scarab
             },
-
             {
-                x: 1400,
+                x: 1700,
                 name: "Papyrus",
                 symbol: "📜",
                 question: "Which river was essential to ancient Egyptian civilization?",
@@ -168,9 +172,8 @@ const levels = [
                 fact: "The Nile River provided water, transportation, and fertile soil for farming.",
                 image: images.nile
             },
-
             {
-                x: 1750,
+                x: 2150,
                 name: "Ankh",
                 symbol: "☥",
                 question: "What were the large pyramids mainly built as?",
@@ -179,7 +182,6 @@ const levels = [
                 fact: "Many Egyptian pyramids were built as royal tombs for pharaohs.",
                 image: images.pyramids
             }
-
         ]
     },
 
@@ -189,7 +191,6 @@ const levels = [
         background: "#c69a60",
 
         artifacts: [
-
             {
                 x: 350,
                 name: "Papyrus",
@@ -200,9 +201,8 @@ const levels = [
                 fact: "Hieroglyphics were a writing system that used pictures and symbols.",
                 image: images.hieroglyphics
             },
-
             {
-                x: 700,
+                x: 800,
                 name: "Ankh",
                 symbol: "☥",
                 question: "Who was the ancient Egyptian sun god?",
@@ -211,9 +211,8 @@ const levels = [
                 fact: "Ra was an important ancient Egyptian sun god.",
                 image: images.hieroglyphics
             },
-
             {
-                x: 1050,
+                x: 1250,
                 name: "Scarab",
                 symbol: "🪲",
                 question: "What was the main purpose of the Rosetta Stone?",
@@ -222,9 +221,8 @@ const levels = [
                 fact: "The Rosetta Stone helped researchers understand Egyptian hieroglyphics.",
                 image: images.rosetta
             },
-
             {
-                x: 1400,
+                x: 1700,
                 name: "Papyrus",
                 symbol: "📜",
                 question: "What was the main role of a scribe?",
@@ -233,9 +231,8 @@ const levels = [
                 fact: "Scribes were trained writers who recorded information and important documents.",
                 image: images.hieroglyphics
             },
-
             {
-                x: 1750,
+                x: 2150,
                 name: "Ankh",
                 symbol: "☥",
                 question: "Which animal was closely associated with the god Anubis?",
@@ -244,7 +241,6 @@ const levels = [
                 fact: "Anubis was commonly depicted with the head of a jackal and was associated with mummification.",
                 image: images.hieroglyphics
             }
-
         ]
     },
 
@@ -254,7 +250,6 @@ const levels = [
         background: "#8e765b",
 
         artifacts: [
-
             {
                 x: 350,
                 name: "Scarab",
@@ -265,9 +260,8 @@ const levels = [
                 fact: "Mummification preserved bodies because ancient Egyptians believed in an afterlife.",
                 image: images.tutankhamun
             },
-
             {
-                x: 700,
+                x: 800,
                 name: "Ankh",
                 symbol: "☥",
                 question: "What was the title of an ancient Egyptian ruler?",
@@ -276,9 +270,8 @@ const levels = [
                 fact: "The pharaoh was the ruler of ancient Egypt.",
                 image: images.tutankhamun
             },
-
             {
-                x: 1050,
+                x: 1250,
                 name: "Papyrus",
                 symbol: "📜",
                 question: "Who was Tutankhamun?",
@@ -287,9 +280,8 @@ const levels = [
                 fact: "Tutankhamun was a young Egyptian pharaoh whose tomb was discovered in 1922.",
                 image: images.tutankhamun
             },
-
             {
-                x: 1400,
+                x: 1700,
                 name: "Scarab",
                 symbol: "🪲",
                 question: "What was placed inside some ancient Egyptian tombs?",
@@ -298,9 +290,8 @@ const levels = [
                 fact: "Some tombs contained food, jewelry, furniture, and other objects for the afterlife.",
                 image: images.tutankhamun
             },
-
             {
-                x: 1750,
+                x: 2150,
                 name: "Ankh",
                 symbol: "☥",
                 question: "What was the Valley of the Kings used for?",
@@ -309,10 +300,8 @@ const levels = [
                 fact: "The Valley of the Kings was a burial site for many New Kingdom pharaohs.",
                 image: images.valley
             }
-
         ]
     }
-
 ];
 
 
@@ -324,12 +313,15 @@ function getArtifacts() {
 
 
 // OBSTACLES
+// Each obstacle is placed between two treasures.
+// There is now at least 225 pixels between a treasure
+// and the nearest obstacle.
 
 const obstacles = [
-    { x: 550, width: 45, height: 38 },
-    { x: 950, width: 50, height: 42 },
-    { x: 1350, width: 55, height: 40 },
-    { x: 1650, width: 45, height: 38 }
+    { x: 575, width: 45, height: 38 },
+    { x: 1025, width: 50, height: 42 },
+    { x: 1475, width: 55, height: 40 },
+    { x: 1925, width: 45, height: 38 }
 ];
 
 
@@ -420,7 +412,6 @@ window.addEventListener("keydown", function(event) {
     }
 
     keys[event.key.toLowerCase()] = true;
-
 });
 
 window.addEventListener("keyup", function(event) {
@@ -612,7 +603,6 @@ function drawArtifacts() {
         ctx.font = "bold 19px Georgia";
         ctx.textAlign = "center";
         ctx.fillText(item.symbol, x, 347);
-
     });
 }
 
@@ -640,7 +630,6 @@ function drawObstacles() {
             obstacle.width - 10,
             7
         );
-
     });
 }
 
@@ -685,13 +674,11 @@ function collectArtifact(item) {
         });
 
         answerOptions.appendChild(button);
-
     });
 
     questionPanel.hidden = false;
 
     gameMessage.textContent = "Answer the question to collect your treasure!";
-
 }
 
 
@@ -750,9 +737,7 @@ function checkAnswer(selectedAnswer, selectedButton) {
             "Not quite! Try again. Hint: " + item.fact;
 
         answerFeedback.className = "incorrect";
-
     }
-
 }
 
 
@@ -796,18 +781,15 @@ continueButton.addEventListener("click", function() {
 
             winGame();
             return;
-
         }
 
     } else {
 
         gameMessage.textContent =
             "Keep exploring and collect the remaining treasures!";
-
     }
 
     gameLoop();
-
 });
 
 
@@ -832,7 +814,6 @@ function checkCollisions() {
         if (distance < 35) {
             collectArtifact(item);
         }
-
     });
 
     if (questionActive) return;
@@ -867,11 +848,8 @@ function checkCollisions() {
             if (lives <= 0) {
                 endGame();
             }
-
         }
-
     });
-
 }
 
 
@@ -923,9 +901,7 @@ function openJournal() {
             entryBox.appendChild(fact);
 
             panel.appendChild(entryBox);
-
         });
-
     }
 
     const closeButton = document.createElement("button");
@@ -938,14 +914,12 @@ function openJournal() {
         journalOpen = false;
 
         gameLoop();
-
     });
 
     panel.appendChild(closeButton);
     gameScreen.appendChild(panel);
 
     closeButton.focus();
-
 }
 
 
@@ -962,7 +936,6 @@ function updateDisplay() {
     scarabDisplay.textContent = inventory.Scarab;
 
     treasuresDisplay.textContent = collectedCount;
-
 }
 
 
@@ -1004,7 +977,6 @@ function showEndPanel(title, message) {
 
         gameScreen.hidden = true;
         titleScreen.hidden = false;
-
     });
 
     panel.appendChild(heading);
@@ -1018,7 +990,6 @@ function showEndPanel(title, message) {
     currentEndPanel = panel;
 
     returnButton.focus();
-
 }
 
 
@@ -1039,7 +1010,6 @@ function endGame() {
         "Adventure Over!",
         "Your journey through Ancient Egypt has ended. Try again to discover all the treasures!"
     );
-
 }
 
 
@@ -1059,7 +1029,6 @@ function winGame() {
         "Secrets of Ancient Egypt Uncovered!",
         "Congratulations! You completed all three levels, collected 15 treasures, and discovered fascinating facts about Ancient Egypt. You earned 200 bonus points!"
     );
-
 }
 
 
@@ -1095,5 +1064,4 @@ function gameLoop() {
     ) {
         animationId = requestAnimationFrame(gameLoop);
     }
-
 }

@@ -9,113 +9,140 @@
 
 <body>
 
-<header>
-    <h1>Secrets of Ancient Egypt</h1>
-    <p>Explore ancient treasures, solve mysteries, and discover Egyptian history!</p>
-</header>
+    <header>
+        <h1>Secrets of Ancient Egypt</h1>
+        <p>Explore the past. Discover the treasures. Test your knowledge.</p>
+    </header>
 
-<main>
+    <main>
 
-    <section id="title-screen">
-        <h2>Welcome, Explorer!</h2>
-        <p>Travel through Ancient Egypt and uncover its secrets.</p>
+        <!-- TITLE SCREEN -->
+        <section id="title-screen" class="screen">
 
-        <img
-            src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=1000"
-            alt="Egyptian desert landscape"
-            class="title-image">
+            <h2>Welcome, Explorer!</h2>
 
-        <button id="start-button">Start Adventure</button>
-    </section>
-
-    <section id="game-screen" hidden>
-
-        <div class="level-information">
-            <h2 id="level-name">Level 1: Desert of Secrets</h2>
-            <p id="level-description">
-                Explore the desert and discover ancient treasures.
-            </p>
-            <p>Level: <span id="level-number">1</span></p>
-        </div>
-
-        <div class="game-info">
-            <p>Score: <span id="score">0</span></p>
-            <p>Lives: <span id="lives">3</span></p>
-            <p>Artifacts: <span id="artifacts">0</span></p>
-        </div>
-
-        <section class="inventory">
-            <h3>Treasure Inventory</h3>
-            <p>Ankh: <span id="ankh-count">0</span></p>
-            <p>Papyrus: <span id="papyrus-count">0</span></p>
-            <p>Scarab: <span id="scarab-count">0</span></p>
-        </section>
-
-        <section class="game-progress">
             <p>
-                Treasures Collected:
-                <span id="treasures-collected">0</span>
+                Travel through Ancient Egypt and uncover its secrets.
             </p>
+
+            <img
+                src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=80"
+                alt="Egyptian desert landscape"
+                class="title-image"
+            >
+
+            <h3>Your Three-Level Adventure</h3>
+
+            <div class="level-list">
+                <p><strong>Level 1:</strong> Desert of Secrets</p>
+                <p><strong>Level 2:</strong> Temple of Knowledge</p>
+                <p><strong>Level 3:</strong> Pharaoh's Tomb</p>
+            </div>
+
+            <p>
+                Collect ancient artifacts, avoid obstacles,
+                and answer historical questions as you explore.
+            </p>
+
+            <button id="start-button">Start Adventure</button>
+
         </section>
 
-        <div class="game-stage">
 
-            <canvas id="game-canvas" width="900" height="450">
-                Your browser does not support the game canvas.
-            </canvas>
+        <!-- GAME SCREEN -->
+        <section id="game-screen" class="screen" style="display: none;">
 
-            <div id="question-panel" class="question-panel" hidden>
+            <div class="game-info">
+                <div>Score: <span id="score">0</span></div>
+                <div>Lives: <span id="lives">3</span></div>
+                <div>Artifacts: <span id="artifacts">0</span></div>
+            </div>
 
-                <h3 id="question-artifact">Ancient Treasure</h3>
 
-                <h2 id="question-title">Ancient Egypt Challenge</h2>
+            <!-- LEVEL INFORMATION -->
+            <div class="level-info">
 
-                <div class="question-image-container">
-                    <img
-                        id="question-image"
-                        src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=800"
-                        alt="Ancient Egyptian historical site">
+                <h2 id="level-name">Level 1: Desert of Secrets</h2>
+
+                <p id="level-description">
+                    Explore the desert and discover ancient treasures.
+                </p>
+
+                <p>
+                    Level <span id="level-number">1</span> of 3
+                </p>
+
+                <div class="level-list">
+                    <p>Level 1: Desert of Secrets</p>
+                    <p>Level 2: Temple of Knowledge</p>
+                    <p>Level 3: Pharaoh's Tomb</p>
                 </div>
 
-                <p id="question-text">
-                    Answer the question to continue your adventure!
+            </div>
+
+
+            <!-- GAME AREA -->
+            <canvas id="game-canvas" width="900" height="450"></canvas>
+
+            <p id="game-message">
+                Use the arrow keys to move and the spacebar to jump.
+            </p>
+
+
+            <!-- ARTIFACT INVENTORY -->
+            <div class="inventory">
+
+                <h3>Artifact Collection</h3>
+
+                <p>Ankh: <span id="ankh-count">0</span></p>
+
+                <p>Papyrus: <span id="papyrus-count">0</span></p>
+
+                <p>Scarab: <span id="scarab-count">0</span></p>
+
+                <p>Total Treasures:
+                    <span id="treasures-collected">0</span>
                 </p>
+
+            </div>
+
+
+            <button id="journal-button">View Explorer Journal</button>
+
+
+            <!-- QUESTION PANEL -->
+            <div id="question-panel" class="question-panel" style="display: none;">
+
+                <h2 id="question-artifact">Ancient Artifact</h2>
+
+                <h3 id="question-title">Knowledge Challenge</h3>
+
+                <img
+                    id="question-image"
+                    class="question-image"
+                    src=""
+                    alt="Ancient Egyptian artifact"
+                >
+
+                <p id="question-text"></p>
 
                 <div id="answer-options"></div>
 
                 <p id="answer-feedback"></p>
 
-                <button id="continue-button" hidden>
+                <button id="continue-button" style="display: none;">
                     Continue
                 </button>
 
             </div>
 
-        </div>
+        </section>
 
-        <p id="game-message"></p>
+    </main>
 
-        <button id="journal-button">Open Explorer Journal</button>
 
-    </section>
-
-    <section id="journal-panel" hidden>
-        <h2>Explorer Journal</h2>
-        <p>Record the treasures and discoveries you make.</p>
-    </section>
-
-    <section id="end-panel" hidden>
-        <h2>Adventure Complete!</h2>
-        <p>You have uncovered the secrets of Ancient Egypt!</p>
-    </section>
-
-</main>
-
-<footer>
-    <p>COP4813 - Assignment 13 | Secrets of Ancient Egypt</p>
-</footer>
-
-<script src="assignment13.js"></script>
+    <!-- JAVASCRIPT -->
+    <script src="assignment13.js"></script>
 
 </body>
 </html>

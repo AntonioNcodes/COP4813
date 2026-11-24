@@ -41,7 +41,7 @@
                 <p>Use the arrow keys or WASD to move.</p>
                 <p>Press SPACE to jump.</p>
                 <p>Collect artifacts and discover ancient history.</p>
-                <p>Answer historical questions to earn points and learn new facts.</p>
+                <p>Answer historical questions to earn rewards and learn new facts.</p>
             </div>
 
         </section>
@@ -54,20 +54,73 @@
                 <p>Artifacts: <span id="artifacts">0</span></p>
             </div>
 
+            <div class="inventory">
+                <h3>Your Inventory</h3>
+
+                <div class="inventory-items">
+
+                    <div class="inventory-item">
+                        <span>☥</span>
+                        <p>Ankh: <span id="ankh-count">0</span></p>
+                    </div>
+
+                    <div class="inventory-item">
+                        <span>📜</span>
+                        <p>Papyrus: <span id="papyrus-count">0</span></p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="game-progress">
+                <h3>Adventure Goal</h3>
+                <p>Collect 3 Ankhs and 3 Papyrus scrolls to unlock the Ancient Temple!</p>
+
+                <p>
+                    Treasures collected:
+                    <span id="treasures-collected">0</span> / 6
+                </p>
+            </div>
+
             <canvas id="game-canvas"
                     width="900"
                     height="450"
                     aria-label="Ancient Egypt adventure game">
             </canvas>
 
-                <button id="journal-button" type="button">
-                    History Journal
-                </button>
-            </div>
+            <button id="journal-button" type="button">
+                History Journal
+            </button>
 
             <p id="game-message" aria-live="polite">
                 Explore the desert and discover ancient artifacts!
             </p>
+
+            <!-- Educational Question Panel -->
+
+            <section class="question-panel" id="question-panel"
+                     aria-labelledby="question-title" hidden>
+
+                <div class="question-artifact" id="question-artifact">
+                    ☥
+                </div>
+
+                <h2 id="question-title">Ancient Knowledge Challenge</h2>
+
+                <p id="question-text">
+                    Answer the question to discover ancient knowledge!
+                </p>
+
+                <div id="answer-options" class="answer-options">
+                </div>
+
+                <p id="answer-feedback" aria-live="polite"></p>
+
+                <button id="continue-button" type="button" hidden>
+                    Continue Adventure
+                </button>
+
+            </section>
 
         </section>
 

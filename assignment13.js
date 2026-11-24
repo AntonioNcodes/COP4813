@@ -313,9 +313,6 @@ function getArtifacts() {
 
 
 // OBSTACLES
-// Each obstacle is placed between two treasures.
-// There is now at least 225 pixels between a treasure
-// and the nearest obstacle.
 
 const obstacles = [
     { x: 575, width: 45, height: 38 },
@@ -939,17 +936,92 @@ function updateDisplay() {
 }
 
 
-// END SCREEN
+// END SCREEN WITH ORIGINAL ROYAL CORONATION ANIMATION
 
-function showEndPanel(title, message) {
+function showEndPanel(title, message, isVictory = false) {
 
     endPanelOpen = true;
 
     const panel = document.createElement("section");
 
-    panel.className = "end-panel";
+    panel.className = isVictory
+        ? "end-panel royal-ceremony"
+        : "end-panel";
+
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-modal", "true");
+
+    // ORIGINAL ANIMATED CORONATION
+
+    if (isVictory) {
+
+        const stage = document.createElement("div");
+        stage.className = "coronation-stage";
+
+        const roomTitle = document.createElement("p");
+        roomTitle.className = "throne-room-title";
+        roomTitle.textContent = "THE ROYAL THRONE ROOM";
+
+        stage.appendChild(roomTitle);
+
+        // PHARAOH
+
+        const king = document.createElement("div");
+        king.className = "ceremony-pharaoh";
+
+        king.innerHTML = `
+            <div class="pharaoh-crown"></div>
+            <div class="pharaoh-head">
+                <div class="pharaoh-eyes"></div>
+                <div class="pharaoh-beard"></div>
+            </div>
+            <div class="pharaoh-body"></div>
+            <div class="pharaoh-arm"></div>
+        `;
+
+        // EXPLORER
+
+        const explorer = document.createElement("div");
+        explorer.className = "ceremony-explorer";
+
+        explorer.innerHTML = `
+            <div class="explorer-head"></div>
+            <div class="explorer-body"></div>
+            <div class="explorer-legs"></div>
+        `;
+
+        // MOVING CROWN
+
+        const crown = document.createElement("div");
+        crown.className = "ceremony-crown";
+        crown.textContent = "♛";
+
+        // CELEBRATION
+
+        const sparkles = document.createElement("div");
+        sparkles.className = "ceremony-sparkles";
+        sparkles.textContent = "✦ ✨ ⭐ ✨ ✦";
+
+        const celebration = document.createElement("p");
+        celebration.className = "coronation-text";
+        celebration.textContent = "THE PHARAOH HONORS YOU!";
+
+        stage.appendChild(king);
+        stage.appendChild(explorer);
+        stage.appendChild(crown);
+        stage.appendChild(sparkles);
+        stage.appendChild(celebration);
+
+        panel.appendChild(stage);
+    }
+
+    // ENDING INFORMATION
+
+    const details = document.createElement("div");
+
+    details.className = isVictory
+        ? "victory-details"
+        : "";
 
     const heading = document.createElement("h2");
     heading.textContent = title;
@@ -963,6 +1035,13 @@ function showEndPanel(title, message) {
     const treasureText = document.createElement("p");
     treasureText.textContent =
         "Treasures Collected: " + collectedCount + " / 15";
+
+    details.appendChild(heading);
+    details.appendChild(description);
+    details.appendChild(scoreText);
+    details.appendChild(treasureText);
+
+    // RETURN BUTTON
 
     const returnButton = document.createElement("button");
     returnButton.textContent = "Return to Main Menu";
@@ -979,11 +1058,8 @@ function showEndPanel(title, message) {
         titleScreen.hidden = false;
     });
 
-    panel.appendChild(heading);
-    panel.appendChild(description);
-    panel.appendChild(scoreText);
-    panel.appendChild(treasureText);
-    panel.appendChild(returnButton);
+    details.appendChild(returnButton);
+    panel.appendChild(details);
 
     gameScreen.appendChild(panel);
 
@@ -1027,7 +1103,8 @@ function winGame() {
 
     showEndPanel(
         "Secrets of Ancient Egypt Uncovered!",
-        "Congratulations! You completed all three levels, collected 15 treasures, and discovered fascinating facts about Ancient Egypt. You earned 200 bonus points!"
+        "Congratulations! You completed all three levels, collected 15 treasures, and discovered fascinating facts about Ancient Egypt. You earned 200 bonus points!",
+        true
     );
 }
 

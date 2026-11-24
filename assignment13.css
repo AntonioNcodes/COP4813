@@ -81,13 +81,14 @@ button {
     border-radius: 7px;
     background: #a66a28;
     color: white;
+    font-family: Georgia, "Times New Roman", serif;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background: #d18d35;
     transform: translateY(-2px);
 }
@@ -95,6 +96,11 @@ button:hover {
 button:focus-visible {
     outline: 3px solid white;
     outline-offset: 4px;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
 }
 
 /* INSTRUCTIONS */
@@ -140,6 +146,66 @@ button:focus-visible {
     font-weight: bold;
 }
 
+/* INVENTORY */
+
+.inventory {
+    margin: 18px 0;
+    padding: 18px;
+    background: #28394a;
+    border: 2px solid #c89a43;
+    border-radius: 10px;
+}
+
+.inventory h3 {
+    margin-top: 0;
+    color: #f5c85b;
+}
+
+.inventory-items {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.inventory-item {
+    min-width: 120px;
+    padding: 12px;
+    background: #182c43;
+    border: 1px solid #d6a441;
+    border-radius: 8px;
+}
+
+.inventory-icon {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 2rem;
+}
+
+.inventory-item p {
+    margin: 5px 0;
+    color: #f8e5b5;
+}
+
+/* GAME PROGRESS */
+
+.game-progress {
+    margin: 18px 0;
+    padding: 15px;
+    background: #28394a;
+    border: 1px solid #d6a441;
+    border-radius: 8px;
+}
+
+.game-progress h3 {
+    margin-top: 0;
+    color: #f5c85b;
+}
+
+.game-progress p {
+    line-height: 1.5;
+}
+
 /* GAME CANVAS */
 
 #game-canvas {
@@ -168,6 +234,155 @@ button:focus-visible {
     margin-top: 20px;
     color: #f5d98c;
     line-height: 1.6;
+}
+
+/* QUESTION PANEL */
+
+.question-panel {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 25px;
+    background: linear-gradient(
+        145deg,
+        #28394a,
+        #182c43
+    );
+    border: 3px solid #d6a441;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.question-artifact {
+    margin-bottom: 12px;
+    color: #f5c85b;
+    font-size: 3.5rem;
+}
+
+.question-panel h2 {
+    margin-top: 5px;
+    color: #f5c85b;
+}
+
+.question-panel p {
+    line-height: 1.6;
+}
+
+/* ANSWER OPTIONS */
+
+.answer-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 22px auto;
+}
+
+.answer-button {
+    width: 100%;
+    padding: 15px;
+    background: #80502c;
+    border: 2px solid #d6a441;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.answer-button:hover:not(:disabled) {
+    background: #a66a28;
+}
+
+.answer-button.correct-answer {
+    background: #315c3b;
+    border-color: #83c98b;
+}
+
+.answer-button.incorrect-answer {
+    background: #743535;
+    border-color: #e58b79;
+}
+
+/* ANSWER FEEDBACK */
+
+.answer-feedback {
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.correct-feedback {
+    background: rgba(49, 92, 59, 0.7);
+    border: 2px solid #83c98b;
+    color: #d9f5d9;
+}
+
+.incorrect-feedback {
+    background: rgba(116, 53, 53, 0.7);
+    border: 2px solid #e58b79;
+    color: #ffe0d8;
+}
+
+#continue-button {
+    margin-top: 15px;
+}
+
+/* JOURNAL PANEL */
+
+.journal-panel {
+    position: relative;
+    max-width: 750px;
+    margin: 25px auto;
+    padding: 25px;
+    background: #e9d19b;
+    color: #382817;
+    border: 5px solid #a66a28;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    text-align: left;
+}
+
+.journal-panel h2 {
+    margin-top: 0;
+    color: #80502c;
+    text-align: center;
+}
+
+.journal-entry {
+    margin: 15px 0;
+    padding: 12px;
+    background: rgba(255, 244, 214, 0.8);
+    border-left: 4px solid #a66a28;
+    border-radius: 4px;
+    line-height: 1.6;
+}
+
+.journal-panel button {
+    display: block;
+    margin: 20px auto 0;
+}
+
+/* END PANEL */
+
+.end-panel {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 30px;
+    background: linear-gradient(
+        145deg,
+        #28394a,
+        #182c43
+    );
+    border: 3px solid #f5c85b;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.end-panel h2 {
+    color: #f5c85b;
+    font-size: 2rem;
+}
+
+.end-panel p {
+    line-height: 1.7;
 }
 
 /* FOOTER */
@@ -202,7 +417,37 @@ button:focus-visible {
         padding: 20px 5px;
     }
 
+    .game-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .inventory-items {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .inventory-item {
+        width: 100%;
+    }
+
+    .question-panel {
+        padding: 18px;
+    }
+
+    .question-artifact {
+        font-size: 2.8rem;
+    }
+
+    .game-controls {
+        flex-direction: column;
+    }
+
     .game-controls button {
         width: 100%;
+    }
+
+    .end-panel {
+        padding: 20px;
     }
 }

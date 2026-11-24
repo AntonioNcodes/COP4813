@@ -1,3 +1,4 @@
+
 /* ==========================================
    SECRETS OF ANCIENT EGYPT
    COP4813 - ASSIGNMENT 13
@@ -239,9 +240,7 @@ button:active {
 }
 
 
-/* ==========================================
-   CENTERED QUESTION POPUP
-========================================== */
+/* QUESTION POPUP */
 
 .question-panel {
     position: fixed;
@@ -380,12 +379,456 @@ button:active {
 
     width: 90%;
     max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+
     padding: 25px;
 
     background: #302014;
     border: 3px solid #e2b34c;
     border-radius: 14px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+}
+
+
+/* ==========================================
+   ORIGINAL PHARAOH CORONATION ANIMATION
+========================================== */
+
+.royal-ceremony {
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background: linear-gradient(
+        180deg,
+        #503019,
+        #24150d
+    );
+
+    border: 4px solid #e5b94e;
+
+    animation: ceremony-appear 0.7s ease-out;
+}
+
+@keyframes ceremony-appear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -45%) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+/* THRONE ROOM */
+
+.coronation-stage {
+    position: relative;
+    height: 260px;
+    max-width: 580px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+
+    border: 3px solid #d6a43b;
+    border-radius: 12px;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #9a642e 0%,
+            #56351d 65%,
+            #26170e 100%
+        );
+}
+
+.coronation-stage::before {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    height: 35px;
+
+    background: repeating-linear-gradient(
+        90deg,
+        #c18a38,
+        #c18a38 35px,
+        #8b5b28 35px,
+        #8b5b28 70px
+    );
+
+    border-top: 4px solid #e5b94e;
+}
+
+.throne-room-title {
+    position: absolute;
+    top: 5px;
+    width: 100%;
+
+    color: #ffe6a6;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+
+/* PHARAOH */
+
+.ceremony-pharaoh {
+    position: absolute;
+    left: 24%;
+    bottom: 32px;
+    width: 95px;
+    height: 165px;
+
+    animation: pharaoh-breathe 2s ease-in-out infinite;
+}
+
+.pharaoh-head {
+    position: absolute;
+    top: 30px;
+    left: 27px;
+    width: 42px;
+    height: 48px;
+
+    background: #b97843;
+    border: 2px solid #57351e;
+    border-radius: 45% 45% 40% 40%;
+
+    z-index: 2;
+}
+
+.pharaoh-crown {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    width: 65px;
+    height: 35px;
+
+    background: #e4b52e;
+    border: 3px solid #fff0a0;
+    border-radius: 50% 50% 5px 5px;
+
+    z-index: 3;
+}
+
+.pharaoh-crown::after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: 25px;
+    width: 10px;
+    height: 18px;
+
+    background: #d33e2f;
+    border-radius: 50%;
+}
+
+.pharaoh-eyes {
+    position: absolute;
+    top: 17px;
+    left: 8px;
+    width: 23px;
+    height: 4px;
+
+    background: #292019;
+    border-radius: 50%;
+}
+
+.pharaoh-beard {
+    position: absolute;
+    bottom: -19px;
+    left: 15px;
+    width: 12px;
+    height: 22px;
+
+    background: #292019;
+    border-radius: 2px 2px 7px 7px;
+}
+
+.pharaoh-body {
+    position: absolute;
+    top: 78px;
+    left: 10px;
+    width: 75px;
+    height: 85px;
+
+    background: linear-gradient(
+        90deg,
+        #c18a31,
+        #f5d36b,
+        #b47a25
+    );
+
+    border: 3px solid #70451e;
+    border-radius: 18px 18px 5px 5px;
+}
+
+.pharaoh-body::after {
+    content: "☥";
+    position: absolute;
+    top: 17px;
+    left: 22px;
+
+    color: #70451e;
+    font-size: 28px;
+}
+
+.pharaoh-arm {
+    position: absolute;
+    top: 85px;
+    right: -10px;
+    width: 45px;
+    height: 13px;
+
+    background: #b97843;
+    border: 2px solid #57351e;
+    border-radius: 12px;
+
+    transform-origin: left center;
+    transform: rotate(15deg);
+
+    z-index: 4;
+
+    animation: raise-arm 2s ease-in-out infinite alternate;
+}
+
+@keyframes raise-arm {
+    from {
+        transform: rotate(15deg);
+    }
+
+    to {
+        transform: rotate(-55deg);
+    }
+}
+
+@keyframes pharaoh-breathe {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+
+/* EXPLORER */
+
+.ceremony-explorer {
+    position: absolute;
+    right: 16%;
+    bottom: 32px;
+    width: 65px;
+    height: 130px;
+
+    animation: explorer-arrive 1.5s ease-out;
+}
+
+.explorer-head {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    width: 38px;
+    height: 40px;
+
+    background: #c58a53;
+    border: 2px solid #57351e;
+    border-radius: 50%;
+}
+
+.explorer-head::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -3px;
+    width: 39px;
+    height: 9px;
+
+    background: #302014;
+    border-radius: 50%;
+}
+
+.explorer-body {
+    position: absolute;
+    top: 45px;
+    left: 8px;
+    width: 53px;
+    height: 55px;
+
+    background: #e6d3a7;
+    border: 3px solid #806039;
+    border-radius: 12px;
+}
+
+.explorer-legs {
+    position: absolute;
+    top: 96px;
+    left: 15px;
+    width: 14px;
+    height: 28px;
+
+    background: #63452b;
+    box-shadow: 20px 0 #63452b;
+}
+
+@keyframes explorer-arrive {
+    from {
+        opacity: 0;
+        transform: translateX(55px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* MOVING CROWN */
+
+.ceremony-crown {
+    position: absolute;
+    left: 38%;
+    top: 38%;
+
+    z-index: 10;
+
+    color: #ffe05c;
+    font-family: Georgia, serif;
+    font-size: 48px;
+
+    text-shadow:
+        0 0 8px #fff0a0,
+        0 0 18px #f6b82e;
+
+    animation: crown-presentation 4.5s ease-in-out forwards;
+}
+
+@keyframes crown-presentation {
+    0% {
+        left: 38%;
+        top: 38%;
+        transform: scale(0.7) rotate(-20deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+
+    40% {
+        left: 38%;
+        top: 18%;
+        transform: scale(1.15) rotate(0deg);
+    }
+
+    75% {
+        left: 76%;
+        top: 18%;
+        transform: scale(1) rotate(10deg);
+    }
+
+    90%, 100% {
+        left: 76%;
+        top: 32%;
+        transform: scale(1.15) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+
+/* SPARKLES */
+
+.ceremony-sparkles {
+    position: absolute;
+    top: 12%;
+    left: 0;
+    width: 100%;
+
+    color: #ffe66b;
+    font-size: 24px;
+    letter-spacing: 10px;
+
+    opacity: 0;
+
+    animation: sparkle-celebration 1s ease-in-out 4s 4;
+}
+
+@keyframes sparkle-celebration {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+
+/* VICTORY MESSAGE */
+
+.coronation-text {
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    width: 100%;
+
+    color: #ffe36c;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    text-shadow: 0 0 8px #ffbd35;
+
+    opacity: 0;
+
+    animation: victory-message 1s ease-in-out 4.5s forwards;
+}
+
+@keyframes victory-message {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* FINAL SCORE */
+
+.victory-details {
+    opacity: 0;
+    animation: reveal-results 1s ease-in-out 5.2s forwards;
+}
+
+@keyframes reveal-results {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
@@ -426,5 +869,52 @@ button:active {
 
     button {
         max-width: 100%;
+    }
+
+    .coronation-stage {
+        height: 230px;
+    }
+
+    .ceremony-pharaoh {
+        left: 12%;
+        transform: scale(0.85);
+        transform-origin: bottom center;
+    }
+
+    .ceremony-explorer {
+        right: 8%;
+        transform: scale(0.85);
+        transform-origin: bottom center;
+    }
+
+    .ceremony-crown {
+        font-size: 38px;
+    }
+
+    .coronation-text {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    .throne-room-title {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+    }
+}
+
+
+/* RESPECT REDUCED-MOTION PREFERENCES */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .royal-ceremony *,
+    .royal-ceremony *::before,
+    .royal-ceremony *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .victory-details {
+        opacity: 1;
     }
 }

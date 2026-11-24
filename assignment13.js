@@ -39,6 +39,18 @@ const answerFeedback = document.getElementById("answer-feedback");
 const continueButton = document.getElementById("continue-button");
 
 
+// IMAGE FALLBACK
+
+questionImage.onerror = function () {
+    questionImage.style.display = "none";
+    questionImage.alt = "Historical photo could not be loaded.";
+};
+
+questionImage.onload = function () {
+    questionImage.style.display = "block";
+};
+
+
 // GAME SETTINGS
 
 const worldWidth = 2200;
@@ -87,6 +99,21 @@ const player = {
 };
 
 
+// IMAGE LINKS
+
+const images = {
+    ankh: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankh.svg",
+    papyrus: "https://commons.wikimedia.org/wiki/Special:FilePath/Papyrus_plant.jpg",
+    scarab: "https://commons.wikimedia.org/wiki/Special:FilePath/Scarab_beetle.jpg",
+    nile: "https://commons.wikimedia.org/wiki/Special:FilePath/Nile_River.jpg",
+    pyramids: "https://commons.wikimedia.org/wiki/Special:FilePath/Great_Pyramid_of_Giza.jpg",
+    hieroglyphics: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_Hieroglyphs.jpg",
+    rosetta: "https://commons.wikimedia.org/wiki/Special:FilePath/Rosetta_Stone%2C_British_Museum.jpg",
+    tutankhamun: "https://commons.wikimedia.org/wiki/Special:FilePath/Golden_mask_of_Tutankhamun.jpg",
+    valley: "https://commons.wikimedia.org/wiki/Special:FilePath/Valley_of_the_Kings.jpg"
+};
+
+
 // LEVELS AND HISTORICAL QUESTIONS
 
 const levels = [
@@ -106,7 +133,7 @@ const levels = [
                 options: ["Life", "War", "Farming", "Wealth"],
                 answer: 0,
                 fact: "The Ankh was an ancient Egyptian symbol associated with life and immortality.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ankh.svg"
+                image: images.ankh
             },
 
             {
@@ -117,7 +144,7 @@ const levels = [
                 options: ["Palm tree", "Papyrus plant", "Olive tree", "Cedar tree"],
                 answer: 1,
                 fact: "Ancient Egyptians made a writing material called papyrus from a plant that grew along the Nile River.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Papyrus_plant.jpg"
+                image: images.papyrus
             },
 
             {
@@ -128,7 +155,7 @@ const levels = [
                 options: ["Ocean travel", "War", "Rebirth and renewal", "Farming"],
                 answer: 2,
                 fact: "The scarab beetle was an important symbol associated with rebirth and renewal.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Scarab_beetle.jpg"
+                image: images.scarab
             },
 
             {
@@ -139,7 +166,7 @@ const levels = [
                 options: ["Amazon", "Nile", "Mississippi", "Danube"],
                 answer: 1,
                 fact: "The Nile River provided water, transportation, and fertile soil for farming.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Nile_River.jpg"
+                image: images.nile
             },
 
             {
@@ -150,7 +177,7 @@ const levels = [
                 options: ["Markets", "Schools", "Tombs", "Farms"],
                 answer: 2,
                 fact: "Many Egyptian pyramids were built as royal tombs for pharaohs.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Pyramids_of_Giza.jpg"
+                image: images.pyramids
             }
 
         ]
@@ -171,7 +198,7 @@ const levels = [
                 options: ["A type of food", "A writing system", "A musical instrument", "A building"],
                 answer: 1,
                 fact: "Hieroglyphics were a writing system that used pictures and symbols.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_hieroglyphics.jpg"
+                image: images.hieroglyphics
             },
 
             {
@@ -182,7 +209,7 @@ const levels = [
                 options: ["Ra", "Osiris", "Anubis", "Horus"],
                 answer: 0,
                 fact: "Ra was an important ancient Egyptian sun god.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ra_Egyptian_god.jpg"
+                image: images.hieroglyphics
             },
 
             {
@@ -193,7 +220,7 @@ const levels = [
                 options: ["Build pyramids", "Translate hieroglyphics", "Store food", "Measure land"],
                 answer: 1,
                 fact: "The Rosetta Stone helped researchers understand Egyptian hieroglyphics.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Rosetta_Stone.jpg"
+                image: images.rosetta
             },
 
             {
@@ -204,7 +231,7 @@ const levels = [
                 options: ["Write and record information", "Build boats", "Grow crops", "Train soldiers"],
                 answer: 0,
                 fact: "Scribes were trained writers who recorded information and important documents.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ancient_Egyptian_scribe.jpg"
+                image: images.hieroglyphics
             },
 
             {
@@ -215,7 +242,7 @@ const levels = [
                 options: ["Lion", "Jackal", "Eagle", "Horse"],
                 answer: 1,
                 fact: "Anubis was commonly depicted with the head of a jackal and was associated with mummification.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Anubis.jpg"
+                image: images.hieroglyphics
             }
 
         ]
@@ -236,7 +263,7 @@ const levels = [
                 options: ["Prepare the body for the afterlife", "Prepare for battle", "Celebrate a festival", "Build a home"],
                 answer: 0,
                 fact: "Mummification preserved bodies because ancient Egyptians believed in an afterlife.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_mummy.jpg"
+                image: images.tutankhamun
             },
 
             {
@@ -247,7 +274,7 @@ const levels = [
                 options: ["Senator", "Emperor", "Pharaoh", "Knight"],
                 answer: 2,
                 fact: "The pharaoh was the ruler of ancient Egypt.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tutankhamun_mask.jpg"
+                image: images.tutankhamun
             },
 
             {
@@ -258,7 +285,7 @@ const levels = [
                 options: ["A famous pharaoh", "A Roman general", "A Greek philosopher", "A builder"],
                 answer: 0,
                 fact: "Tutankhamun was a young Egyptian pharaoh whose tomb was discovered in 1922.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tutankhamun_mask.jpg"
+                image: images.tutankhamun
             },
 
             {
@@ -269,7 +296,7 @@ const levels = [
                 options: ["Modern computers", "Food and valuable objects", "Cars", "Electric lights"],
                 answer: 1,
                 fact: "Some tombs contained food, jewelry, furniture, and other objects for the afterlife.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Egyptian_tomb_treasures.jpg"
+                image: images.tutankhamun
             },
 
             {
@@ -280,7 +307,7 @@ const levels = [
                 options: ["Growing crops", "Royal burials", "Trading boats", "Building schools"],
                 answer: 1,
                 fact: "The Valley of the Kings was a burial site for many New Kingdom pharaohs.",
-                image: "https://commons.wikimedia.org/wiki/Special:FilePath/Valley_of_the_Kings.jpg"
+                image: images.valley
             }
 
         ]
@@ -451,29 +478,21 @@ function drawBackground() {
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Sun
-
     ctx.fillStyle = "#ffe6a1";
     ctx.beginPath();
     ctx.arc(760, 75, 38, 0, Math.PI * 2);
     ctx.fill();
-
-    // Distant pyramids
 
     drawPyramid(170 - cameraX * 0.4, 285, 180, 170);
     drawPyramid(650 - cameraX * 0.4, 300, 140, 155);
     drawPyramid(1100 - cameraX * 0.4, 280, 200, 180);
     drawPyramid(1750 - cameraX * 0.4, 295, 160, 165);
 
-    // Ground
-
     ctx.fillStyle = levels[currentLevel].background;
     ctx.fillRect(0, groundY, canvas.width, 65);
 
     ctx.fillStyle = "#a7773f";
     ctx.fillRect(0, groundY + 8, canvas.width, 8);
-
-    // Level-specific scenery
 
     if (currentLevel === 1) {
         drawTemple();
@@ -514,7 +533,6 @@ function drawPyramid(x, y, width, height) {
 function drawTemple() {
 
     ctx.fillStyle = "#a88b61";
-
     ctx.fillRect(650 - cameraX * 0.35, 190, 260, 195);
 
     ctx.fillStyle = "#e0c18b";
@@ -553,27 +571,17 @@ function drawPlayer() {
     const x = player.x - cameraX;
     const y = player.y;
 
-    // Head
-
     ctx.fillStyle = "#b87943";
     ctx.fillRect(x + 9, y, 18, 18);
-
-    // Hair
 
     ctx.fillStyle = "#29211c";
     ctx.fillRect(x + 8, y, 19, 5);
 
-    // Body
-
     ctx.fillStyle = "#f5e6bd";
     ctx.fillRect(x + 7, y + 18, 22, 20);
 
-    // Belt
-
     ctx.fillStyle = "#c28b32";
     ctx.fillRect(x + 7, y + 30, 22, 5);
-
-    // Legs
 
     ctx.fillStyle = "#523a29";
     ctx.fillRect(x + 8, y + 38, 7, 10);
@@ -603,7 +611,6 @@ function drawArtifacts() {
         ctx.fillStyle = "#70451b";
         ctx.font = "bold 19px Georgia";
         ctx.textAlign = "center";
-
         ctx.fillText(item.symbol, x, 347);
 
     });
@@ -655,17 +662,9 @@ function collectArtifact(item) {
     questionTitle.textContent = "Ancient " + item.name + " Challenge";
     questionText.textContent = item.question;
 
-    questionImage.src = item.image;
+    questionImage.style.display = "block";
     questionImage.alt = "Historical image related to " + item.name;
-
-    questionImage.onerror = function() {
-        questionImage.alt = "Historical image unavailable";
-        questionImage.style.display = "none";
-    };
-
-    questionImage.onload = function() {
-        questionImage.style.display = "block";
-    };
+    questionImage.src = item.image;
 
     answerFeedback.textContent = "";
     answerFeedback.className = "";

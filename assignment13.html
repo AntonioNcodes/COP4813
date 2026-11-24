@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Secrets of Ancient Egypt</title>
+
     <link rel="stylesheet" href="assignment13.css">
 </head>
 
@@ -44,18 +47,25 @@
                 and answer historical questions as you explore.
             </p>
 
-            <button id="start-button">Start Adventure</button>
+            <button id="start-button" type="button">
+                Start Adventure
+            </button>
 
         </section>
 
 
         <!-- GAME SCREEN -->
-        <section id="game-screen" class="screen" style="display: none;">
+        <!-- The hidden attribute allows JavaScript to show this screen. -->
+        <section id="game-screen" class="screen" hidden>
 
             <div class="game-info">
+
                 <div>Score: <span id="score">0</span></div>
+
                 <div>Lives: <span id="lives">3</span></div>
+
                 <div>Artifacts: <span id="artifacts">0</span></div>
+
             </div>
 
 
@@ -65,7 +75,7 @@
                 <h2 id="level-name">Level 1: Desert of Secrets</h2>
 
                 <p id="level-description">
-                    Explore the desert and discover ancient treasures.
+                    Explore the Egyptian desert and discover ancient treasures.
                 </p>
 
                 <p>
@@ -81,8 +91,13 @@
             </div>
 
 
-            <!-- GAME AREA -->
-            <canvas id="game-canvas" width="900" height="450"></canvas>
+            <!-- GAME CANVAS -->
+            <canvas
+                id="game-canvas"
+                width="900"
+                height="450"
+            ></canvas>
+
 
             <p id="game-message">
                 Use the arrow keys to move and the spacebar to jump.
@@ -100,18 +115,21 @@
 
                 <p>Scarab: <span id="scarab-count">0</span></p>
 
-                <p>Total Treasures:
+                <p>
+                    Total Treasures:
                     <span id="treasures-collected">0</span>
                 </p>
 
             </div>
 
 
-            <button id="journal-button">View Explorer Journal</button>
+            <button id="journal-button" type="button">
+                View Explorer Journal
+            </button>
 
 
             <!-- QUESTION PANEL -->
-            <div id="question-panel" class="question-panel" style="display: none;">
+            <div id="question-panel" class="question-panel" hidden>
 
                 <h2 id="question-artifact">Ancient Artifact</h2>
 
@@ -130,8 +148,12 @@
 
                 <p id="answer-feedback"></p>
 
-                <button id="continue-button" style="display: none;">
-                    Continue
+                <button
+                    id="continue-button"
+                    type="button"
+                    hidden
+                >
+                    Continue Adventure
                 </button>
 
             </div>

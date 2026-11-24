@@ -346,3 +346,9 @@ button:active {
         max-width: 100%;
     }
 }
+
+/* Allow JavaScript to control hidden game sections */
+
+[hidden] {
+    display: none !important;
+}

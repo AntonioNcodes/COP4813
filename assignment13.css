@@ -1,8 +1,9 @@
-
 /* =========================================
    SECRETS OF ANCIENT EGYPT
-   COP4813 - Assignment 13
+   COP4813 - ASSIGNMENT 13
 ========================================= */
+
+/* GENERAL SETTINGS */
 
 * {
     box-sizing: border-box;
@@ -13,450 +14,306 @@ body {
     min-height: 100vh;
     font-family: Georgia, "Times New Roman", serif;
     color: #fff4d6;
-    background:
-        linear-gradient(
-            180deg,
-            rgba(18, 35, 56, 0.95),
-            rgba(91, 57, 34, 0.92),
-            rgba(193, 132, 55, 0.95)
-        );
+    background: linear-gradient(
+        135deg,
+        #101b2d,
+        #25354a,
+        #101b2d
+    );
+    text-align: center;
 }
 
 /* HEADER */
 
-.game-header {
-    text-align: center;
+header {
     padding: 30px 15px;
-    background: #182c43;
-    border-bottom: 4px solid #d6a441;
+    background: #101827;
+    border-bottom: 4px solid #d4a642;
 }
 
-.game-header h1 {
+header h1 {
     margin: 0;
-    color: #f5c85b;
-    font-size: 2.5rem;
+    color: #e9bd59;
+    font-size: 2.6rem;
     letter-spacing: 2px;
     text-shadow: 2px 3px 5px #000;
 }
 
-.game-header p {
-    margin-bottom: 0;
-    color: #f8e5b5;
+header p {
+    color: #f4dfad;
     font-size: 1.1rem;
 }
 
-/* MAIN CONTAINER */
+/* MAIN CONTENT */
 
-.game-container {
-    width: 94%;
+main {
+    width: 95%;
     max-width: 1100px;
     margin: 30px auto;
-    padding: 25px;
-    background: rgba(30, 35, 43, 0.96);
-    border: 3px solid #d6a441;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+}
+
+section {
+    margin-bottom: 25px;
 }
 
 /* TITLE SCREEN */
 
-.title-screen {
-    text-align: center;
-    padding: 35px 15px;
+#title-screen {
+    padding: 30px;
+    background: #26364b;
+    border: 3px solid #d4a642;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.title-screen h2 {
-    color: #f5c85b;
+#title-screen h2 {
+    color: #e9bd59;
     font-size: 2rem;
 }
 
-.title-screen > p {
-    max-width: 700px;
-    margin: 15px auto 25px;
-    line-height: 1.8;
+.title-image {
+    display: block;
+    width: 100%;
+    max-width: 750px;
+    max-height: 350px;
+    object-fit: cover;
+    margin: 25px auto;
+    border: 4px solid #d4a642;
+    border-radius: 10px;
 }
 
 /* BUTTONS */
 
 button {
-    padding: 13px 24px;
-    border: 2px solid #f5c85b;
+    padding: 12px 25px;
+    margin: 8px;
+    color: #241b0d;
+    background: linear-gradient(#edca77, #c18a32);
+    border: 2px solid #f6dfa2;
     border-radius: 7px;
-    background: linear-gradient(#b77b32, #80502c);
-    color: white;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Georgia, serif;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    transition: 0.2s ease;
 }
 
-button:hover:not(:disabled) {
-    background: linear-gradient(#d69a42, #a66a28);
+button:hover {
+    background: #ffe4a0;
     transform: translateY(-2px);
 }
 
-button:focus-visible {
-    outline: 3px solid white;
-    outline-offset: 4px;
-}
-
 button:disabled {
-    opacity: 0.65;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
 }
 
-/* INSTRUCTIONS */
+/* LEVEL INFORMATION */
 
-.instructions {
-    max-width: 700px;
-    margin: 35px auto 0;
-    padding: 20px;
-    background: #28394a;
-    border: 1px solid #c89a43;
+.level-information {
+    padding: 18px;
+    background: #26364b;
+    border: 2px solid #d4a642;
     border-radius: 10px;
 }
 
-.instructions h3 {
-    color: #f5c85b;
-}
-
-.instructions p {
-    line-height: 1.6;
-}
-
-/* GAME SCREEN */
-
-.game-screen {
-    text-align: center;
+.level-information h2 {
+    color: #e9bd59;
+    margin-top: 0;
 }
 
 /* GAME INFORMATION */
 
 .game-info {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: #28394a;
-    border: 1px solid #d6a441;
-    border-radius: 8px;
+    gap: 15px;
+    margin: 20px 0;
 }
 
 .game-info p {
-    margin: 5px;
-    color: #f5c85b;
+    padding: 12px 20px;
+    background: #26364b;
+    border: 1px solid #d4a642;
+    border-radius: 8px;
     font-weight: bold;
 }
 
 /* INVENTORY */
 
 .inventory {
-    margin: 18px 0;
-    padding: 18px;
-    background: #28394a;
-    border: 2px solid #c89a43;
+    padding: 15px;
+    background: #26364b;
+    border: 2px solid #d4a642;
     border-radius: 10px;
 }
 
 .inventory h3 {
+    color: #e9bd59;
     margin-top: 0;
-    color: #f5c85b;
 }
 
-.inventory-items {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
+.inventory p {
+    display: inline-block;
+    margin: 8px 15px;
+    color: #f4dfad;
 }
 
-.inventory-item {
-    min-width: 140px;
-    padding: 12px;
-    background: #182c43;
-    border: 1px solid #d6a441;
-    border-radius: 8px;
-}
-
-.inventory-icon {
-    display: block;
-    margin-bottom: 7px;
-    font-size: 2rem;
-}
-
-.inventory-item p {
-    margin: 5px 0;
-    color: #f8e5b5;
-}
-
-/* MISSION PROGRESS */
+/* GAME PROGRESS */
 
 .game-progress {
-    margin: 18px 0;
-    padding: 15px;
-    background: #28394a;
-    border: 1px solid #d6a441;
-    border-radius: 8px;
+    padding: 10px;
+    color: #e9bd59;
+    font-weight: bold;
 }
 
-.game-progress h3 {
-    margin-top: 0;
-    color: #f5c85b;
-}
-
-.game-progress p {
-    line-height: 1.5;
-}
-
-/* GAME STAGE */
+/* GAME AREA */
 
 .game-stage {
     position: relative;
     width: 100%;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 25px auto;
     overflow: hidden;
-    border: 4px solid #d6a441;
-    border-radius: 8px;
-    background: #dca64e;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    border: 4px solid #d4a642;
+    border-radius: 12px;
+    background: #c9a66b;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
-
-/* GAME CANVAS */
 
 #game-canvas {
     display: block;
     width: 100%;
     height: auto;
-    margin: 0 auto;
-    background: #e9b85e;
+    background: #d9b77c;
 }
 
-/* QUESTION OVERLAY */
+/* QUESTION PANEL */
 
 .question-panel {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
-
     width: 88%;
-    max-width: 650px;
+    max-width: 560px;
     max-height: 92%;
     overflow-y: auto;
-
-    margin: 0;
-    padding: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #f4dfad,
-            #dfbd78,
-            #f0d69c
-        );
-
-    color: #382817;
-    border: 6px double #8b5a25;
+    padding: 20px;
+    color: #382813;
+    background: #f0dfb5;
+    border: 5px solid #b58a3c;
     border-radius: 12px;
-
-    box-shadow:
-        0 0 0 4px rgba(214, 164, 65, 0.8),
-        0 8px 25px rgba(0, 0, 0, 0.7);
-
-    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
 }
-
-/* QUESTION ARTIFACT */
-
-.question-artifact {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 75px;
-    height: 75px;
-    margin-bottom: 10px;
-
-    background: #80502c;
-    color: #f5c85b;
-
-    border: 3px solid #d6a441;
-    border-radius: 50%;
-
-    font-size: 2.8rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* QUESTION TEXT */
 
 .question-panel h2 {
-    margin: 8px 0 12px;
-    color: #70451f;
-    font-size: 1.6rem;
+    color: #704719;
+    margin: 10px 0;
+}
+
+.question-panel h3 {
+    color: #a16b22;
+    margin-top: 0;
 }
 
 .question-panel p {
-    color: #382817;
-    font-size: 1.05rem;
-    line-height: 1.6;
+    line-height: 1.5;
+}
+
+/* QUESTION IMAGE */
+
+.question-image-container {
+    width: 100%;
+    margin: 12px auto;
+}
+
+#question-image {
+    display: block;
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border: 3px solid #b58a3c;
+    border-radius: 8px;
 }
 
 /* ANSWER OPTIONS */
 
-.answer-options {
+#answer-options {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 20px auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 18px 0;
 }
 
-.answer-button {
+#answer-options button {
     width: 100%;
-    padding: 14px 18px;
-
-    background: linear-gradient(#a9783d, #80502c);
-    color: white;
-
-    border: 2px solid #70451f;
-    border-radius: 8px;
-
-    text-align: left;
-    font-size: 1rem;
+    min-height: 55px;
+    margin: 0;
+    color: #382813;
+    background: #d7bd83;
+    border: 2px solid #9d783d;
+    border-radius: 7px;
 }
 
-.answer-button:hover:not(:disabled) {
-    background: linear-gradient(#c58b42, #a66a28);
-}
-
-.answer-button.correct-answer {
-    background: #315c3b;
-    border-color: #24512e;
-    color: white;
-}
-
-.answer-button.incorrect-answer {
-    background: #873d32;
-    border-color: #61251d;
-    color: white;
+#answer-options button:hover {
+    background: #f5dda5;
 }
 
 /* ANSWER FEEDBACK */
 
-.answer-feedback {
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 8px;
-    line-height: 1.6;
+#answer-feedback {
     font-weight: bold;
+    font-size: 1.05rem;
 }
 
-.correct-feedback {
-    background: #d5e8c9;
-    border: 2px solid #477a42;
-    color: #24512e;
+#answer-feedback.correct {
+    color: #26733b;
 }
 
-.incorrect-feedback {
-    background: #f1c5b9;
-    border: 2px solid #a34838;
-    color: #702c22;
-}
-
-/* CONTINUE BUTTON */
-
-#continue-button {
-    margin-top: 12px;
-    background: linear-gradient(#b77b32, #80502c);
+#answer-feedback.incorrect {
+    color: #a32e24;
 }
 
 /* GAME MESSAGE */
 
 #game-message {
-    min-height: 30px;
-    margin-top: 20px;
-    color: #f5d98c;
-    line-height: 1.6;
+    min-height: 25px;
+    color: #f4dfad;
+    font-size: 1.1rem;
 }
 
-/* GAME CONTROLS */
+/* JOURNAL */
 
-.game-controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 20px;
+#journal-button {
+    margin: 15px;
 }
 
-/* JOURNAL PANEL */
+/* JOURNAL AND END SCREENS */
 
-.journal-panel {
-    position: relative;
-    max-width: 750px;
-    margin: 25px auto;
+#journal-panel,
+#end-panel {
     padding: 25px;
-    background: #e9d19b;
-    color: #382817;
-    border: 5px solid #a66a28;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    text-align: left;
+    background: #26364b;
+    border: 3px solid #d4a642;
+    border-radius: 10px;
 }
 
-.journal-panel h2 {
-    margin-top: 0;
-    color: #80502c;
-    text-align: center;
-}
-
-.journal-entry {
-    margin: 15px 0;
-    padding: 12px;
-    background: rgba(255, 244, 214, 0.8);
-    border-left: 4px solid #a66a28;
-    border-radius: 4px;
-    line-height: 1.6;
-}
-
-.journal-panel button {
-    display: block;
-    margin: 20px auto 0;
-}
-
-/* END PANEL */
-
-.end-panel {
-    max-width: 700px;
-    margin: 25px auto;
-    padding: 30px;
-    background: linear-gradient(145deg, #28394a, #182c43);
-    border: 3px solid #f5c85b;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.end-panel h2 {
-    color: #f5c85b;
-    font-size: 2rem;
-}
-
-.end-panel p {
-    line-height: 1.7;
+#journal-panel h2,
+#end-panel h2 {
+    color: #e9bd59;
 }
 
 /* FOOTER */
 
-.game-footer {
+footer {
+    margin-top: 40px;
     padding: 20px;
-    text-align: center;
-    background: #182c43;
-    border-top: 3px solid #d6a441;
-    color: #f8e5b5;
+    color: #f4dfad;
+    background: #101827;
+    border-top: 3px solid #d4a642;
 }
 
 /* HIDDEN ELEMENTS */
@@ -465,77 +322,52 @@ button:disabled {
     display: none !important;
 }
 
-/* MOBILE RESPONSIVENESS */
+/* MOBILE DESIGN */
 
 @media (max-width: 600px) {
 
-    .game-header h1 {
+    header h1 {
         font-size: 1.8rem;
     }
 
-    .game-container {
-        width: 95%;
-        padding: 12px;
+    main {
+        width: 96%;
     }
 
-    .title-screen {
-        padding: 20px 5px;
+    #title-screen {
+        padding: 18px;
     }
 
     .game-info {
-        flex-direction: column;
-        align-items: center;
+        gap: 5px;
     }
 
-    .inventory-items {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .inventory-item {
-        width: 100%;
-    }
-
-    .question-panel {
-        width: 94%;
-        max-height: 94%;
-        padding: 14px;
-        border-width: 4px;
-    }
-
-    .question-artifact {
-        width: 55px;
-        height: 55px;
-        font-size: 2rem;
-    }
-
-    .question-panel h2 {
-        font-size: 1.2rem;
-    }
-
-    .question-panel p {
-        font-size: 0.9rem;
-    }
-
-    .answer-options {
-        gap: 8px;
-        margin: 12px auto;
-    }
-
-    .answer-button {
+    .game-info p {
         padding: 10px;
         font-size: 0.9rem;
     }
 
-    .game-controls {
-        flex-direction: column;
+    .inventory p {
+        margin: 5px;
+        font-size: 0.9rem;
     }
 
-    .game-controls button {
-        width: 100%;
+    .question-panel {
+        width: 94%;
+        padding: 12px;
     }
 
-    .end-panel {
-        padding: 20px;
+    #question-image {
+        max-height: 110px;
+    }
+
+    #answer-options {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    #answer-options button {
+        min-height: 40px;
+        padding: 8px;
     }
 }
